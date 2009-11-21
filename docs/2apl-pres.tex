@@ -115,7 +115,7 @@
 \frame{
 	\frametitle{2APL Language}
 	
-	There are 2 distinguished set of programming constructs
+	There are 2 distinguished set of programming constructs that allows to define:
 	
 	\begin{enumerate}
 		\item Multi-agent system specification
@@ -128,7 +128,7 @@
 \begin{frame}[allowframebreaks,fragile]
 	\frametitle{Multi-agent system specification}
 
-	A multi-agent system is defined by set of:
+	A multi-agent system is defined as a set of couples:
 
 	\vskip 0.2ex
 	
@@ -136,33 +136,33 @@
 		\item Individual agents
 		\item Environments they have access to
 		\begin{itemize}
-			\item Any Java class with an internal a state
-			\item A set of methods to change the state
+			\item Java class with an internal a state
+			\item A set of actions (methods) to change the state
 			\item Can function as interface (e.g. real world, other software)
 		\end{itemize}		
 	\end{enumerate}
 
 	\break	
 
-	\bsyntax 
-	\begin{verbatim}
-	<MAS_Prog>     := ( <agentname> ``:'' <filename> [<int>]
-	                   [<environments>] )+
-	<agentname>    := <ident>
-	<filename>     := <ident>``.2apl''
-	<environments> := ``@''<ident> (``,'' <ident>)*
-	\end{verbatim}
-	\esyntax
+\bsyntax 
+\begin{verbatim}
+<MAS_Prog>     := ( <agentname> ``:'' <filename> [<int>]
+                   [<environments>] )+
+<agentname>    := <ident>
+<filename>     := <ident>``.2apl''
+<environments> := ``@''<ident> (``,'' <ident>)*
+\end{verbatim}
+\esyntax
 
 	\vskip 1.0ex
 	
-	\bexample
-	\begin{verbatim}
-	harry : harry.2apl @blockworld
-	sally : sally.2apl @blockworld
-	\end{verbatim}
-	\eexample
-	\end{frame}
+\bexample
+\begin{verbatim}
+harry : harry.2apl @blockworld
+sally : sally.2apl @blockworld
+\end{verbatim}
+\eexample
+\end{frame}
 
 \subsubsection{Individual agent specification}
 
@@ -257,7 +257,7 @@
 		
 }
 
-\begin{frame}[fragile,allowframebreaks]
+\frame[allowframebreaks]{
 	\frametitle{Belief base}
 
 	\bsyntax
@@ -265,9 +265,12 @@
 	``Beliefs:'' <belief>
 	
 	<belief>   := ( <ground_atom> ``.''
-	              | <atom> ``:-'' <literals> ``.'' )+
+	              | <atom> ``:-'' <literals> ``.'' 
+	              )+
 	<literals> := <literal> (``,'' <literal>)*
-	<literal>  := ( <atom> | ``not'' <atom>)
+	<literal>  := ( <atom> 
+	              | ``not'' <atom>
+	              )
 	\end{verbatim}
 	\esyntax
 
@@ -290,9 +293,9 @@
 	       clean(blockWorld) :- not bomb(X,Y), not carry(bomb).
 	\end{verbatim}
 	\eexample
-\end{frame}
+}
 
-\begin{frame}[fragile]
+\frame[allowframebreaks]{
 	\frametitle{Goal base}
 	
 	\bsyntax 
@@ -321,14 +324,12 @@
 		\item Having ``\texttt{a and b}'' is different than having ``\texttt{a, b}''
 		\item Goal base is a list such that the goals are ordered
 	\end{itemize}
-\end{frame}
+}
 
 \frame[allowframebreaks]{
 	\frametitle{Basic actions}
 	
 	A 2APL agent needs to act in order to achieve its goals.
-
-	\vskip 2.0ex
 	
 	There are 6 types of basic actions:
 	
@@ -345,30 +346,27 @@
 	
 	\bsyntax
 	\begin{verbatim}
-	<baction> = ( ``skip'' | <beliefupdate>
-	            | <sendaction>| <externalaction> 
-	            | <abstractaction> | <test>
-	            | <adoptgoal> | <dropgoal>
+	<baction> = ( ``skip'' 
+	            | <beliefupdate> | <sendaction>| <externalaction> 
+	            | <abstractaction> | <test> | <adoptgoal> | <dropgoal>
 	            )
 	\end{verbatim}
 	\esyntax
 }
 
-\begin{frame}[fragile,allowframebreaks]
+\frame[allowframebreaks]{
 	\frametitle{Belief update action}
 	
 	Updates the belief base using precondition-delete-add formalism.
 	
-	\vskip 2.0ex
+	\vskip 1.0ex
 	
 	\bsyntax
-	\footnotesize
+	\small
 	\begin{verbatim}
 	``BeliefUpdates:'' <BelUpSpec>
 	
-	<BelUpSpec>    := (
-	                  ``{'' <belquery> ``}'' <beliefupdate> ``{'' <literals> ``}''
-	                  )+
+	<BelUpSpec>    := ( ``{'' <belquery> ``}'' <beliefupdate> ``{'' <literals> ``}'' )+
 	<belquery>     := ( ``true'' 
 	                  | <belquery> ``and'' <belquery>
 	                  | <belquery> ``or'' <belquery>
@@ -384,10 +382,10 @@
 	\bexample
 	\begin{verbatim}
 	BeliefUpdates:
-	   { bomb(X,Y) }       RemoveBomb(X,Y) { not bomb(X,Y) }
-	   { true }            AddBomb(X,Y)    { bomb(X,Y) }
-	   { carry(bomb) }     Drop()          { not carry(bomb) }
-	   { not carry(bomb) } PickUp()        { carry(bomb) }
+	      { bomb(X,Y) }       RemoveBomb(X,Y) { not bomb(X,Y) }
+	      { true }            AddBomb(X,Y)    { bomb(X,Y) }
+	      { carry(bomb) }     Drop()          { not carry(bomb) }
+	      { not carry(bomb) } PickUp()        { carry(bomb) }
 	\end{verbatim}
 	\eexample
 	
@@ -395,9 +393,9 @@
 		\item After the execution of the action, the post-condition is entailed by the belief base
 		\item The specification of belief update actions do not cahnge during agent execution
 	\end{itemize}
-\end{frame}
+}
 
-\begin{frame}[fragile]
+\frame[allowframebreaks]{
 	\frametitle{Communication action}
 	
 	A communication action passes a message to another agent.
@@ -418,10 +416,8 @@
 
 	% operational semantics
 	\bsem
-	\begin{verbatim}
 	send(Receiver, Performative, Language, Ontology, Content)
 	send(Receiver, Performative, Content)
-	\end{verbatim}
 	\esem
 
 	\vskip 1.0ex
@@ -432,9 +428,9 @@
 	send(harry, inform, La, On, bombAt(X1,Y1))
 	\end{verbatim}
 	\eexample
-\end{frame}
+}
 
-\begin{frame}[fragile]
+\frame[allowframebreaks]{
 	\frametitle{External action}
 	
 	An external action is supposed to change the state of an external environment
@@ -447,7 +443,7 @@
 	\bsyntax
 	\small
 	\begin{verbatim}
-	<externalaction> := ``@'' <ident> ``('' <atom> ``,'' <Var> ``)''
+	<externalaction> = ``@'' <ident> ``('' <atom> ``,'' <Var> ``)''
 	\end{verbatim}
 	\esyntax
 
@@ -464,14 +460,14 @@
 	@blockworld(east(), L)
 	\end{verbatim}
 	\eexample
-\end{frame}
+}
 
-\begin{frame}[fragile]
+\frame[allowframebreaks]{
 	\frametitle{Abstract action}
 	
 	\bsyntax
 	\begin{verbatim}
-	<abstractlaction> := <atom>
+	<abstractlaction> = <atom>
 	\end{verbatim}
 	\esyntax
 
@@ -480,7 +476,7 @@
 		\item When it is invoked, an instantiation of the plan that is associated is executed
 		\item It can be used to pass parameters among plans
 	\end{itemize}
-\end{frame}
+}
 
 \begin{frame}[fragile,allowframebreaks]
 	\frametitle{Test actions}
@@ -509,8 +505,8 @@
 	\begin{verbatim}
 	p(a) 
 	q(b) 
-	B(p(X)) & G(q(X))   // fails	
-	G(q(Y) or r(X))     // succeeds
+	B(p(X)) \& G(q(X))	// fails	
+	G(q(Y) or r(X))		// succeeds
 	\end{verbatim}
 	\eexample
 \end{frame}
@@ -520,14 +516,10 @@
 	
 	They are used to adopt and drop a goal to and from an agent's goal base.
 
-	\vskip 2.0ex
-
 	\bsyntax
-	\footnotesize
+	\small
 	\begin{verbatim}
-	<adoptgoal> := ( ``adopta('' <goalvar> ``)''
-	               | ``adoptz('' <goalvar> ``)''
-	               )
+	<adoptgoal> := ( ``adopta('' <goalvar> ``)'' | ``adoptz('' <goalvar> ``)'' )
 	<dropgoal>  := ( ``dropgoal('' <goalvar> ``)''
 	               | ``dropsubgoals('' <goalvar> ``)''
 	               | ``dropsupergoals('' <goalvar> ``)''
@@ -536,35 +528,28 @@
 	\end{verbatim}
 	\esyntax
 	
-	\vskip 2.0ex
-
 	It is programmer task to ensure that the variables are instantiated before the actions are executed.
 
 	\break
 
-	\bexample
-	\footnotesize
-	\begin{verbatim}
 	Goal base:
-	   a(1)
-	   a(1) and b(1)
-	   a(1) and b(1) and c(1)
+	\begin{itemize}
+		\item \texttt{a(1)}
+		\item \texttt{a(1) and b(1)}
+		\item \texttt{a(1) and b(1) and c(1)}
+	\end{itemize}
 
-	   ...
-
-	   dropgoal(a(1) and b(1))       // drops a(1) and b(1)
-	   dropsubgoal(a(1) and b(1))    // drops a(1), a(1) and b(1)
-	   dropsupergoal(a(1) and b(1))  // drops a(1) and b(1), a(1) and b(1) and c(1)
-	\end{verbatim}
-	\eexample
+	\begin{itemize}
+		\item \texttt{dropgoal(a(1) and b(1))}	drops \texttt{a(1) and b(1)}
+		\item \texttt{dropsubgoal(a(1) and b(1))} drops \texttt{a(1), a(1) and b(1)}
+		\item \texttt{dropsupergoal(a(1) and b(1))} drops \texttt{a(1) and b(1), a(1) and b(1) and c(1)}
+	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile,allowframebreaks]
+\begin{frame}[fragile]
 	\frametitle{Plans}
 	
 	In order to reach its goals, a 2APL agent adopts \emph{plans}.  An agent can have different plans at the same time.
-
-	\vskip 2.0ex
 	
 	A plan consists of basic actions composed by use of
 	\begin{itemize}
@@ -573,19 +558,13 @@
 		\item conditional iteration operator
 		\item unary operator to identify plans that should be executed atomically
 	\end{itemize}	
-
-	\break	
-
+	
 	\bsyntax
 	\small
 	\begin{verbatim}
-	<plan>         := ( <baction> | <sequenceplan> 
-	                  |  <ifplan> | <whileplan>
-	                  | <atomicplan>
-	                  )
+	<plan>         := <baction> | <sequenceplan> | <ifplan> | <whileplan> | <atomicplan>
 	<sequenceplan> := <plan> ``;'' <plan>
-	<ifplan>       := ``if'' <test> ``then'' <scopeplan>
-	                  [``else'' <scopeplan>]
+	<ifplan>       := ``if'' <test> ``then'' <scopeplan> [``else'' <scopeplan>]
 	<scopeplan>    := ``{'' <plan ``}''
 	<whileplan>    := ``while'' <text> ``do'' <scopeplan>
 	<atomicplan>   := ``['' <plan> ``]''
@@ -598,19 +577,13 @@
 
 	The plans of a 2APL agent are implemented by its plan base.
 
-	\vskip 2.0ex
-
 	\bsyntax
 	\begin{verbatim}
 	Plans: <plans>
-
-	<plans> := <plan> ( ``,'' <plan> )*
 	\end{verbatim}
 	\esyntax
 
-	\vskip 2.0ex
-
-	Initial plan base:
+	Example of an initial plan base:
 	\bexample
 	\begin{verbatim}
 	@blockworld(enter(0,0, blue), L)
@@ -621,7 +594,7 @@
 \begin{frame}
 	\frametitle{Reasoning rules}
 	
-	3 \emph{practical} reasoning rules that can be used to implement the generation of plans.
+	3 reasoning rules that can be used to implement the generation of plans.
 
 	\begin{itemize}
 		\item Planning goal rules (PG rules)
@@ -635,8 +608,6 @@
 
 	A planning goal rule specifies which plan to generate starting from certain beliefs and goals.
 
-	\vskip 2.0ex
-
 	\bsyntax
 	\begin{verbatim}
 	``PG-rules:'' <pgrules>}
@@ -645,8 +616,6 @@
 	<pgrule>  := [<goalquery>] ``<-'' <belquery> ``|'' <plan>
 	\end{verbatim}
 	\esyntax
-
-	\vskip 2.0ex
 
 	An agent can also generate a plan only based on its belief condition.
 
@@ -678,8 +647,6 @@
 
 	They are intended for defining procedure for handling:
 
-	\vskip 2.0ex
-
 	\begin{enumerate}
 		\item instance the execution of abstract actions
 		\item the reception of messages sent by other agents
@@ -690,8 +657,6 @@
 	
 	The head can be: a message, an event or an abstract action.
 
-	\vskip 2.0ex
-
 	\bsyntax
 	\begin{verbatim}
 	``PC-rules:'' <pcrules>
@@ -701,14 +666,11 @@
 	\end{verbatim}
 	\esyntax
 
-	\vskip 2.0ex
-
 	A PC rule is applied iff the agent has received a message/event/abstract action and the belief condition is entailed by the belief base.
 
 	\break
 
 	\bexample
-	\footnotesize
 	\begin{verbatim}
 	goto( X, Y ) <- true |
 	{
@@ -758,8 +720,6 @@
 
 	If the execution of a plan fails and the agent has a certain belief, then the failed plan could be replaced by another plan.
 
-	\vskip 2.0ex
-
 	A plan repair rule can be applied iif:
 	\begin{enumerate}
 		\item the execution of one of its plan fails
@@ -776,13 +736,7 @@
 
 	<prrules>      := <prrule>+
 	<pcrule>       := <planvar> ``<-'' <belquery> ``|'' <planvar>
-	<planvar>      := ( <plan>
-	                  | <Var>
-	                  | ``if'' <test> ``then'' <scopeplanvar>
-	                   [``else'' <scopeplanvar>]
-	                  | ``while'' <test> ``do'' <scopeplanvar> 
-	                  | <planvar> ``;'' <planvar>
-	                  )
+	<planvar>      := <plan> | <Var> | ``if'' <test> ``then'' <scopeplanvar> [``else'' <scopeplanvar>] | ``while'' <test> ``do'' <scopeplanvar> | <planvar> ``;'' <planvar>
 	<scopeplanvar> := ``{'' <planvar> ``}''
 	\end{verbatim}
 	\esyntax
@@ -805,8 +759,6 @@
 	\break
 
 	When the execution of a plan fails?  When the execution of its first action fails.
-	
-	\vskip 2.0ex
 
 	It depends on the type of the action
 	\begin{itemize}
@@ -824,9 +776,6 @@
 				\item The agent has no access to the environment
 				\item The actions is not defined in the environment
 			\end{itemize}
-
-		\break
-
 		\item Test action 
 			\begin{itemize}
 				\item The test expression is no derivable from the belief or goal bases
@@ -842,8 +791,6 @@
 			\end{itemize}
 	\end{itemize}
 
-	\vskip 2.0ex
-
 	The execution of all other actions will be always successful.
 	
 \end{frame}
@@ -855,8 +802,6 @@
 
 	2APL environment can be any Java class implementing the \emph{environment interface}
 
-	\vskip 2.0ex
-
 	It contains the following methods:
 
 	\begin{itemize}
@@ -864,14 +809,11 @@
 		\item \texttt{removeAgent(String name)}
 	\end{itemize}
 
-	\vskip 2.0ex
-
 	\texttt{@env($a_1, \ldots, a_n$, R)} calls a method $m$ with arguments $a_1, \ldots, a_n$ in environment $env$
 
 	\break
 
 	\bexample
-	\small
 	\begin{verbatim}
 	public Term move(String agent, String direction)
 	   throws ExternalActionFailedException
@@ -892,18 +834,12 @@
 	\frametitle{Events and exceptions}
 	
 	Events are used to pass information from environments to agents
-	
-	\vskip 1.0ex
 
 	The constructor of the environment \emph{must} requireq exactly one paramter of the type \texttt{ExternalEventListener}
-
-	\vskip 1.0ex
 
 	The programmer can decide when and which information from the environment pass to agents using:
 	
 	\texttt{notifyEvent(AF event, String ... agents)}
-
-	\vskip 1.0ex
 
 	The exepcetion are used to apply plan repair rules. They contain the identifier of the failed plan such that it can be determined which plan needs to be repaired.
 }
@@ -947,7 +883,7 @@ construct.
 
 }
 
-\frame{
+\frame[allowframebreaks]{
   \frametitle{Individual 2APL agent}
 
   An individual 2APL agent if defined as follow:
@@ -958,13 +894,24 @@ construct.
   where $\iota$ is an agent id, $\sigma$ is a set of beliefs,
   $\gamma$ is a list of goals, $\Pi$ is a set of plans, $\theta$ is ground
   substitution and $\xi$ is the event base.
-  \newline 
-  \newline 
+
+  \vskip 1.0ex
+
+  $\xi = \langle E, I, M \rangle$ is the agent's event base, where:
+  \begin{itemize}
+    \item {\bf E} is a set of external events.
+    \item {\bf I} is a set of plan identifiers denoting failed plans.
+    \item {\bf M} is a set of messages sent to agent.
+  \end{itemize}
+
+  \break
+
   Each plan entry is a tuple $(\pi, r, p)$, where $\pi$ is the executing plan,
   $r$ is the instantiation of the PG-rule through which $\pi$ is generated, and
   $p$ is the plan identiﬁer.
-  \newline
-  \newline
+
+  \vskip 1.0ex
+
   The belief base and each goal in the goal base are only positive atoms.
 
 }
@@ -978,6 +925,7 @@ construct.
   $$ \langle A_{1}, \ldots, A_{n}, \chi \rangle $$
 
   where $\xi$ is a set of external shared environments.
+
 }
 
 
@@ -994,9 +942,10 @@ construct.
     \item Communication actions.
     \item External actions.
   \end{itemize}
+
 }
 
-\frame[allowframebreaks]{
+\frame{
   \frametitle{Skip actions}
 
   The execution of skip action has no effect on an agent's conﬁguration. The
@@ -1025,6 +974,7 @@ construct.
 
   After the execution of the action, its
   post-condition should be entailed by the belief base.
+
 }
 
 
@@ -1046,8 +996,8 @@ construct.
 
 }
 
-\frame{
-  \frametitle{Goal dynamics action (1/2)}
+\frame[allowframebreaks]{
+  \frametitle{Goal dynamics action}
 
   Goals can be adopted and added to the agent's goal base by means of basic
   actions {\tt adopta($\phi$)} and {\tt adoptz($\phi$)}.
@@ -1056,10 +1006,8 @@ construct.
   second action adds the  goal $\phi$ to the end of the goal base.
   % formal application of the action
   $$ {{{\sigma \nvDash \phi \theta} \& {\texttt{ground}(\phi \theta)} \& {\gamma \vDash_{g} G(r)}}\over{\langle \iota, \sigma, \gamma, \{(\texttt{adoptX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
-}
 
-\frame{
-  \frametitle{Goal dynamics action (2/2)}
+  \break
 
   Goals can be dropped and removed from the goal base by means of {\tt dropgoal($\phi$)},
   {\tt dropsubgoals($\phi$)}, and {\tt dropsupergoals($\phi$)} actions.
@@ -1069,27 +1017,37 @@ construct.
   have $\phi$ as a subgoal.
   % formal application of the action
   $$ {{\gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{dropX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
+
 }
 
 \frame{
   \frametitle{Abstract actions}
 
+  % Abstract actions can be used for different purposes. It can be used as a mechanism to reuse plans that occur
+  % in many other plans, or they can be used to implement recursion.
+
   Abstract actions are representations of plans. The execution of an abstract
   action replaces the action with the plan it represents.
 
   % formal application of the action
-  $$ $$
+  $$ {{Unify(\alpha\theta, \phi = \tau_{1} \& \sigma \vDash \beta\tau_{1}\tau_{2} \& \gamma \vDash_{g} G(r) } \over {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{(\pi\tau_{1}\tau_{2}, r, id)\}, \theta, \xi \rangle}} $$
 
 }
 
 \frame{
   \frametitle{Communication actions}
 
-  Agents can communicate with each other by sending messages to each other. An
-  agent can send a message to another agent by means of the
+  Agents can communicate with each other by sending messages to each other.
+  An agent can send a message to another agent by means of the
   \texttt{send}(j, p, l, o, $\phi$) action. The execution of the send action
   broadcasts a message which will be added to the event base of the receiving
   agent.
+
+  \vskip 1.0ex
+
+  The execution of the send action broadcasts a message which will be added to
+  the event base of the receiving agent. The broadcasted message will include
+  the name of the sending agent.
 
 
   % formal application of the action
@@ -1111,6 +1069,7 @@ construct.
 
 \frame{
   \frametitle{Transitions}
+
   Transitions rules for plans:
   \begin{itemize}
     \item Sequence plan.
@@ -1119,6 +1078,7 @@ construct.
     \item Atomic plan.
     \item Multiple concurrent plans.
   \end{itemize}
+
 }
 
 \frame{
@@ -1129,16 +1089,19 @@ construct.
 
   % formal application of the action
   $${ {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta', \xi' \rangle} \over {\langle \iota, \sigma, \gamma, \{(\alpha:\pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi, r, id)\}, \theta', \xi' \rangle}}$$
+
 }
 
-\frame[allowframebreaks]{
+\frame{
   \frametitle{Conditional Plan}
 
   The execution of a conditional plan {\tt if $\varphi$ then $\pi_{1}$ else
   $\pi_{2}$} consists of a choice between plans $\pi_{1}$ and $\pi_{2}$.
 
   % formal application of the action
-  $${ {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta', \xi' \rangle} \over {\langle \iota, \sigma, \gamma, \{(\alpha:\pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi, r, id)\}, \theta', \xi' \rangle}}$$
+  $${ {(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{(\pi_{1}\tau, r, id)\}, \theta, \xi \rangle}}$$
+  \vskip 0.2ex
+  $${ {¬\exists\tau : (\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi_{2}\tau, r, id)\}, \theta, \xi \rangle}}$$
 
 }
 
@@ -1150,27 +1113,30 @@ construct.
   $\pi$ should be executed after which the while plan should be tried again.
 
   % formal application of the action
-  $$ $$
+  $${ {(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi\tau;\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle}}$$
+  \vskip 0.2ex
+  $${ {¬\exists\tau:(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi\tau;\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle}}$$
+
 }
 
-\frame[allowframebreaks]{
+\frame{
   \frametitle{Atomic Plan}
 
   The execution of an atomic plan is the non-interleaved execution of the
-  maximum number of actions of the plan. Let
-  $[\alpha_{1} ; \ldots ; \alpha_{n} ]$ be an atomic plan.
+  maximum number of actions of the plan. An atomic plan can be defined like 
+  $[\alpha_{1} ; \ldots ; \alpha_{n} ]$, where $\alpha_{i}$ is an action.
 
   % formal application of the action
   $$ $$
+
 }
 
 \frame{
   \frametitle{Multiple concurrent Plans}
 
   An agent executes its plans concurrently by interleaving the executions of
-  their constituent actions. This idea is captured by the following transition
-  rule which states that an agent executes one of its plans at each computation
-  step.
+  their constituent actions. An agent executes one of its plans at each
+  computation step.
 
   % formal application of the action
   $$ $$
@@ -1180,34 +1146,41 @@ construct.
 
 \frame{
   \frametitle{Transitions}
+
   Transitions rules for reasoning rules:
   \begin{itemize}
     \item Planning goal rules.
     \item Procedure call rules.
     \item Plain repair rules.
   \end{itemize}
+
 }
 
 \frame{
   \frametitle{Planning goal rules}
 
-  A planning goal rule is of the form:
+  An agent generates a plan by applying planning goal rule, of the form:
 
   $$ [\kappa] \leftarrow \beta \vert \pi $$
 
   where $\kappa$ is a goal (optional), $\beta$ a belief and $\pi$ a plan.
 
+  \vskip 0.2ex
+
   A planning goal rule of an agent can be applied when the goal and belief
   expressions are derivable from the agent's goal and the belief bases, respectively.
 
+  \vskip 0.2ex
+
   Since $\kappa$ is optional, the agent can generate a plan only based on its belief
   condition.
+
 }
 
 \frame{
   \frametitle{Procedure call rules}
 
-  A procedural Rule, is of the form:
+  Abstrac actions are based on application of procedural call rules, of the form:
 
   $$ \varphi  \leftarrow \beta \vert \pi $$
 
@@ -1221,13 +1194,16 @@ construct.
 \frame{
   \frametitle{Plain repair rules}
 
-  A plan Repair Rule, is of the form:
+  A plan repair rule is of the form:
 
-  $$ \pi \leftarrow \beta \vert \pi $$
+  $$ \pi_{1} \leftarrow \beta \vert \pi_{2} $$
+
+  \vskip 0.2ex
 
   A plan repair rule indicates that if the execution of an agent's
   plan fails and the agent has a certain belief, then the failed
   plan should be replaced by another plan.
+
 }
 
 \frame{
@@ -1235,13 +1211,15 @@ construct.
 
   The execution of a 2APL multi-agent system is the interleaved executions of
   the involved individual agents and the environments.
-  \newline
-  \newline
+
+  \vskip 1.0ex
+
   We assume that the external shared environments can change either by the
   execution of an agent’s external action in one of the environments or by the
   internal dynamics of the environments.
-  \newline
-  \newline
+
+  \vskip 1.0ex
+
   Therefore, {\bf the conﬁguration of a multi-agent system can be modiﬁed} when either
   the conﬁguration of one of the involved individual agents
   is modiﬁed or when the shared environments change.
@@ -1293,8 +1271,15 @@ construct.
   \end{itemize}
 }
 
-\frame{
+\frame[allowframebreaks]{
   \frametitle{Management of Messages}
+
+  The message agent can be used for sending messages to running agents. The message
+  agent can be accessed by clicking on the message agent button in the toolbar.
+
+  \vskip 1.0ex
+
+  We can specify the following elements, as we saw before:
   \begin{itemize}
     \item Receiver, it can be in JADE format.
     \item Performative.
@@ -1302,11 +1287,12 @@ construct.
     \item Ontology (optional)
     \item Content
   \end{itemize}
-}
 
-\frame{
-  \frametitle{Management of Messages}
-  Example
+  \break
+
+  \begin{center}
+  \includegraphics[keepaspectratio,scale=0.75]{fig/messageagent.png}
+  \end{center}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
