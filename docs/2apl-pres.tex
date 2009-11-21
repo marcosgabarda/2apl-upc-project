@@ -1,0 +1,1276 @@
+\documentclass[dvipsnames,usenames,10pt]{beamer}
+
+\usetheme{JuanLesPins}
+
+\title{2APL: A Practical Programming Language and Platform for Multi-agent Systems}
+
+\author[B. Borja Fiz, F. De Santis, M. Gabarda]{Beltran Borja Fiz, Fabrizio De Santis, Marcos Gabarda}
+\institute[Universitat Polit\`ecnica de Catalunya]{
+			Multi-agent Systems Course\\
+			Master in Artificial Intelligence\\
+			Universitat Polit\`ecnica de Catalunya\\
+			\tiny \texttt{\\ \{beltran.borja.fiz, fabrizio.de.santis, marcos.gabarda\}@est.fib.upc.edu}}
+\date{\today}
+
+\setbeamercolor{exupcol}{fg=white,bg=NavyBlue}
+\setbeamercolor{exlowcol}{fg=black,bg=NavyBlue!40}
+\setbeamercolor{synupcol}{fg=white,bg=LimeGreen}
+\setbeamercolor{synlowcol}{fg=black,bg=LimeGreen!40}
+\setbeamercolor{semupcol}{fg=white,bg=Orange}
+\setbeamercolor{semlowcol}{fg=black,bg=Orange!40}
+
+\newcommand{\bsyntax}{\begin{beamerboxesrounded}[upper=synupcol,lower=synlowcol,shadow=true]{Formal Syntax}}
+\newcommand{\esyntax}{\end{beamerboxesrounded}}
+
+\newcommand{\bexample}{\begin{beamerboxesrounded}[upper=exupcol,lower=exlowcol,shadow=true]{Example}}
+\newcommand{\eexample}{\end{beamerboxesrounded}}
+
+\newcommand{\bsem}{\begin{beamerboxesrounded}[upper=semupcol,lower=semlowcol,shadow=true]{Semantics}}
+\newcommand{\esem}{\end{beamerboxesrounded}}
+
+
+
+\begin{document}
+
+\frame{\titlepage}
+
+\section*{Outline}
+
+\frame{
+	\frametitle{Outline}
+	\tableofcontents
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}	%%%% BORJA here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{
+	\frametitle{Introduction}
+	
+	\begin{itemize}
+		\item 2APL is designed and developed at the Intelligent Systems Group at the University of Utrecht.
+	\end{itemize}
+
+	\begin{itemize}
+		\item BDI-based agent-oriented programming language
+		\item integration of declarative programming constructs such as belief and goals
+		\item imperative style programming constructs such as events and plans.
+	\end{itemize}
+
+	% history of 2APL
+	% introducing to the blockworld example
+}
+
+\frame[allowframebreaks]{
+  \frametitle{Prolog Introduction}
+
+  % a short introduction to Prolog
+  Prolog is a general purpose logic programming language.
+
+  % horn clauses
+  Based on Horn Clauses
+  \begin{itemize}
+    \item $H \leftarrow B_{1} \wedge \ldots \wedge B_{n}$
+    \item $H \leftarrow true$
+  \end{itemize}
+
+  \break
+
+  \begin{itemize}
+    % data types
+    \item {\bf Data Types}
+    \begin{itemize}
+      \item Atoms, general-purpose name with no inherent meaning. Atoms include x, red, 'Ball', and 'some atom'.
+      \item Numbers, integer or float.
+      \item Variables, denoted by a string beginning with an upper-case letter or underscore.
+      \item Compound Term, composed of an atom called a "functor" and a number of "arguments".
+    \end{itemize}
+    % rules and facts
+    \item {\bf Rules and Facts}
+    \begin{itemize}
+      \item Rule: \texttt{Head :- Body.}
+      \item Fact: \texttt{father(sam).}
+    \end{itemize}
+  \end{itemize}
+
+  \break
+
+  % evaluation
+  \begin{itemize}
+    \item {\bf Evaluation}
+    \begin{itemize}
+      \item Execution of a Prolog program is initiated by the user's posting of a single goal, called the query
+      \item The Prolog engine tries to find a resolution refutation of the negated query
+      \item The resolution method used by Prolog is called {\bf SLD resolution}
+    \end{itemize}
+  \end{itemize}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{2APL Language} % Fabrizio
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Syntax and operational semantics}
+
+\frame{
+	\frametitle{2APL Language}
+	
+	There are 2 distinguished set of programming constructs that allows to define:
+	
+	\begin{enumerate}
+		\item Multi-agent system specification
+		\item Individual agent specification
+	\end{enumerate}	
+}
+
+\subsubsection{Multi-agent system specification}
+
+\begin{frame}[allowframebreaks,fragile]
+	\frametitle{Multi-agent system specification}
+
+	A multi-agent system is defined as a set of couples:
+
+	\vskip 0.2ex
+	
+	\begin{enumerate}
+		\item Individual agents
+		\item Environments they have access to
+		\begin{itemize}
+			\item Java class with an internal a state
+			\item A set of actions (methods) to change the state
+			\item Can function as interface (e.g. real world, other software)
+		\end{itemize}		
+	\end{enumerate}
+
+	\break	
+
+\bsyntax 
+\begin{verbatim}
+<MAS_Prog>     := ( <agentname> ``:'' <filename> [<int>]
+                   [<environments>] )+
+<agentname>    := <ident>
+<filename>     := <ident>``.2apl''
+<environments> := ``@''<ident> (``,'' <ident>)*
+\end{verbatim}
+\esyntax
+
+	\vskip 1.0ex
+	
+\bexample
+\begin{verbatim}
+harry : harry.2apl @blockworld
+sally : sally.2apl @blockworld
+\end{verbatim}
+\eexample
+\end{frame}
+
+\subsubsection{Individual agent specification}
+
+\frame[allowframebreaks]{
+	\frametitle{Individual agent specification}
+	
+	2APL agents are implemented in terms of:
+	\begin{itemize}
+		\item beliefs	(declarative way)
+		\item goals	(declarative way)
+		\item actions
+		\item plans	(imperative way)
+		\item events
+		\item three different kind of rules
+			\begin{itemize}
+				\item generate plans for achieving goals
+				\item process events and received messages
+				\item handle and repair failed plans
+			\end{itemize}			
+	\end{itemize}	
+	
+	%Agent can observe an environment either:
+	%\begin{itemize}
+		%\item actively by means of a sense action
+		%\item passively by means of events generated by the environment
+	%\end{itemize}
+	
+	\break
+	
+	\bsyntax
+	\begin{verbatim}
+	<Agent_Prog> := ( ``Include:'' <ident>
+	                | ``BeliefUpdates:'' <BelUpSpec>
+	                | ``Beliefs:'' <belief> 
+	                | ``Goals:'' <goals> 
+	                | ``Plans:'' <plans>
+	                | ``PG-rules:'' <pgrules>
+	                | ``PC-rules:'' <pcrules>
+	                | ``PR-rules:'' <prrules>
+	                )*
+	\end{verbatim}
+	\esyntax
+}
+
+\frame[allowframebreaks]{
+	\frametitle{Basic elements of the language}
+
+	\begin{itemize}
+		\item \texttt{<atom>}: Prolog like atomic formula starting with a lowercase letter
+		\item \texttt{<Atom>}: Prolog like atomic formula starting with a capital letter
+		\begin{itemize}
+			\item They are used to distinguish between Prolog formulas and the name of functions that can be used in the imperative part of the agent code
+		\end{itemize}
+		
+		\break
+		
+		\item \texttt{<ident>}: string with a lowercase letter
+		\item \texttt{<Var>}: string with a capital letter
+		\begin{itemize}
+			\item Variables that can be used in the imperative part of the agent code
+		\end{itemize}
+		\item \texttt{<ground\_atom>}: grounded atomic formula
+		\begin{itemize}
+			\item Formulas that does not contain any variables
+		\end{itemize}
+	\end{itemize}
+}
+
+\frame{
+	\frametitle{Beliefs and goals}
+
+	A 2APL agent has \emph{beliefs} and \emph{goals} that change during the agent's execution
+	
+	\begin{itemize}
+		\item Beliefs that are containted into a \emph{belief base} and are related to:
+			\begin{itemize}
+				\item The environment
+				\item Other agents
+			\end{itemize}
+		\item Goals that are contained into a \emph{goal base}
+	\end{itemize}
+	
+	\vskip 1.0ex
+
+	Rationality principle:
+	\begin{itemize}
+		\item If an agent believes a certain fact, then the agent should not purse that fact as a goal	
+		\begin{itemize}
+			\item If an agent modifies its belief base, then its goal base may be modified as well		
+		\end{itemize}
+	\end{itemize}
+		
+}
+
+\frame[allowframebreaks]{
+	\frametitle{Belief base}
+
+	\bsyntax
+	\begin{verbatim}
+	``Beliefs:'' <belief>
+	
+	<belief>   := ( <ground_atom> ``.''
+	              | <atom> ``:-'' <literals> ``.'' 
+	              )+
+	<literals> := <literal> (``,'' <literal>)*
+	<literal>  := ( <atom> 
+	              | ``not'' <atom>
+	              )
+	\end{verbatim}
+	\esyntax
+
+	\vskip 1.0ex
+	
+	\begin{itemize}
+		\item Each belief is treated as a Prolog fact or rule
+		\begin{itemize}
+			\item A belief base is a Prolog program
+			\item All facts are assumed to be grounded
+		\end{itemize}
+	\end{itemize}
+
+	\break
+	
+	\bexample
+	\begin{verbatim}
+	Beliefs:
+	       bomb(3,4).
+	       clean(blockWorld) :- not bomb(X,Y), not carry(bomb).
+	\end{verbatim}
+	\eexample
+}
+
+\frame[allowframebreaks]{
+	\frametitle{Goal base}
+	
+	\bsyntax 
+	\begin{verbatim}
+	``Goals:'' <goals>
+	
+	<goals> := <goal> ( ``,'' <goal> )*
+	<goal>  := <ground_atom> ( ``and'' <ground_atom> )*
+	\end{verbatim}
+	\esyntax
+	
+	\vskip 1.0ex
+
+	Each goal expression is a conjunction of ground atoms. 
+	
+	\vskip 1.0ex
+	
+	\bexample
+	\begin{verbatim}
+	Goals:
+	     clean(blockWorld)
+	\end{verbatim}
+	\eexample
+	
+	\begin{itemize}
+		\item Having ``\texttt{a and b}'' is different than having ``\texttt{a, b}''
+		\item Goal base is a list such that the goals are ordered
+	\end{itemize}
+}
+
+\frame[allowframebreaks]{
+	\frametitle{Basic actions}
+	
+	A 2APL agent needs to act in order to achieve its goals.
+	
+	There are 6 types of basic actions:
+	
+	\begin{enumerate}
+		\item Belief base update action
+		\item Communication action
+		\item External action
+		\item Abstract action
+		\item Test actions
+		\item Goal dynamic actions
+	\end{enumerate}
+	
+	\break
+	
+	\bsyntax
+	\begin{verbatim}
+	<baction> = ( ``skip'' 
+	            | <beliefupdate> | <sendaction>| <externalaction> 
+	            | <abstractaction> | <test> | <adoptgoal> | <dropgoal>
+	            )
+	\end{verbatim}
+	\esyntax
+}
+
+\frame[allowframebreaks]{
+	\frametitle{Belief update action}
+	
+	Updates the belief base using precondition-delete-add formalism.
+	
+	\vskip 1.0ex
+	
+	\bsyntax
+	\small
+	\begin{verbatim}
+	``BeliefUpdates:'' <BelUpSpec>
+	
+	<BelUpSpec>    := ( ``{'' <belquery> ``}'' <beliefupdate> ``{'' <literals> ``}'' )+
+	<belquery>     := ( ``true'' 
+	                  | <belquery> ``and'' <belquery>
+	                  | <belquery> ``or'' <belquery>
+	                  | ``('' <belquery> ``)''
+	                  | <literal>
+	                  )
+	<beliefupdate> := <Atom>
+	\end{verbatim}
+	\esyntax
+
+	\break
+
+	\bexample
+	\begin{verbatim}
+	BeliefUpdates:
+	      { bomb(X,Y) }       RemoveBomb(X,Y) { not bomb(X,Y) }
+	      { true }            AddBomb(X,Y)    { bomb(X,Y) }
+	      { carry(bomb) }     Drop()          { not carry(bomb) }
+	      { not carry(bomb) } PickUp()        { carry(bomb) }
+	\end{verbatim}
+	\eexample
+	
+	\begin{itemize}
+		\item After the execution of the action, the post-condition is entailed by the belief base
+		\item The specification of belief update actions do not cahnge during agent execution
+	\end{itemize}
+}
+
+\frame[allowframebreaks]{
+	\frametitle{Communication action}
+	
+	A communication action passes a message to another agent.
+	
+	\vskip 1.0ex
+	
+	% formal syntax
+	\bsyntax
+	\small
+	\begin{verbatim}
+	<sendaction> := ``send('' <iv> ``,'' <iv> ``,''
+	                        [ <iv> ``,'' <iv> ``,'' ]  <atom> ``)''  
+	<iv>         := <ident> | <Var>
+	\end{verbatim}
+	\esyntax
+
+	\vskip 1.0ex
+
+	% operational semantics
+	\bsem
+	send(Receiver, Performative, Language, Ontology, Content)
+	send(Receiver, Performative, Content)
+	\esem
+
+	\vskip 1.0ex
+
+	% example
+	\bexample
+	\begin{verbatim}
+	send(harry, inform, La, On, bombAt(X1,Y1))
+	\end{verbatim}
+	\eexample
+}
+
+\frame[allowframebreaks]{
+	\frametitle{External action}
+	
+	An external action is supposed to change the state of an external environment
+	
+	\begin{itemize}
+		\item Effects of external actions are assumed to be determined by the environment
+		\item The agent can know the effects of an external action by performing a sense action that is an external action
+	\end{itemize}	
+	
+	\bsyntax
+	\small
+	\begin{verbatim}
+	<externalaction> = ``@'' <ident> ``('' <atom> ``,'' <Var> ``)''
+	\end{verbatim}
+	\esyntax
+
+	\vskip 1.0ex
+
+	\bsem
+	\begin{verbatim}
+	@Env(ActionName, Return, Time-out)
+	\end{verbatim}
+	\esem
+
+	\bexample
+	\begin{verbatim}
+	@blockworld(east(), L)
+	\end{verbatim}
+	\eexample
+}
+
+\frame[allowframebreaks]{
+	\frametitle{Abstract action}
+	
+	\bsyntax
+	\begin{verbatim}
+	<abstractlaction> = <atom>
+	\end{verbatim}
+	\esyntax
+
+	\begin{itemize}
+		\item It is similar to a procedure call
+		\item When it is invoked, an instantiation of the plan that is associated is executed
+		\item It can be used to pass parameters among plans
+	\end{itemize}
+}
+
+\begin{frame}[fragile,allowframebreaks]
+	\frametitle{Test actions}
+	
+	Test actions are (Prolog) query expressions used to check if an agent can derive certain beliefs and goals from its bases.
+	
+	\bsyntax
+	\small
+	\begin{verbatim}
+	<test>      := ( B('' <belquery> ``)'' 
+	               | ``G('' <goalquery> ``)''
+	               | <test> ``&'' <test>
+	               )
+	<goalquery> := ( ``true'' 
+	               | <goalquery> ``and'' <goalquery>
+	               | <goalquery> ``or'' <goalquery>
+	               | ``('' <goalquery> ``)''
+	               | <atom>
+	               )
+	\end{verbatim}
+	\esyntax
+	
+	\break
+
+	\bexample
+	\begin{verbatim}
+	p(a) 
+	q(b) 
+	B(p(X)) \& G(q(X))	// fails	
+	G(q(Y) or r(X))		// succeeds
+	\end{verbatim}
+	\eexample
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]
+	\frametitle{Goal dynamics actions}
+	
+	They are used to adopt and drop a goal to and from an agent's goal base.
+
+	\bsyntax
+	\small
+	\begin{verbatim}
+	<adoptgoal> := ( ``adopta('' <goalvar> ``)'' | ``adoptz('' <goalvar> ``)'' )
+	<dropgoal>  := ( ``dropgoal('' <goalvar> ``)''
+	               | ``dropsubgoals('' <goalvar> ``)''
+	               | ``dropsupergoals('' <goalvar> ``)''
+	               )
+	<goalvar>   := ( <atom> | ``not'' <atom> )
+	\end{verbatim}
+	\esyntax
+	
+	It is programmer task to ensure that the variables are instantiated before the actions are executed.
+
+	\break
+
+	Goal base:
+	\begin{itemize}
+		\item \texttt{a(1)}
+		\item \texttt{a(1) and b(1)}
+		\item \texttt{a(1) and b(1) and c(1)}
+	\end{itemize}
+
+	\begin{itemize}
+		\item \texttt{dropgoal(a(1) and b(1))}	drops \texttt{a(1) and b(1)}
+		\item \texttt{dropsubgoal(a(1) and b(1))} drops \texttt{a(1), a(1) and b(1)}
+		\item \texttt{dropsupergoal(a(1) and b(1))} drops \texttt{a(1) and b(1), a(1) and b(1) and c(1)}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Plans}
+	
+	In order to reach its goals, a 2APL agent adopts \emph{plans}.  An agent can have different plans at the same time.
+	
+	A plan consists of basic actions composed by use of
+	\begin{itemize}
+		\item the sequence operator
+		\item conditional choice operators
+		\item conditional iteration operator
+		\item unary operator to identify plans that should be executed atomically
+	\end{itemize}	
+	
+	\bsyntax
+	\small
+	\begin{verbatim}
+	<plan>         := <baction> | <sequenceplan> | <ifplan> | <whileplan> | <atomicplan>
+	<sequenceplan> := <plan> ``;'' <plan>
+	<ifplan>       := ``if'' <test> ``then'' <scopeplan> [``else'' <scopeplan>]
+	<scopeplan>    := ``{'' <plan ``}''
+	<whileplan>    := ``while'' <text> ``do'' <scopeplan>
+	<atomicplan>   := ``['' <plan> ``]''
+	\end{verbatim}
+	\esyntax
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Plan base}
+
+	The plans of a 2APL agent are implemented by its plan base.
+
+	\bsyntax
+	\begin{verbatim}
+	Plans: <plans>
+	\end{verbatim}
+	\esyntax
+
+	Example of an initial plan base:
+	\bexample
+	\begin{verbatim}
+	@blockworld(enter(0,0, blue), L)
+	\end{verbatim}	
+	\eexample
+\end{frame}
+
+\begin{frame}
+	\frametitle{Reasoning rules}
+	
+	3 reasoning rules that can be used to implement the generation of plans.
+
+	\begin{itemize}
+		\item Planning goal rules (PG rules)
+		\item Procedural rules (PC rules)
+		\item Plan repair rules (PR rules)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]
+	\frametitle{Planning goal rules}
+
+	A planning goal rule specifies which plan to generate starting from certain beliefs and goals.
+
+	\bsyntax
+	\begin{verbatim}
+	``PG-rules:'' <pgrules>}
+	
+	<pgrules> := <pgrule>+
+	<pgrule>  := [<goalquery>] ``<-'' <belquery> ``|'' <plan>
+	\end{verbatim}
+	\esyntax
+
+	An agent can also generate a plan only based on its belief condition.
+
+	\break
+
+	\bexample 
+	\begin{verbatim}
+	PG-rules:
+	clean(blockWorld) <- bomb(X, Y) |
+  	{ 
+	goto(X, Y)
+	@blockworld(pickup(), L1)
+	PickUp()
+	RemoveBomb(X, Y)
+
+	goto(0, 0)
+	@blockworld(drop(), L2)
+	Drop()
+	}
+	\end{verbatim}
+	\eexample
+
+	\texttt{goto(X, Y)} is an abstract action.
+
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]
+	\frametitle{Procedural rules}
+
+	They are intended for defining procedure for handling:
+
+	\begin{enumerate}
+		\item instance the execution of abstract actions
+		\item the reception of messages sent by other agents
+		\item events generated by the external environment
+	\end{enumerate}
+
+	\break
+	
+	The head can be: a message, an event or an abstract action.
+
+	\bsyntax
+	\begin{verbatim}
+	``PC-rules:'' <pcrules>
+	
+	<pcrules> = <pcrule>+
+	<pcrule> = <atom> ``<-'' <belquery> ``|'' <plan>
+	\end{verbatim}
+	\esyntax
+
+	A PC rule is applied iff the agent has received a message/event/abstract action and the belief condition is entailed by the belief base.
+
+	\break
+
+	\bexample
+	\begin{verbatim}
+	goto( X, Y ) <- true |
+	{
+	@blockworld( sensePosition(), POS );
+    B(POS = [A,B]);
+    if B(A > X) then
+    { @blockworld( west(), L );
+      goto( X, Y )
+    }
+    else if B(A < X) then
+    { @blockworld( east(), L );
+      goto( X, Y )
+    }
+    else if B(B > Y) then
+    { @blockworld( north(), L );
+      goto( X, Y )
+    }
+    else if B(B < Y) then
+    { @blockworld( south(), L );
+      goto( X, Y )
+    }
+	}
+	\end{verbatim}
+	\eexample
+
+	The rule is defined recursively.
+
+	\break
+
+	\bexample
+	\begin{verbatim}
+	message(sally, inform, La, On, bombAt(X, Y)) <- true |
+	{
+	if B(not bomb(A, B)) then { 
+	  AddBomb(X, Y)
+	  adoptz(clean(blockWorld))
+	} else { 
+	AddBomb(X, Y)
+	}
+	}
+	\end{verbatim}
+	\eexample
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]
+	\frametitle{Plan repair rules}
+
+	If the execution of a plan fails and the agent has a certain belief, then the failed plan could be replaced by another plan.
+
+	A plan repair rule can be applied iif:
+	\begin{enumerate}
+		\item the execution of one of its plan fails
+		\item the failed plan can be matched with the abstract plan in the head of the rule
+		\item the belief query expression is derivable from the agent’s belief base
+	\end{enumerate}
+
+	\break
+
+	\bsyntax
+	\small
+	\begin{verbatim}
+	``PR-rules:'' <prrules>
+
+	<prrules>      := <prrule>+
+	<pcrule>       := <planvar> ``<-'' <belquery> ``|'' <planvar>
+	<planvar>      := <plan> | <Var> | ``if'' <test> ``then'' <scopeplanvar> [``else'' <scopeplanvar>] | ``while'' <test> ``do'' <scopeplanvar> | <planvar> ``;'' <planvar>
+	<scopeplanvar> := ``{'' <planvar> ``}''
+	\end{verbatim}
+	\esyntax
+
+	\break
+	
+	\bexample
+	\begin{verbatim}
+	PR−rules: 
+	   @blockworld ( pickup ( ) , L ) ; REST <− true | 
+	   { 
+	   @blockworld ( sensePosition ( ) , POS )
+	   B ( POS = [ X , Y ] )
+	   RemoveBomb ( X , Y )
+	   }
+	}
+	\end{verbatim}
+	\eexample
+
+	\break
+
+	When the execution of a plan fails?  When the execution of its first action fails.
+
+	It depends on the type of the action
+	\begin{itemize}
+		\item Belief update action
+			\begin{itemize}
+				\item  It is not specified or the pre-condition is not entailed by the belief base
+			\end{itemize}
+		\item Abstract action
+			\begin{itemize}
+				\item There is no applicable procedural rule 
+			\end{itemize}
+		\item External action
+			\begin{itemize}
+				\item The environment throws an \texttt{ExternalActionFailedException}
+				\item The agent has no access to the environment
+				\item The actions is not defined in the environment
+			\end{itemize}
+		\item Test action 
+			\begin{itemize}
+				\item The test expression is no derivable from the belief or goal bases
+			\end{itemize}
+		\item Goal adopt action
+			\begin{itemize}
+				\item The goal is already entailed by the belief base
+				\item The goal to be adopted is not ground
+			\end{itemize}
+		\item Atomic plan
+			\begin{itemize}
+				\item If one of its actions fails
+			\end{itemize}
+	\end{itemize}
+
+	The execution of all other actions will be always successful.
+	
+\end{frame}
+
+\subsubsection{Programming external environment}
+
+\begin{frame}[fragile,allowframebreaks]
+	\frametitle{Programming external environment}
+
+	2APL environment can be any Java class implementing the \emph{environment interface}
+
+	It contains the following methods:
+
+	\begin{itemize}
+		\item \texttt{addAgent(String name)}
+		\item \texttt{removeAgent(String name)}
+	\end{itemize}
+
+	\texttt{@env($a_1, \ldots, a_n$, R)} calls a method $m$ with arguments $a_1, \ldots, a_n$ in environment $env$
+
+	\break
+
+	\bexample
+	\begin{verbatim}
+	public Term move(String agent, String direction)
+	   throws ExternalActionFailedException
+	{
+   	if (direction.equals("north") {moveNorth();}
+   	else if (direction.equals("east") {moveEast();}
+   	else if (direction.equals("south") {moveSouth();}
+   	else if (direction.equals("west") {moveWest();}
+   	else throw
+	    new ExternalActionFailedException("Unknown direction");
+   	return getPositionTerm();
+	}
+	\end{verbatim}
+	\eexample
+\end{frame}
+
+\frame[allowframebreaks]{
+	\frametitle{Events and exceptions}
+	
+	Events are used to pass information from environments to agents
+
+	The constructor of the environment \emph{must} requireq exactly one paramter of the type \texttt{ExternalEventListener}
+
+	The programmer can decide when and which information from the environment pass to agents using:
+	
+	\texttt{notifyEvent(AF event, String ... agents)}
+
+	The exepcetion are used to apply plan repair rules. They contain the identifier of the failed plan such that it can be determined which plan needs to be repaired.
+}
+
+\frame[allowframebreaks]{
+	\frametitle{Including 2APL files}
+Different agents may share certain initial beliefs, goals, plans, belief updates, and practical
+reasoning rules. The 2APL programming language provides an encapsulation mechanism to
+include these shared initial ingredients in different 2APL programs. This is done by allowing a
+2APL program to be included in other 2APL programs through the Include: filename
+construct.
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Formal Semantics}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{
+  \frametitle{Formal Semantics}
+
+  % the objective of the formal semantics is to valitade the program across the specifications
+  With formal semantics, it is possible to verify whether agent programs
+  satisfy their (formal) speciﬁcations.
+
+  % definition of the theoretical model as a transition system.
+  \begin{itemize}
+    \item The semantics of 2APL in terms of a {\bf transition system}.
+    \item A {\bf transition system} is a set of transition rules for deriving
+          {\bf transitions}.
+    \item A {\bf transition} is a transformation of one {\bf conﬁguration} into
+          another and it corresponds to a single computation/execution step.
+  \end{itemize}
+
+  Elements to formal define:
+  \begin{itemize}
+    \item Configuration of individual 2APL agent.
+    \item Configuration of multi-agent systems.
+    \item Transitions.
+  \end{itemize}
+
+}
+
+\frame{
+  \frametitle{Individual 2APL agent}
+
+  An individual 2APL agent if defined as follow:
+
+  % formal definition of an agent
+  $$ A_{\iota} = \langle \iota, \sigma, \gamma, \Pi, \theta, \xi \rangle $$
+
+  where $\iota$ is an agent id, $\sigma$ is a set of beliefs,
+  $\gamma$ is a list of goals, $\Pi$ is a set of plans, $\theta$ is ground
+  substitution and $\xi$ is the event base.
+  \newline 
+  \newline 
+  Each plan entry is a tuple $(\pi, r, p)$, where $\pi$ is the executing plan,
+  $r$ is the instantiation of the PG-rule through which $\pi$ is generated, and
+  $p$ is the plan identiﬁer.
+  \newline
+  \newline
+  The belief base and each goal in the goal base are only positive atoms.
+
+}
+
+\frame{
+  \frametitle{Multi-agent Systems}
+
+  The conﬁguration of a 2APL multi-agents system is deﬁned as:
+
+  % formal definition of a multi-agent system
+  $$ \langle A_{1}, \ldots, A_{n}, \chi \rangle $$
+
+  where $\xi$ is a set of external shared environments.
+}
+
+
+\frame{
+  \frametitle{Transitions}
+  
+  Transitions rules for basic actions:
+  \begin{itemize}
+    \item Skip action.
+    \item Belief update actions.
+    \item Test actions.
+    \item Goal dynamics actions.
+    \item Abstract actions.
+    \item Communication actions.
+    \item External actions.
+  \end{itemize}
+}
+
+\frame[allowframebreaks]{
+  \frametitle{Skip actions}
+
+  The execution of skip action has no effect on an agent's conﬁguration. The
+  execution of this action always succeeds resulting in its removal from the
+  plan base.
+
+  % formal application of the action
+  $$ {{\gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\texttt{skip}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{\}, \theta, \xi \rangle}}$$
+
+}
+
+\frame{
+  \frametitle{Belief update actions}
+
+  A {\bf belief update action}:
+  \begin{itemize}
+    \item Is speciﬁed in terms of a pre- and a post-condition.
+    \item Modiﬁes the belief base when it is executed.
+  \end{itemize}
+
+  % formal application of the action
+  $$ {{T(\alpha \theta, \sigma) = \sigma' \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma', \gamma', \{\}, \theta, \xi \rangle}} $$
+
+  A belief update action can be executed if its pre-condition is
+  entailed by the belief base.
+
+  After the execution of the action, its
+  post-condition should be entailed by the belief base.
+}
+
+
+\frame{
+  \frametitle{Test actions}
+  
+  A test action checks if the belief and goal queries within a test expression
+  are entailed by the agent's belief and goal bases.
+
+%   Moreover, as some of the variables that
+%   occur in the belief and goal queries may already be bound by the substitution θ , we apply the
+%   substitution to the test expression before testing it against the belief and goal bases. After
+%   applying θ , the test expression can still contain unbound variables (to bind next occurrences
+%   of the variable in the plan in which it occurs). Therefore, the test action results in a substitution
+%   τ which is added to θ .
+
+  % formal application of the action
+  $$ {{( \sigma, \gamma) \vDash_{t} \varphi \theta \tau \& \gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\varphi, r, id)\}, \theta, \xi' \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta \cup \tau, \xi \rangle}} $$
+
+}
+
+\frame{
+  \frametitle{Goal dynamics action (1/2)}
+
+  Goals can be adopted and added to the agent's goal base by means of basic
+  actions {\tt adopta($\phi$)} and {\tt adoptz($\phi$)}.
+
+  The ﬁrst action adds the goal $\phi$ to the beginning of the goal base and the
+  second action adds the  goal $\phi$ to the end of the goal base.
+  % formal application of the action
+  $$ {{{\sigma \nvDash \phi \theta} \& {\texttt{ground}(\phi \theta)} \& {\gamma \vDash_{g} G(r)}}\over{\langle \iota, \sigma, \gamma, \{(\texttt{adoptX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
+}
+
+\frame{
+  \frametitle{Goal dynamics action (2/2)}
+
+  Goals can be dropped and removed from the goal base by means of {\tt dropgoal($\phi$)},
+  {\tt dropsubgoals($\phi$)}, and {\tt dropsupergoals($\phi$)} actions.
+
+  The ﬁrst action removes from the goal base the goal $\phi$, the second removes
+  all goals that are subgoals of $\phi$, and the third action removes all goals that
+  have $\phi$ as a subgoal.
+  % formal application of the action
+  $$ {{\gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{dropX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
+}
+
+\frame{
+  \frametitle{Abstract actions}
+
+  Abstract actions are representations of plans. The execution of an abstract
+  action replaces the action with the plan it represents.
+
+  % formal application of the action
+  $$ $$
+
+}
+
+\frame{
+  \frametitle{Communication actions}
+
+  Agents can communicate with each other by sending messages to each other. An
+  agent can send a message to another agent by means of the
+  \texttt{send}(j, p, l, o, $\phi$) action. The execution of the send action
+  broadcasts a message which will be added to the event base of the receiving
+  agent.
+
+
+  % formal application of the action
+  $$ $$
+
+}
+
+\frame{
+  \frametitle{External actions}
+
+  The execution of an external action by an individual agent affects the
+  external environments that may be shared by other agents.
+
+  % formal application of the action
+  $$ $$
+
+}
+
+
+\frame{
+  \frametitle{Transitions}
+  Transitions rules for plans:
+  \begin{itemize}
+    \item Sequence plan.
+    \item Conditional plan.
+    \item While plan.
+    \item Atomic plan.
+    \item Multiple concurrent plans.
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Sequence Plan}
+
+  The execution of a sequence plan $\alpha; \pi$ consists of the execution of
+  the basic action $\alpha$ followed by the execution of plan $\pi$.
+
+  % formal application of the action
+  $${ {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta', \xi' \rangle} \over {\langle \iota, \sigma, \gamma, \{(\alpha:\pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi, r, id)\}, \theta', \xi' \rangle}}$$
+}
+
+\frame[allowframebreaks]{
+  \frametitle{Conditional Plan}
+
+  The execution of a conditional plan {\tt if $\varphi$ then $\pi_{1}$ else
+  $\pi_{2}$} consists of a choice between plans $\pi_{1}$ and $\pi_{2}$.
+
+  % formal application of the action
+  $${ {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta', \xi' \rangle} \over {\langle \iota, \sigma, \gamma, \{(\alpha:\pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi, r, id)\}, \theta', \xi' \rangle}}$$
+
+}
+
+\frame{
+  \frametitle{While Plan}
+
+  The execution of a while plan {\tt while $\varphi$ do $\pi$} depends on if
+  $\varphi$ is entailed by the agent's belief and goal bases, then the plan
+  $\pi$ should be executed after which the while plan should be tried again.
+
+  % formal application of the action
+  $$ $$
+}
+
+\frame[allowframebreaks]{
+  \frametitle{Atomic Plan}
+
+  The execution of an atomic plan is the non-interleaved execution of the
+  maximum number of actions of the plan. Let
+  $[\alpha_{1} ; \ldots ; \alpha_{n} ]$ be an atomic plan.
+
+  % formal application of the action
+  $$ $$
+}
+
+\frame{
+  \frametitle{Multiple concurrent Plans}
+
+  An agent executes its plans concurrently by interleaving the executions of
+  their constituent actions. This idea is captured by the following transition
+  rule which states that an agent executes one of its plans at each computation
+  step.
+
+  % formal application of the action
+  $$ $$
+
+}
+
+
+\frame{
+  \frametitle{Transitions}
+  Transitions rules for reasoning rules:
+  \begin{itemize}
+    \item Planning goal rules.
+    \item Procedure call rules.
+    \item Plain repair rules.
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Planning goal rules}
+
+  A planning goal rule is of the form:
+
+  $$ [\kappa] \leftarrow \beta \vert \pi $$
+
+  where $\kappa$ is a goal (optional), $\beta$ a belief and $\pi$ a plan.
+
+  A planning goal rule of an agent can be applied when the goal and belief
+  expressions are derivable from the agent's goal and the belief bases, respectively.
+
+  Since $\kappa$ is optional, the agent can generate a plan only based on its belief
+  condition.
+}
+
+\frame{
+  \frametitle{Procedure call rules}
+
+  A procedural Rule, is of the form:
+
+  $$ \varphi  \leftarrow \beta \vert \pi $$
+
+  where $\varphi$ is an event.
+
+  A procedural rule has a belief condition indicating when a message
+  (or received event or abstract action) should cause the generation
+  of a plan.
+}
+
+\frame{
+  \frametitle{Plain repair rules}
+
+  A plan Repair Rule, is of the form:
+
+  $$ \pi \leftarrow \beta \vert \pi $$
+
+  A plan repair rule indicates that if the execution of an agent's
+  plan fails and the agent has a certain belief, then the failed
+  plan should be replaced by another plan.
+}
+
+\frame{
+  \frametitle{Multi-agent Transition Rules}
+
+  The execution of a 2APL multi-agent system is the interleaved executions of
+  the involved individual agents and the environments.
+  \newline
+  \newline
+  We assume that the external shared environments can change either by the
+  execution of an agent’s external action in one of the environments or by the
+  internal dynamics of the environments.
+  \newline
+  \newline
+  Therefore, {\bf the conﬁguration of a multi-agent system can be modiﬁed} when either
+  the conﬁguration of one of the involved individual agents
+  is modiﬁed or when the shared environments change.
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Deliberation Cycle}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame[allowframebreaks]{
+	\frametitle{Deliberation cycle}
+	
+	\begin{itemize}
+		\item The beliefs, goals, plans and reasoning rules form the mental states of the 2APL agent.
+		\item The deliberation cycle states which step the agent should perform next
+			\begin{itemize}
+				\item execute an action
+				\item apply a reasoning rule. 
+			\end{itemize}
+	\end{itemize}
+	
+	\break
+	
+	\begin{center}
+ 		\includegraphics[keepaspectratio,scale=0.3]{fig/rcycle.png}
+	\end{center}
+
+	\break
+
+	Properties:
+	\begin{enumerate}
+		\item If the execution of a plan fails, then the plan will either be repaired in the same deliberation cycle or get re-executed in the next deliberation cycle.
+		\item If the first action of a failed plan is a belief update action, a test action, an adopt goal action, an abstract action, or an external action, and there is no plan repair rule to repair it, then the failed plan may be successfully executed in the next deliberation cycle.
+	\end{enumerate}
+	
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Agent Platform and Tools}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{
+  \frametitle{Agent Platform}
+  \begin{itemize}
+    \item The 2APL platform is built on the top of JADE (Java Agent DEvelopment Framework).
+    \item The fact that 2APL is develop over JADE allows to use all the functionalities that this framework has to communicate to other agents.
+    \item As JADE, 2APL follows FIPA specifications.
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Management of Messages}
+  \begin{itemize}
+    \item Receiver, it can be in JADE format.
+    \item Performative.
+    \item Language (optional)
+    \item Ontology (optional)
+    \item Content
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Management of Messages}
+  Example
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Demo}			%% BORJA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{
+ \frametitle{Demo}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}	%% BORJA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\frame{
+	\frametitle{Comparison with other languages}
+	SEE LAST PARAGRAPH OF 2APL FULLTEXT PDF 
+}
+
+
+\frame{
+ \frametitle{Conclusion}
+}
+
+\begin{frame}{Bibliography}
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{2apl-pres}
+\end{frame}
+
+\end{document}

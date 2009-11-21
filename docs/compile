@@ -1,0 +1,3 @@
+#!/bin/bash
+
+pdflatex 2apl-pres && bibtex 2apl-pres && pdflatex 2apl-pres && pdflatex 2apl-pres
