@@ -25,10 +25,11 @@
 \newcommand{\bexample}{\begin{beamerboxesrounded}[upper=exupcol,lower=exlowcol,shadow=true]{Example}}
 \newcommand{\eexample}{\end{beamerboxesrounded}}
 
-\newcommand{\bsem}{\begin{beamerboxesrounded}[upper=semupcol,lower=semlowcol,shadow=true]{Semantics}}
-\newcommand{\esem}{\end{beamerboxesrounded}}
+\newcommand{\bopsem}{\begin{beamerboxesrounded}[upper=semupcol,lower=semlowcol,shadow=true]{Operational Semantics}}
+\newcommand{\eopsem}{\end{beamerboxesrounded}}
 
-
+\newcommand{\bformsem}{\begin{beamerboxesrounded}[upper=semupcol,lower=semlowcol,shadow=true]{Formal Semantics}}
+\newcommand{\eformsem}{\end{beamerboxesrounded}}
 
 \begin{document}
 
@@ -172,6 +173,9 @@ sally : sally.2apl @blockworld
 	\frametitle{Individual agent specification}
 	
 	2APL agents are implemented in terms of:
+
+	\vskip 2.0ex
+
 	\begin{itemize}
 		\item beliefs	
 		\item goals	
@@ -186,6 +190,10 @@ sally : sally.2apl @blockworld
 			\end{itemize}			
 	\end{itemize}	
 	
+	\vskip 2.0ex
+
+	The beliefs, goals, plans and reasoning rules form the \emph{mental states} of the 2APL agent.
+
 	%Agent can observe an environment either:
 	%\begin{itemize}
 		%\item actively by means of a sense action
@@ -214,22 +222,28 @@ sally : sally.2apl @blockworld
 
 	\begin{itemize}
 		\item \texttt{<atom>}: Prolog like atomic formula starting with a lowercase letter
+		\begin{itemize}
+			\item Prolog formulas that can be used in the declarative part of the agent code
+		\end{itemize}
+		\vskip 2.0ex
 		\item \texttt{<Atom>}: Prolog like atomic formula starting with a capital letter
 		\begin{itemize}
-			\item They are used to distinguish between Prolog formulas and the name of functions that can be used in the imperative part of the agent code
+			\item Function names that can be used in the imperative part of the agent code
 		\end{itemize}
 		
 		\break
 		
-		\item \texttt{<ident>}: string with a lowercase letter
+		\item \texttt{<ground\_atom>}: grounded atomic formula
+		\begin{itemize}
+			\item Prolog formulas that does not contain any variables
+		\end{itemize}
+		\vskip 2.0ex
 		\item \texttt{<Var>}: string with a capital letter
 		\begin{itemize}
 			\item Variables that can be used in the imperative part of the agent code
 		\end{itemize}
-		\item \texttt{<ground\_atom>}: grounded atomic formula
-		\begin{itemize}
-			\item Formulas that does not contain any variables
-		\end{itemize}
+		\vskip 2.0ex
+		\item \texttt{<ident>}: string with a lowercase letter
 	\end{itemize}
 }
 
@@ -430,12 +444,12 @@ sally : sally.2apl @blockworld
 	\vskip 1.0ex
 
 	% operational semantics
-	\bsem
+	\bopsem
 	\begin{verbatim}
 	send(Receiver, Performative, Language, Ontology, Content)
 	send(Receiver, Performative, Content)
 	\end{verbatim}
-	\esem
+	\eopsem
 
 	\vskip 1.0ex
 
@@ -468,11 +482,11 @@ sally : sally.2apl @blockworld
 
 	\vskip 1.0ex
 
-	\bsem
+	\bopsem
 	\begin{verbatim}
 	@Env(ActionName, Return, Time-out)
 	\end{verbatim}
-	\esem
+	\eopsem
 
 	\vskip 1.0ex
 
@@ -1318,16 +1332,9 @@ sally : sally.2apl @blockworld
 \frame[allowframebreaks]{
 	\frametitle{Deliberation cycle}
 	
-	\begin{itemize}
-		\item The beliefs, goals, plans and reasoning rules form the mental states of the 2APL agent.
-		\item The deliberation cycle states which step the agent should perform next
-			\begin{itemize}
-				\item execute an action
-				\item apply a reasoning rule. 
-			\end{itemize}
-	\end{itemize}
-	
-	\break
+	The deliberation cycle is used to determine what the agent should do next
+
+	\vskip 2.0ex
 	
 	\begin{center}
  		\includegraphics[keepaspectratio,scale=0.3]{fig/rcycle.png}
