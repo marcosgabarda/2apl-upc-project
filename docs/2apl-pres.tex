@@ -380,9 +380,9 @@ sally : sally.2apl @blockworld
 	\end{verbatim}
 	\esyntax
 
-	\vskip 2.0ex
+	%\vskip 2.0ex
 
-	The execution of a \texttt{skip} action always succeeds resulting in its removal from the plan base
+	%The execution of a \texttt{skip} action always succeeds resulting in its removal from the plan base
 \end{frame}
 
 \begin{frame}[fragile,allowframebreaks]
@@ -473,13 +473,13 @@ sally : sally.2apl @blockworld
 \begin{frame}[fragile]
 	\frametitle{External action}
 	
-	An external action is supposed to change the state of an external environment
+	An external action is \emph{supposed} to change the state of an external environment
 	
 	\vskip 2.0ex
 	
 	\begin{itemize}
-		\item Effects of external actions are assumed to be determined by the environment
-		\item The agent can perform a sense action to determine the effect of an action
+		\item Effects of actions are assumed to be determined by the environment
+		\item A sense action needs to be performed to determine an effect
 	\end{itemize}	
 	
 	\bsyntax
