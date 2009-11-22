@@ -178,11 +178,11 @@ sally : sally.2apl @blockworld
 		\item actions
 		\item plans
 		\item events
-		\item 3 kind of different practical reasoning rules
+		\item 3 kind of different practical reasoning rules for
 			\begin{itemize}
-				\item Generate plans for achieving goals
-				\item Process events and received messages
-				\item Handle and repair failed plans
+				\item Generating plans for achieving goals
+				\item Processing events and received messages
+				\item Handling and repairing failed plans
 			\end{itemize}			
 	\end{itemize}	
 	
@@ -358,6 +358,8 @@ sally : sally.2apl @blockworld
 	\end{verbatim}
 	\esyntax
 
+	\vskip 2.0ex
+
 	The execution of a \texttt{skip} action always succeeds resulting in its removal from the plan base
 \end{frame}
 
@@ -370,7 +372,9 @@ sally : sally.2apl @blockworld
 	``BeliefUpdates:'' <BelUpSpec>
 	
 	<BelUpSpec>    := (
-	                  ``{'' <belquery> ``}'' <beliefupdate> ``{'' <literals> ``}''
+	                  ``{'' <belquery> ``}''
+	                      <beliefupdate>
+	                  ``{'' <literals> ``}''
 	                  )+
 	<belquery>     := ( ``true'' 
 	                  | <belquery> ``and'' <belquery>
@@ -397,6 +401,8 @@ sally : sally.2apl @blockworld
 	  { not carry(bomb) } PickUp()        { carry(bomb) }
 	\end{verbatim}
 	\eexample
+
+	\vskip 2.0ex
 	
 	\begin{itemize}
 		\item After the execution of the action, the post-condition is entailed by the belief base
@@ -498,7 +504,7 @@ sally : sally.2apl @blockworld
 \begin{frame}[fragile,allowframebreaks]
 	\frametitle{Test actions}
 	
-	Test actions are (Prolog) query expressions used to check if an agent can derive certain beliefs and goals from its bases.
+	Test actions are query expressions used to check if an agent can derive certain beliefs and goals from its bases.
 
 	\vskip 2.0ex
 	
@@ -560,6 +566,7 @@ sally : sally.2apl @blockworld
 	\break
 
 	\bexample
+	\footnotesize
 	\begin{verbatim}
 	// Goal base
 	a(1)
@@ -624,7 +631,12 @@ sally : sally.2apl @blockworld
 	\end{verbatim}
 	\esyntax
 
+	\vskip 2.0ex
+
 	Initial plan base:
+
+	\vskip 2.0ex
+
 	\bexample
 	\begin{verbatim}
 	@blockworld(enter(0,0, blue), L)
@@ -637,10 +649,12 @@ sally : sally.2apl @blockworld
 
 	3 \emph{practical} reasoning rules that can be used to implement the generation of plans.	
 
+	\vskip 2.0ex
+
 	\begin{itemize}
 		\item Planning goal rules (PG rules)
-		\item Procedural rules (PC rules)
-		\item Plan repair rules (PR rules)
+		\item Procedural rules    (PC rules)
+		\item Plan repair rules   (PR rules)
 	\end{itemize}
 \end{frame}
 
@@ -669,9 +683,8 @@ sally : sally.2apl @blockworld
 	\bexample 
 	\begin{verbatim}
 	PG-rules:
-	clean(blockWorld) <- bomb(X, Y) |
-  	{ 
-	goto(X, Y)
+	clean(blockWorld) <- bomb(X, Y) | { 
+	goto(X, Y)                   // goto() is an abstract action
 	@blockworld(pickup(), L1)
 	PickUp()
 	RemoveBomb(X, Y)
@@ -682,9 +695,6 @@ sally : sally.2apl @blockworld
 	}
 	\end{verbatim}
 	\eexample
-
-	\texttt{goto(X, Y)} is an abstract action.
-
 \end{frame}
 
 \begin{frame}[fragile,allowframebreaks]
@@ -722,29 +732,27 @@ sally : sally.2apl @blockworld
 	\bexample
 	\footnotesize
 	\begin{verbatim}
-	goto( X, Y ) <- true |
-	{
-	@blockworld( sensePosition(), POS );
-    B(POS = [A,B]);
-    if B(A > X) then
-    { @blockworld( west(), L );
-      goto( X, Y )
-    }
-    else if B(A < X) then
-    { @blockworld( east(), L );
-      goto( X, Y )
-    }
-    else if B(B > Y) then
-    { @blockworld( north(), L );
-      goto( X, Y )
-    }
-    else if B(B < Y) then
-    { @blockworld( south(), L );
-      goto( X, Y )
-    }
+	goto(X, Y) <- true | {
+	@blockworld(sensePosition(), POS);
+	B(POS = [A,B]);
+	if B(A > X) then {
+	   @blockworld( west(), L);
+	   goto( X, Y )
+	} else if B(A < X) then {
+	   @blockworld( east(), L);
+	   goto( X, Y )
+	} else if B(B > Y) then {
+	   @blockworld( north(), L);
+	   goto(X, Y)
+	} else if B(B < Y) then {
+	@blockworld(south(), L);
+	goto(X, Y)
+	}
 	}
 	\end{verbatim}
 	\eexample
+	
+	\vskip 1.0ex
 
 	The rule is defined recursively.
 
@@ -803,13 +811,11 @@ sally : sally.2apl @blockworld
 	
 	\bexample
 	\begin{verbatim}
-	PR−rules: 
-	   @blockworld ( pickup ( ) , L ) ; REST <− true | 
-	   { 
-	   @blockworld ( sensePosition ( ) , POS )
-	   B ( POS = [ X , Y ] )
-	   RemoveBomb ( X , Y )
-	   }
+	PR-rules: 
+	@blockworld(pickup(), L) ; REST <− true | { 
+	    @blockworld(sensePosition(), POS)
+	    B(POS = [X, Y])
+	    RemoveBomb(X, Y)
 	}
 	\end{verbatim}
 	\eexample
@@ -888,7 +894,7 @@ sally : sally.2apl @blockworld
 	public Term move(String agent, String direction)
 	   throws ExternalActionFailedException {
    	   
-           if (direction.equals("north") { moveNorth(); }
+	   if (direction.equals("north") { moveNorth(); }
    	   else if (direction.equals("east") {moveEast();}
    	   else if (direction.equals("south") {moveSouth();}
    	   else if (direction.equals("west") {moveWest();}
@@ -906,7 +912,7 @@ sally : sally.2apl @blockworld
 	
 	Events are used to pass information from environments to agents
 
-`	\vskip 1.0ex
+	\vskip 1.0ex
 
 	The constructor of the environment \emph{must} requireq exactly one paramter of the type \texttt{ExternalEventListener}
 
