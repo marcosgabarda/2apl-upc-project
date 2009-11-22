@@ -48,18 +48,19 @@
 \frame{
 	\frametitle{Introduction}
 	
-	\begin{itemize}
-		\item 2APL is designed and developed at the Intelligent Systems Group at the University of Utrecht.
-	\end{itemize}
+	2APL is designed and developed at the Intelligent Systems Group at the University of Utrecht.
 
 	\begin{itemize}
-		\item BDI-based agent-oriented programming language
-		\item integration of declarative programming constructs such as belief and goals
-		\item imperative style programming constructs such as events and plans.
+		\item It is a BDI-based agent-oriented programming language that integrates
+		\begin{itemize}
+			\item \emph{declarative} programming constructs such as belief and goals
+			\item \emph{imperative} style programming constructs such as events and plans
+		\end{itemize}
 	\end{itemize}
+}
 
-	% history of 2APL
-	% introducing to the blockworld example
+\frame{
+	\frametitle{History}
 }
 
 \frame[allowframebreaks]{
@@ -790,17 +791,8 @@ sally : sally.2apl @blockworld
 
 	\vskip 2.0ex
 
-	A plan repair rule can be applied iif:
-	\begin{enumerate}
-		\item the execution of one of its plan fails
-		\item the failed plan can be matched with the abstract plan in the head of the rule
-		\item the belief query expression is derivable from the agent’s belief base
-	\end{enumerate}
-
-	\break
-
 	\bsyntax
-	\small
+	\footnotesize
 	\begin{verbatim}
 	``PR-rules:'' <prrules>
 
@@ -818,17 +810,31 @@ sally : sally.2apl @blockworld
 	\esyntax
 
 	\break
+
+	It can be applied iif:
+	\begin{enumerate}
+		\item the execution of a plan fails
+		\item there is rule matching the failed action
+		\item the belief query expression is derivable from the agent's belief base
+	\end{enumerate}
+
+	\vskip 2.0ex
 	
 	\bexample
+	\footnotesize
 	\begin{verbatim}
 	PR-rules: 
 	@blockworld(pickup(), L) ; REST <− true | { 
 	    @blockworld(sensePosition(), POS)
-	    B(POS = [X, Y])
-	    RemoveBomb(X, Y)
+	    B(POS = [X, Y])     // test action	
+	    RemoveBomb(X, Y)    // belief update action
 	}
 	\end{verbatim}
 	\eexample
+
+	\vskip 2.0ex
+	
+	\texttt{REST}: the rest of the original plan is dropped.
 
 	\break
 
@@ -946,7 +952,7 @@ sally : sally.2apl @blockworld
 
 	\bexample
 	\begin{verbatim}
-	Include: person.2apl    // it implements goto(X,Y)
+	Include: person.2apl    // implements goto(X,Y)
 	\end{verbatim}
 	\eexample
 }
