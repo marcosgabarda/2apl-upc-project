@@ -9,7 +9,7 @@
 			Multi-agent Systems Course\\
 			Master in Artificial Intelligence\\
 			Universitat Polit\`ecnica de Catalunya\\
-			\tiny \texttt{\\ \{beltran.borja.fiz, fabrizio.de.santis, marcos.gabarda\}@est.fib.upc.edu}}
+			\texttt{\\ \{beltran.borja.fiz, fabrizio.de.santis, marcos.gabarda\}@est.fib.upc.edu}}
 \date{\today}
 
 \setbeamercolor{exupcol}{fg=white,bg=NavyBlue}
@@ -250,26 +250,25 @@ sally : sally.2apl @blockworld
 \frame{
 	\frametitle{Beliefs and goals}
 
-	A 2APL agent has \emph{beliefs} and \emph{goals} that change during the agent's execution
+	A 2APL agent has \emph{beliefs} and \emph{goals} that may change during the execution
+
+	\vskip 2.0ex
 	
 	\begin{itemize}
-		\item Beliefs that are containted into a \emph{belief base} and are related to:
+		\item Beliefs are containted into a \emph{belief base} and they are related to:
 			\begin{itemize}
 				\item The environment
 				\item Other agents
 			\end{itemize}
-		\item Goals that are contained into a \emph{goal base}
+		\item Goals are contained into a \emph{goal base}
 	\end{itemize}
 	
-	\vskip 1.0ex
+	\vskip 2.0ex
 
-	Rationality principle:
-	\begin{itemize}
-		\item If an agent believes a certain fact, then the agent should not purse that fact as a goal	
-		\begin{itemize}
-			\item If an agent modifies its belief base, then its goal base may be modified as well		
-		\end{itemize}
-	\end{itemize}
+	Rationality principle: if an agent believes a certain fact, then it can not purse that fact as a goal	
+%	\begin{itemize}
+%		\item If an agent modifies its belief base, then its goal base may require a modification
+%	\end{itemize}
 		
 }
 
@@ -293,9 +292,9 @@ sally : sally.2apl @blockworld
 	\vskip 1.0ex
 	
 	\begin{itemize}
-		\item Each belief is treated as a Prolog fact or rule
+		\item Actually, a belief base is a Prolog program
 		\begin{itemize}
-			\item A belief base is a Prolog program
+			\item Each belief is a Prolog fact or rule
 			\item All facts are assumed to be grounded
 		\end{itemize}
 	\end{itemize}
@@ -419,8 +418,8 @@ sally : sally.2apl @blockworld
 	\vskip 2.0ex
 	
 	\begin{itemize}
-		\item After the execution of the action, the post-condition is entailed by the belief base
 		\item The specification of belief update actions does not change during agent execution
+		\item After the execution of the action, the post-condition is entailed by the belief base
 	\end{itemize}
 \end{frame}
 
@@ -444,12 +443,12 @@ sally : sally.2apl @blockworld
 	\vskip 1.0ex
 
 	% operational semantics
-	\bopsem
+%	\bopsem
 	\begin{verbatim}
 	send(Receiver, Performative, Language, Ontology, Content)
 	send(Receiver, Performative, Content)
 	\end{verbatim}
-	\eopsem
+%	\eopsem
 
 	\vskip 1.0ex
 
@@ -470,7 +469,7 @@ sally : sally.2apl @blockworld
 	
 	\begin{itemize}
 		\item Effects of external actions are assumed to be determined by the environment
-		\item The agent can know the effects of an external action by performing a sense action that is an external action
+		\item The agent can perform a sense action to determine the effect of the previous action
 	\end{itemize}	
 	
 	\bsyntax
@@ -482,11 +481,11 @@ sally : sally.2apl @blockworld
 
 	\vskip 1.0ex
 
-	\bopsem
+%	\bopsem
 	\begin{verbatim}
 	@Env(ActionName, Return, Time-out)
 	\end{verbatim}
-	\eopsem
+%	\eopsem
 
 	\vskip 1.0ex
 
@@ -605,10 +604,10 @@ sally : sally.2apl @blockworld
 	
 	A plan consists of basic actions that can be composed by using different operators:
 	\begin{itemize}
-		\item the sequence operator
+		\item sequence operator
 		\item conditional choice operators
 		\item conditional iteration operator
-		\item unary operator for plans that must be executed atomically
+		\item atomic operator for plans that must be executed atomically
 	\end{itemize}	
 
 	\vskip 2.0ex
@@ -665,15 +664,15 @@ sally : sally.2apl @blockworld
 \begin{frame}
 	\frametitle{Reasoning rules}
 
-	3 \emph{practical} reasoning rules that can be used to implement the generation of plans.	
+	3 \emph{practical} reasoning rules are used for generating plans.	
 
 	\vskip 2.0ex
 
-	\begin{itemize}
+	\begin{enumerate}
 		\item Planning goal rules (PG rules)
 		\item Procedural rules    (PC rules)
 		\item Plan repair rules   (PR rules)
-	\end{itemize}
+	\end{enumerate}
 \end{frame}
 
 \begin{frame}[fragile,allowframebreaks]
@@ -692,19 +691,15 @@ sally : sally.2apl @blockworld
 	\end{verbatim}
 	\esyntax
 
-	\vskip 2.0ex
-
-	An agent can also generate a plan only based on its belief condition.
-
 	\break
 
 	\bexample 
 	\begin{verbatim}
 	PG-rules:
 	clean(blockWorld) <- bomb(X, Y) | { 
-	goto(X, Y)                // it is an abstract action
-	@blockworld(pickup(), L1)
-	PickUp()
+	goto(X, Y)                  // abstract action
+	@blockworld(pickup(), L1)   // external action
+	PickUp()                    // belief update action
 	RemoveBomb(X, Y)
 
 	goto(0, 0)
@@ -722,8 +717,11 @@ sally : sally.2apl @blockworld
 
 	\begin{enumerate}
 		\item instantiating the execution of abstract actions
-		\item handling the reception of messages received from other agents
-		\item events generated by the external environment
+		\item handling
+		\begin{itemize}
+			\item the reception of messages received from other agents
+			\item events generated by the external environment
+		\end{itemize}
 	\end{enumerate}
 
 	\break
@@ -741,29 +739,30 @@ sally : sally.2apl @blockworld
 
 	\vskip 2.0ex
 
-	A PC rule is applied only if also the belief condition is entailed by the belief base.
+	A PC rule is applied only iif the belief condition is entailed by the belief base.
 
 	\break
 
 	\bexample
 	\footnotesize
 	\begin{verbatim}
+	PC-rules:
 	goto(X, Y) <- true | {
-	@blockworld(sensePosition(), POS);
-	B(POS = [A,B]);
-	if B(A > X) then {
-	   @blockworld( west(), L);
-	   goto( X, Y )
-	} else if B(A < X) then {
-	   @blockworld( east(), L);
-	   goto( X, Y )
-	} else if B(B > Y) then {
-	   @blockworld( north(), L);
-	   goto(X, Y)
-	} else if B(B < Y) then {
-	@blockworld(south(), L);
-	goto(X, Y)
-	}
+	  @blockworld(sensePosition(), POS);
+	  B(POS = [A,B]);
+	  if B(A > X) then {
+	     @blockworld( west(), L);
+	     goto( X, Y )
+	  } else if B(A < X) then {
+	     @blockworld( east(), L);
+	     goto( X, Y )
+	  } else if B(B > Y) then {
+	     @blockworld( north(), L);
+	     goto(X, Y)
+	  } else if B(B < Y) then {
+	    @blockworld(south(), L);
+	    goto(X, Y)
+	  }
 	}
 	\end{verbatim}
 	\eexample
@@ -787,7 +786,7 @@ sally : sally.2apl @blockworld
 \begin{frame}[fragile,allowframebreaks]
 	\frametitle{Plan repair rules}
 
-	If the execution of a plan fails and the agent has a certain belief, then the failed plan could be replaced by another plan.
+	They are used to replace a plan whose execution has failed.
 
 	\vskip 2.0ex
 
