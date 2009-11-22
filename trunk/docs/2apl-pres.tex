@@ -28,7 +28,15 @@
 \newcommand{\bopsem}{\begin{beamerboxesrounded}[upper=semupcol,lower=semlowcol,shadow=true]{Operational Semantics}}
 \newcommand{\eopsem}{\end{beamerboxesrounded}}
 
-\newcommand{\bformsem}{\begin{beamerboxesrounded}[upper=semupcol,lower=semlowcol,shadow=true]{Formal Semantics}}
+\newcommand{\bformsem}{\begin{beamerboxesrounded}[upper=semupcol,lower=semlowco* Reasoning cycle (Deliberation, Means-end Reasoning... 
+* Is there any Belief revision? 
+* Is there any Goal/Intention revision? 
+* Is there any Plan/Task revision? 
+* Is there any special events' handling (i.e. emergency 
+handling)? Is there any way to make agents react to sudden 
+changes in the environment? 
+* Is there any Meta-Level reasoning? (reasoning over the 
+reasioning cycle). l,shadow=true]{Formal Semantics}}
 \newcommand{\eformsem}{\end{beamerboxesrounded}}
 
 \begin{document}
@@ -186,7 +194,7 @@ sally : sally.2apl @blockworld
 		\item 3 kind of different practical reasoning rules for
 			\begin{itemize}
 				\item Generating plans for achieving goals
-				\item Processing events and received messages
+				\item Processing events and messages
 				\item Handling and repairing failed plans
 			\end{itemize}			
 	\end{itemize}	
@@ -447,6 +455,7 @@ sally : sally.2apl @blockworld
 %	\bopsem
 	\begin{verbatim}
 	send(Receiver, Performative, Language, Ontology, Content)
+	or
 	send(Receiver, Performative, Content)
 	\end{verbatim}
 %	\eopsem
@@ -470,7 +479,7 @@ sally : sally.2apl @blockworld
 	
 	\begin{itemize}
 		\item Effects of external actions are assumed to be determined by the environment
-		\item The agent can perform a sense action to determine the effect of the previous action
+		\item The agent can perform a sense action to determine the effect of an action
 	\end{itemize}	
 	
 	\bsyntax
@@ -554,7 +563,7 @@ sally : sally.2apl @blockworld
 \begin{frame}[fragile,allowframebreaks]
 	\frametitle{Goal dynamics actions}
 	
-	They are used to adopt and drop a goal to and from an agent's goal base.
+	They are used to adopt and drop goals to and from an agent's goal base.
 
 	\vskip 2.0ex
 
@@ -883,7 +892,7 @@ sally : sally.2apl @blockworld
 	
 \end{frame}
 
-\subsubsection{Programming external environment}
+\subsubsection{Programming the environment}
 
 \begin{frame}[fragile,allowframebreaks]
 	\frametitle{Programming external environment}
