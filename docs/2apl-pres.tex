@@ -708,14 +708,14 @@ sally : sally.2apl @blockworld
 	\begin{verbatim}
 	PG-rules:
 	clean(blockWorld) <- bomb(X, Y) | { 
-	goto(X, Y)                  // abstract action
-	@blockworld(pickup(), L1)   // external action
-	PickUp()                    // belief update action
-	RemoveBomb(X, Y)
+	goto(X, Y);                  // abstract action
+	@blockworld(pickup(), L1);   // external action
+	PickUp();                    // belief update action
+	RemoveBomb(X, Y);
 
-	goto(0, 0)
-	@blockworld(drop(), L2)
-	Drop()
+	goto(0, 0);
+	@blockworld(drop(), L2);
+	Drop();
 	}
 	\end{verbatim}
 	\eexample
@@ -750,7 +750,7 @@ sally : sally.2apl @blockworld
 
 	\vskip 2.0ex
 
-	A PC rule is applied only iif the belief condition is entailed by the belief base.
+	A PC rule is applied iif the belief condition is entailed by the belief base.
 
 	\break
 
@@ -763,16 +763,16 @@ sally : sally.2apl @blockworld
 	  B(POS = [A,B]);
 	  if B(A > X) then {
 	     @blockworld( west(), L);
-	     goto( X, Y )
+	     goto(X, Y);
 	  } else if B(A < X) then {
 	     @blockworld( east(), L);
-	     goto( X, Y )
+	     goto(X, Y);
 	  } else if B(B > Y) then {
 	     @blockworld( north(), L);
-	     goto(X, Y)
+	     goto(X, Y);
 	  } else if B(B < Y) then {
 	    @blockworld(south(), L);
-	    goto(X, Y)
+	    goto(X, Y);
 	  }
 	}
 	\end{verbatim}
@@ -784,10 +784,10 @@ sally : sally.2apl @blockworld
 	\begin{verbatim}
 	message(sally, inform, La, On, bombAt(X, Y)) <- true | {
 	  if B(not bomb(A, B)) then { 
-	    AddBomb(X, Y)
-	    adoptz(clean(blockWorld))
+	    AddBomb(X, Y);
+	    adoptz(clean(blockWorld));
 	  } else { 
-	    AddBomb(X, Y)
+	    AddBomb(X, Y);
 	  }
 	}
 	\end{verbatim}
@@ -835,9 +835,9 @@ sally : sally.2apl @blockworld
 	\begin{verbatim}
 	PR-rules: 
 	@blockworld(pickup(), L) ; REST <− true | { 
-	    @blockworld(sensePosition(), POS)
-	    B(POS = [X, Y])     // test action	
-	    RemoveBomb(X, Y)    // belief update action
+	    @blockworld(sensePosition(), POS);
+	    B(POS = [X, Y]);     // test action	
+	    RemoveBomb(X, Y);    // belief update action
 	}
 	\end{verbatim}
 	\eexample
@@ -921,9 +921,9 @@ sally : sally.2apl @blockworld
 	   throws ExternalActionFailedException {
    	   
 	   if (direction.equals("north") { moveNorth(); }
-   	   else if (direction.equals("east") {moveEast();}
-   	   else if (direction.equals("south") {moveSouth();}
-   	   else if (direction.equals("west") {moveWest();}
+   	   else if (direction.equals("east") {moveEast(); }
+   	   else if (direction.equals("south") {moveSouth(); }
+   	   else if (direction.equals("west") {moveWest(); }
    	   else throw
 	        new ExternalActionFailedException("Unknown direction");
 
