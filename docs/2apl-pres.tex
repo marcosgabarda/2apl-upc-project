@@ -28,15 +28,7 @@
 \newcommand{\bopsem}{\begin{beamerboxesrounded}[upper=semupcol,lower=semlowcol,shadow=true]{Operational Semantics}}
 \newcommand{\eopsem}{\end{beamerboxesrounded}}
 
-\newcommand{\bformsem}{\begin{beamerboxesrounded}[upper=semupcol,lower=semlowco* Reasoning cycle (Deliberation, Means-end Reasoning... 
-* Is there any Belief revision? 
-* Is there any Goal/Intention revision? 
-* Is there any Plan/Task revision? 
-* Is there any special events' handling (i.e. emergency 
-handling)? Is there any way to make agents react to sudden 
-changes in the environment? 
-* Is there any Meta-Level reasoning? (reasoning over the 
-reasioning cycle). l,shadow=true]{Formal Semantics}}
+\newcommand{\bformsem}{\begin{beamerboxesrounded}[upper=semupcol,lower=semlowcol,shadow=true]{Formal Semantics}}
 \newcommand{\eformsem}{\end{beamerboxesrounded}}
 
 \begin{document}
@@ -54,18 +46,89 @@ reasioning cycle). l,shadow=true]{Formal Semantics}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \frame{
-	\frametitle{Introduction}
-	
-	2APL is designed and developed at the Intelligent Systems Group at the University of Utrecht.
+  \frametitle{Introduction}
+ \begin{itemize}
+  \item 2APL (double-a-p-l) is designed and developed at the Intelligent Systems Group at the University of Utrecht.
+\item Designed in order to be "A Practical Agent Programming Language".
+\item First version released in 2008. It is the successor of 3APL, and added multi-agent capabilities. It is built on the JADE platform.
+\item It provides practical extensions with constructs that makes it easier to program in and debug
 
-	\begin{itemize}
-		\item It is a BDI-based agent-oriented programming language that integrates
-		\begin{itemize}
-			\item \emph{declarative} programming constructs such as belief and goals
-			\item \emph{imperative} style programming constructs such as events and plans
-		\end{itemize}
-	\end{itemize}
+\begin{itemize}
+  \item Testing, different execution modes, event and exception handling mechanism
+  \item Supports the integration of declarative concepts (belief, goals) with imperative style programming (events, plans)
+  \item Aims at improving the practical application of BDI agent programming language.
+\end{itemize}
+\end{itemize}  
+
 }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+  \frametitle{2APL}
+ \begin{itemize}
+\item 2APL distinguishes itself from other agent-oriented programming languages by realising an effective integration of declarative and imperative style programming.
+
+\item The declarative style programming supports the implementation of the mental state of agents allowing them to reason about their mental states and update them accordingly.
+
+\item The imperative style programming supports the implementation of processes allowing programming constructs to implement both the flow of control as well as mechanisms such as procedure call, recursion, plan revision, and interface to existing imperative programming languages.
+
+\end{itemize}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame[allowframebreaks]{
+    \frametitle{2APL Features}
+    
+\begin{itemize}
+    \item Programming Constructs:
+     \begin{itemize}
+        \item Multi-Agent System: Which and how many agents to create? Which
+        environments? Which agent can access which environment?
+
+         \item Individual Agent: Beliefs, Goals, Plans, Events, Messages
+
+     \end{itemize}
+
+     \item Programming Principles and Techniques:
+     \begin{itemize}
+        \item Abstraction: Procedures and Recursion in Plans
+        \item  Error Handling: Plan Failure and their revision by Internal Events,
+        \item Execution of Critical Region of Plans
+        \item  Legacy Systems: Environment and External Actions
+        \item  Encapsulation: Including 2APL ¯les in other 2APL ¯les
+        \item  Autonomy: Adjustable Deliberation Process
+    \end{itemize}
+\end{itemize}
+
+\break
+
+\begin{itemize}
+    \item Integrated Development Environment
+     \begin{itemize}
+        \item 2APL platform is Built on JADE and uses related tools
+        \item Editor with High-Lighting Syntax
+        \item Monitoring mental attitudes of individual agents, their reasoning and
+communications
+        \item Executing in one step or continuous mode
+        \item Visual Programming of the Deliberation Process
+
+    \end{itemize}
+\end{itemize}
+
+}
+
+%\frame{
+%	\frametitle{Introduction}
+%	
+%	2APL is designed and developed at the Intelligent Systems Group at the University of Utrecht.
+
+%	\begin{itemize}
+%		\item It is a BDI-based agent-oriented programming language that integrates
+%		\begin{itemize}
+%			\item \emph{declarative} programming constructs such as belief and goals
+%			\item \emph{imperative} style programming constructs such as events and plans
+%		\end{itemize}
+%	\end{itemize}
+%}
 
 %\frame{
 	%\frametitle{History}
@@ -1182,7 +1245,6 @@ sally : sally.2apl @blockworld
 
 }
 
-
 \frame{
   \frametitle{Transitions}
 
@@ -1231,7 +1293,7 @@ sally : sally.2apl @blockworld
   % formal application of the action
   $${ {(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi\tau;\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle}}$$
   \vskip 0.2ex
-  $${ {¬\exists\tau:(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi\tau;\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle}}$$
+  $${ {¬\exists\tau:(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\pi\tau;\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta, \xi \rangle}}$$
 
 }
 
@@ -1404,6 +1466,79 @@ sally : sally.2apl @blockworld
   \end{center}
 }
 
+
+\frame{
+    \frametitle{JADE tools}
+\begin{itemize}
+    \item 
+The RMA (Remote Monitoring Agent) tool - can be used to control the life cycle of the agent platform and of all the registered agents.
+    \item 
+The sniffer - can be used for tracking messages exchanged in a JADE based environment.
+    \item 
+The introspector allows to monitor and control the life-cycle of a running agent and its exchanged messages, both the queue of sent and received messages. It allows also to monitor the queue of behaviors, including executing them step-by-step.
+\end{itemize}    
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+    \frametitle{RMA: Screenshot}
+      \begin{center}
+  \includegraphics[keepaspectratio,scale=0.5]{fig/rma.png}
+  \end{center}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+    \frametitle{Sniffer: Screenshot}
+      \begin{center}
+  \includegraphics[keepaspectratio,scale=0.5]{fig/sniffer.png}
+  \end{center}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+    \frametitle{Introspector: Screenshot}
+      \begin{center}
+  \includegraphics[keepaspectratio,scale=0.5]{fig/introspector.png}
+  \end{center}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+    \frametitle{2APL Specific tools }
+\begin{itemize}
+    \item The Flexible Graphical Deliberation Cycle (FGDC) tool :
+used to visualize and program the deliberation cycle of an agent. The agent’s deliberation cycle is used to determine what the agent should do next.
+    \item  The state tracer :
+used for showing the execution trace of an agent. Each state shows the beliefs, plans, goals, and log of the agent as a result of executing one deliberation step.
+
+\end{itemize}    
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+    \frametitle{FGDC: Screenshot}
+      \begin{center}
+  \includegraphics[keepaspectratio,scale=0.5]{fig/fgdc.png}
+  \end{center}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+    \frametitle{State Tracer: Screenshot}
+  
+    \begin{center}
+      \includegraphics[keepaspectratio,scale=0.5]{fig/state.png}
+    \end{center}
+  
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+    \frametitle{Environments}
+
+\begin{itemize}
+    \item 2APL agents can interact with environments that are implemented in Java.
+    \item  You can implement your own environment, or use the “blockworld” environment that is provided by the 2APL platform.
+    \item  An environment is specied by a Java class of which one instance
+is created by the 2APL platform when loading a multi-agent specication.
+    \item  2APL can be ported to other environments , e.g : Bos Wars
+\end{itemize}    
+
+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\section{Demo}			%% BORJA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1411,6 +1546,38 @@ sally : sally.2apl @blockworld
 %\frame{
  %\frametitle{Demo}
 %}
+
+\frame{
+    \frametitle{Block World Environment}
+
+\begin{itemize}
+    \item The blockworld is an external environment in which agents can perform actions. 
+    \item  The blockworldconsists of a n x n world where agents can move in four directions (north, south, east and west).
+    \item  The world can contain bombs, stones, and traps. Agents can pickup and drop bombs.
+\end{itemize}    
+
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+    \frametitle{Block World Environment : Screenshot}
+      \begin{center}
+  \includegraphics[keepaspectratio,scale=0.5]{fig/block.png}
+  \end{center}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+    \frametitle{Bos Wars Environment}
+
+\begin{itemize}
+    \item Bos Wars  is an open source, cross-platform real-time strategy game. The project was started by Tina Petersen in 2004, and the current project leader is François Beerten. The game is written in C++ and Lua with the SDL library.actions. 
+    \item  Can be used as an environment for agent testing
+    \item  2APL examples available online. There is a great video of a 2APL agent using reinforcement learning to find the optimal strategy for victory.
+    \item  http://www.youtube.com/watch?v=mt3Mk5Ea484
+\end{itemize}    
+
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}	%% BORJA
@@ -1421,10 +1588,42 @@ sally : sally.2apl @blockworld
 	%SEE LAST PARAGRAPH OF 2APL FULLTEXT PDF 
 %}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \frame{
- \frametitle{Conclusion}
+    \frametitle{Conclusion}
+\begin{itemize}
+    \item We have presented a brief description of the 2APL language. It is still a rather new language and thus is still fully in development: declarative goals, goal revision rules, nested beliefs, model checking, formal semantics, implementations, etc.
+
+    \item  Active community will help improve it. Already being used in several projects and thesis.
+\end{itemize}    
 }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frame{
+    \frametitle{Future Work}
+\begin{itemize}
+    \item Work being done on various extensions of both 2APL programming language as well as the development tools in the 2APL platform.
+
+    \item  More programming constructs on
+    \begin{itemize}
+        \item  multi-agent level : to allow the implementation of social and
+organisational issues such as norms, obligations, prohibition, permissions, power relation,
+delegations of tasks, responsibility, and trust
+    
+        \item  individual agent level : to allow the implementation of various goals types such as perform, achieve, and maintenance goals.
+
+    \end{itemize}    
+    \item  Extending the 2APL platform with (visual) debugging tools that allow
+an agent programmer to monitor the execution of multi-agent programs, halt their executions
+by means of break points, inspect the mental states of individual agents, and analyze the
+interactions among individual agents.
+\end{itemize}    
+}
+
+
+%\frame{
+% \frametitle{Conclusion}
+%}
 
 \begin{frame}{Bibliography}
 \nocite{*}
