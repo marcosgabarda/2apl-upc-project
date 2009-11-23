@@ -976,14 +976,14 @@ sally : sally.2apl @blockworld
 
   % the objective of the formal semantics is to valitade the program across the specifications
   With formal semantics, it is possible to verify whether agent programs
-  satisfy their (formal) speciﬁcations.
+  satisfy their (formal) specifications.
 
   % definition of the theoretical model as a transition system.
   \begin{itemize}
     \item The semantics of 2APL in terms of a {\bf transition system}.
     \item A {\bf transition system} is a set of transition rules for deriving
           {\bf transitions}.
-    \item A {\bf transition} is a transformation of one {\bf conﬁguration} into
+    \item A {\bf transition} is a transformation of one {\bf configuration} into
           another and it corresponds to a single computation/execution step.
   \end{itemize}
 
@@ -1021,7 +1021,7 @@ sally : sally.2apl @blockworld
 
   Each plan entry is a tuple $(\pi, r, p)$, where $\pi$ is the executing plan,
   $r$ is the instantiation of the PG-rule through which $\pi$ is generated, and
-  $p$ is the plan identiﬁer.
+  $p$ is the plan identifier.
 
   \vskip 1.0ex
 
@@ -1032,7 +1032,7 @@ sally : sally.2apl @blockworld
 \frame{
   \frametitle{Multi-agent Systems}
 
-  The conﬁguration of a 2APL multi-agents system is deﬁned as:
+  The configuration of a 2APL multi-agents system is defined as:
 
   % formal definition of a multi-agent system
   $$ \langle A_{1}, \ldots, A_{n}, \chi \rangle $$
@@ -1061,7 +1061,7 @@ sally : sally.2apl @blockworld
 \frame{
   \frametitle{Skip actions}
 
-  The execution of skip action has no effect on an agent's conﬁguration. The
+  The execution of skip action has no effect on an agent's configuration. The
   execution of this action always succeeds resulting in its removal from the
   plan base.
 
@@ -1075,8 +1075,8 @@ sally : sally.2apl @blockworld
 
   A {\bf belief update action}:
   \begin{itemize}
-    \item Is speciﬁed in terms of a pre- and a post-condition.
-    \item Modiﬁes the belief base when it is executed.
+    \item Is specified in terms of a pre- and a post-condition.
+    \item Modifies the belief base when it is executed.
   \end{itemize}
 
   % formal application of the action
@@ -1105,7 +1105,10 @@ sally : sally.2apl @blockworld
 %   τ which is added to θ .
 
   % formal application of the action
-  $$ {{( \sigma, \gamma) \vDash_{t} \varphi \theta \tau \& \gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\varphi, r, id)\}, \theta, \xi' \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta \cup \tau, \xi \rangle}} $$
+  $$ {{( \sigma, \gamma) \vDash_{t} \varphi \theta \tau \& \gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\varphi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{\}, \theta \cup \tau, \xi \rangle}} $$
+
+  A test action can fail if one or more of its involved query expressions are not entailed by
+  the belief or goal bases.
 
 }
 
@@ -1115,7 +1118,7 @@ sally : sally.2apl @blockworld
   Goals can be adopted and added to the agent's goal base by means of basic
   actions {\tt adopta($\phi$)} and {\tt adoptz($\phi$)}.
 
-  The ﬁrst action adds the goal $\phi$ to the beginning of the goal base and the
+  The first action adds the goal $\phi$ to the beginning of the goal base and the
   second action adds the  goal $\phi$ to the end of the goal base.
   % formal application of the action
   $$ {{{\sigma \nvDash \phi \theta} \& {\texttt{ground}(\phi \theta)} \& {\gamma \vDash_{g} G(r)}}\over{\langle \iota, \sigma, \gamma, \{(\texttt{adoptX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
@@ -1125,7 +1128,7 @@ sally : sally.2apl @blockworld
   Goals can be dropped and removed from the goal base by means of {\tt dropgoal($\phi$)},
   {\tt dropsubgoals($\phi$)}, and {\tt dropsupergoals($\phi$)} actions.
 
-  The ﬁrst action removes from the goal base the goal $\phi$, the second removes
+  The first action removes from the goal base the goal $\phi$, the second removes
   all goals that are subgoals of $\phi$, and the third action removes all goals that
   have $\phi$ as a subgoal.
   % formal application of the action
@@ -1333,9 +1336,9 @@ sally : sally.2apl @blockworld
 
   \vskip 1.0ex
 
-  Therefore, {\bf the conﬁguration of a multi-agent system can be modiﬁed} when either
-  the conﬁguration of one of the involved individual agents
-  is modiﬁed or when the shared environments change.
+  Therefore, {\bf the configuration of a multi-agent system can be modified} when either
+  the configuration of one of the involved individual agents
+  is modified or when the shared environments change.
 
 }
 
