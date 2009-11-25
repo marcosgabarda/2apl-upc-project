@@ -45,12 +45,12 @@
 \section{Introduction}	%%%% BORJA here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\frame{
+\frame[allowframebreaks]{
   \frametitle{Introduction}
  \begin{itemize}
   \item 2APL (double-a-p-l) is designed and developed at the Intelligent Systems Group at the University of Utrecht.
-\item Designed in order to be "A Practical Agent Programming Language".
-\item First version released in 2008. It is the successor of 3APL, and added multi-agent capabilities. It is built on the JADE platform.
+\item Designed in order to be ``A Practical Agent Programming Language''.
+\item First version released in 2008. It is the successor of 3APL, and added multi-agent capabilities. It is built on top of JADE platform.
 \item It provides practical extensions with constructs that makes it easier to program in and debug
 
 \begin{itemize}
@@ -60,16 +60,14 @@
 \end{itemize}
 \end{itemize}  
 
-}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{
-  \frametitle{2APL}
+	\break
+
  \begin{itemize}
 \item 2APL distinguishes itself from other agent-oriented programming languages by realising an effective integration of declarative and imperative style programming.
 
-\item The declarative style programming supports the implementation of the mental state of agents allowing them to reason about their mental states and update them accordingly.
+\item The \emph{declarative style programming} supports the implementation of the mental state of agents allowing them to reason about their mental states and update them accordingly.
 
-\item The imperative style programming supports the implementation of processes allowing programming constructs to implement both the flow of control as well as mechanisms such as procedure call, recursion, plan revision, and interface to existing imperative programming languages.
+\item The \emph{imperative style programming} supports the implementation of processes allowing programming constructs to implement both the flow of control as well as mechanisms such as procedure call, recursion, plan revision, and interface to existing imperative programming languages.
 
 \end{itemize}
 }
@@ -91,11 +89,11 @@
      \item Programming Principles and Techniques:
      \begin{itemize}
         \item Abstraction: Procedures and Recursion in Plans
-        \item  Error Handling: Plan Failure and their revision by Internal Events,
+        \item Error Handling: Plan Failure and their revision by Internal Events,
         \item Execution of Critical Region of Plans
-        \item  Legacy Systems: Environment and External Actions
-        \item  Encapsulation: Including 2APL ¯les in other 2APL ¯les
-        \item  Autonomy: Adjustable Deliberation Process
+        \item Legacy Systems: Environment and External Actions
+        \item Encapsulation: Including 2APL in other 2APL 
+        \item Autonomy: Adjustable Deliberation Process
     \end{itemize}
 \end{itemize}
 
@@ -116,6 +114,52 @@ communications
 
 }
 
+
+\frame[allowframebreaks]{
+  \frametitle{Few words about Prolog}
+
+  % a short introduction to Prolog
+  Prolog is a general purpose logic programming language.
+
+  % horn clauses
+  Based on Horn Clauses
+  \begin{itemize}
+    \item $H \leftarrow B_{1} \wedge \ldots \wedge B_{n}$
+    \item $H \leftarrow true$
+  \end{itemize}
+
+  \break
+
+  \begin{itemize}
+    % data types
+    \item {\bf Data Types}
+    \begin{itemize}
+      \item Atoms, general-purpose name with no inherent meaning. Atoms include x, red, 'Ball', and 'some atom'.
+      \item Numbers, integer or float.
+      \item Variables, denoted by a string beginning with an upper-case letter or underscore.
+      \item Compound Term, composed of an atom called a "functor" and a number of "arguments".
+    \end{itemize}
+    % rules and facts
+    \item {\bf Rules and Facts}
+    \begin{itemize}
+      \item Rule: \texttt{Head :- Body.}
+      \item Fact: \texttt{father(sam).}
+    \end{itemize}
+  \end{itemize}
+
+  \break
+
+  % evaluation
+  \begin{itemize}
+    \item {\bf Evaluation}
+    \begin{itemize}
+      \item Execution of a Prolog program is initiated by the user's posting of a single goal, called the query
+      \item The Prolog engine tries to find a resolution refutation of the negated query
+      \item The resolution method used by Prolog is called {\bf SLD resolution}
+    \end{itemize}
+  \end{itemize}
+}
+
 %\frame{
 %	\frametitle{Introduction}
 %	
@@ -132,51 +176,6 @@ communications
 
 %\frame{
 	%\frametitle{History}
-%}
-
-%\frame[allowframebreaks]{
-  %\frametitle{Prolog Introduction}
-
-  %% a short introduction to Prolog
-  %Prolog is a general purpose logic programming language.
-
-  %% horn clauses
-  %Based on Horn Clauses
-  %\begin{itemize}
-    %\item $H \leftarrow B_{1} \wedge \ldots \wedge B_{n}$
-    %\item $H \leftarrow true$
-  %\end{itemize}
-
-  %\break
-
-  %\begin{itemize}
-    %% data types
-    %\item {\bf Data Types}
-    %\begin{itemize}
-      %\item Atoms, general-purpose name with no inherent meaning. Atoms include x, red, 'Ball', and 'some atom'.
-      %\item Numbers, integer or float.
-      %\item Variables, denoted by a string beginning with an upper-case letter or underscore.
-      %\item Compound Term, composed of an atom called a "functor" and a number of "arguments".
-    %\end{itemize}
-    %% rules and facts
-    %\item {\bf Rules and Facts}
-    %\begin{itemize}
-      %\item Rule: \texttt{Head :- Body.}
-      %\item Fact: \texttt{father(sam).}
-    %\end{itemize}
-  %\end{itemize}
-
-  %\break
-
-  %% evaluation
-  %\begin{itemize}
-    %\item {\bf Evaluation}
-    %\begin{itemize}
-      %\item Execution of a Prolog program is initiated by the user's posting of a single goal, called the query
-      %\item The Prolog engine tries to find a resolution refutation of the negated query
-      %\item The resolution method used by Prolog is called {\bf SLD resolution}
-    %\end{itemize}
-  %\end{itemize}
 %}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -238,6 +237,23 @@ sally : sally.2apl @blockworld
 \end{verbatim}
 \eexample
 \end{frame}
+
+\frame{
+    \frametitle{Few words about the blockworld environment}
+
+	\begin{columns}
+  		\begin{column}{0.5\textwidth}
+			\begin{itemize}
+    			\item The blockworld environment models a $<n, n>$ grid world.
+    			\item Each agent can move in each of four directions (north, south, east and west).
+    			\item Each agent can pickup or drop one bomb at a time.
+			\end{itemize}    
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\includegraphics[keepaspectratio,scale=0.35]{fig/block.png}
+		\end{column}
+	\end{columns}
+}
 
 \subsubsection{Individual agent specification}
 
@@ -1482,32 +1498,36 @@ The introspector allows to monitor and control the life-cycle of a running agent
 \frame{
     \frametitle{RMA: Screenshot}
       \begin{center}
-  \includegraphics[keepaspectratio,scale=0.5]{fig/rma.png}
+  \includegraphics[keepaspectratio,scale=0.6]{fig/rma.png}
   \end{center}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{
     \frametitle{Sniffer: Screenshot}
       \begin{center}
-  \includegraphics[keepaspectratio,scale=0.5]{fig/sniffer.png}
+  \includegraphics[keepaspectratio,scale=0.6]{fig/sniffer.png}
   \end{center}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{
     \frametitle{Introspector: Screenshot}
       \begin{center}
-  \includegraphics[keepaspectratio,scale=0.5]{fig/introspector.png}
+  \includegraphics[keepaspectratio,scale=0.6]{fig/introspector.png}
   \end{center}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{
-    \frametitle{2APL Specific tools }
+    \frametitle{2APL Specific tools}
 \begin{itemize}
-    \item The Flexible Graphical Deliberation Cycle (FGDC) tool :
-used to visualize and program the deliberation cycle of an agent. The agent’s deliberation cycle is used to determine what the agent should do next.
-    \item  The state tracer :
-used for showing the execution trace of an agent. Each state shows the beliefs, plans, goals, and log of the agent as a result of executing one deliberation step.
-
+    \item The Flexible Graphical Deliberation Cycle (FGDC) tool
+    \begin{itemize}
+		\item Used to visualize and program the deliberation cycle of an agent. 
+	\end{itemize}
+    \item  The state tracer
+    \begin{itemize}
+		\item Used for showing the execution trace of an agent. 
+		\item Each state shows the beliefs, plans, goals, and log of the agent as a result of executing one deliberation step.
+	\end{itemize}
 \end{itemize}    
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1527,52 +1547,35 @@ used for showing the execution trace of an agent. Each state shows the beliefs, 
   
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{
-    \frametitle{Environments}
+%\frame{
+    %\frametitle{Environments}
 
-\begin{itemize}
-    \item 2APL agents can interact with environments that are implemented in Java.
-    \item  You can implement your own environment, or use the “blockworld” environment that is provided by the 2APL platform.
-    \item  An environment is specied by a Java class of which one instance
-is created by the 2APL platform when loading a multi-agent specication.
-    \item  2APL can be ported to other environments , e.g : Bos Wars
-\end{itemize}    
+%\begin{itemize}
+    %\item 2APL agents can interact with environments that are implemented in Java.
+    %\item  You can implement your own environment, or use the “blockworld” environment that is provided by the 2APL platform.
+    %\item  An environment is specied by a Java class of which one instance
+%is created by the 2APL platform when loading a multi-agent specication.
+    %\item  2APL can be ported to other environments , e.g : Bos Wars
+%\end{itemize}    
 
-}
+%}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Demo}			%% BORJA
+\section{Demo}			%% BORJA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\frame{
  %\frametitle{Demo}
 %}
 
-\frame{
-    \frametitle{Block World Environment}
-
-\begin{itemize}
-    \item The blockworld is an external environment in which agents can perform actions. 
-    \item  The blockworldconsists of a n x n world where agents can move in four directions (north, south, east and west).
-    \item  The world can contain bombs, stones, and traps. Agents can pickup and drop bombs.
-\end{itemize}    
-
-}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frame{
-    \frametitle{Block World Environment : Screenshot}
-      \begin{center}
-  \includegraphics[keepaspectratio,scale=0.5]{fig/block.png}
-  \end{center}
-}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\frame{
-    \frametitle{Bos Wars Environment}
+    \frametitle{Bos Wars}
 
 \begin{itemize}
     \item Bos Wars  is an open source, cross-platform real-time strategy game. The project was started by Tina Petersen in 2004, and the current project leader is François Beerten. The game is written in C++ and Lua with the SDL library.actions. 
-    \item  Can be used as an environment for agent testing
-    \item  2APL examples available online. There is a great video of a 2APL agent using reinforcement learning to find the optimal strategy for victory.
-    \item  http://www.youtube.com/watch?v=mt3Mk5Ea484
+    \item  Can be used as an environment for agent testing, 2APL examples available online.
+    \item  There is a great video of a 2APL agent using reinforcement learning to find the optimal strategy for victory.
+    \item  \url{http://www.youtube.com/watch?v=mt3Mk5Ea484}
 \end{itemize}    
 
 }
@@ -1582,11 +1585,6 @@ is created by the 2APL platform when loading a multi-agent specication.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}	%% BORJA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\frame{
-	%\frametitle{Comparison with other languages}
-	%SEE LAST PARAGRAPH OF 2APL FULLTEXT PDF 
-%}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
