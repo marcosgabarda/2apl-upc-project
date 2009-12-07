@@ -211,7 +211,7 @@ BeliefUpdates:
 \label{fig:example_beliefupdate}
 \end{figure}
 
-A \emph{communication action} is used to pass a message to other agents. Figure~\ref{fig:ebnf_sendaction} provides the formal specification of the action, while Figure~\ref{fig:example_sendaction} shows an example for it. In this case, the agent \texttt{sally} is sending a message to the agent \texttt{harry} using the perfomative of informing him that there is a bomb at position $(X_1, Y_1)$ using the content language \texttt{La} and the ontology \texttt{On}.
+A \emph{communication action} is used to pass a message to other agents. Figure~\ref{fig:ebnf_sendaction} provides the formal specification of the action. Let consider the action \texttt{send(harry, inform, La, On, bombAt(X\_1, Y\_1)}. In this case, the agent \texttt{sally} is sending a message to the agent \texttt{harry} using the perfomative of informing him that there is a bomb at position $(X_1, Y_1)$ using the content language \texttt{La} and the ontology \texttt{On}.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -223,17 +223,9 @@ A \emph{communication action} is used to pass a message to other agents. Figure~
 \label{fig:ebnf_sendaction}
 \end{figure}
 
-\begin{figure}[htp]
-\begin{verbatim}
-send(harry, inform, La, On, bombAt(X_1, Y_1))
-\end{verbatim}
-\caption{Example of a send action}
-\label{fig:example_sendaction}
-\end{figure}
+Actually, a send action can be also performed omitting the specification of the content language and ontology, if it reasonable to assume that all the agents in system share the same content language and ontologies.
 
-Actually, a send action can be also used omitting the specification of a content language or the ontology it it possible to assume that all the agents in system share the same content language and ontologies.
-
-An \emph{external action} is supposed to change the state of an external environment since the effects of actions are assumed to be determined by the environment. Thus, a sense action needs to be performed to determine an effect. The formal syntax is provided in Figure~\ref{fig:ebnf_extaction}, while an example is provided in Figure~\ref{fig:example_extaction} causing the agent to go one step to the east in the \texttt{blockWorld} environment.
+An \emph{external action} is supposed to change the state of an external environment. The effects of external actions are, in fact, assumed to be determined by the environment. Thus, a sense action (that is also an external action) has to be performed in order to determine the effect of a previous external action. The formal syntax is provided in Figure~\ref{fig:ebnf_extaction}. An example of external actions is \texttt{@blockworld(east(), L)} that would try to get the agent one step to the east in the \texttt{blockWorld} environment.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -243,15 +235,7 @@ An \emph{external action} is supposed to change the state of an external environ
 \label{fig:ebnf_extaction}
 \end{figure}
 
-\begin{figure}[htp]
-\begin{verbatim}
-@blockworld(east(), L)
-\end{verbatim}
-\caption{Example of external action}
-\label{fig:example_extaction}
-\end{figure}
-
-An \emph{abstract action} is used to instantiate a new plan when the action is executed in a similar way a procedure call works.The formal syntax is provided in Figure~\ref{fig:ebnf_absaction}. A concrete example will be shown later.
+An \emph{abstract action} is used to instantiate a new plan when the action is executed in the way a procedure call would instantiate a new procedure. The formal syntax is provided in Figure~\ref{fig:ebnf_absaction}. A example of this action will be shown later in a concrete scenario.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -280,18 +264,9 @@ An \emph{abstract action} is used to instantiate a new plan when the action is e
 \label{fig:ebnf_testaction}
 \end{figure}
 
-An example of test action is provided in Figure~\ref{fig:example_testaction} in which the agent has a certain belief \texttt{p(a)} and it is  pursing the goal of achieving a situation \texttt{q(b)}. In the first case the query will fail since no substituion is possible, while in the second case the query will succedd by the substituion $\rho=\{X/a, Y/b\}$.
+Let imagine that, for instance, an agent has a certain belief \texttt{p(a)} and it is  pursing the goal of achieving a situation \texttt{q(b)} and we are querying first for \texttt{B(p(X)) \& G(q(X))} and then for \texttt{B(p(X)) \& G(q(Y) or r(X))}. In the first case the query will fail since no substituion is possible, while in the second case the query will succedd by the substituion $\rho=\{X/a, Y/b\}$.
 
-\begin{figure}[htp]
-\begin{verbatim}
-B(p(X)) & G(q(X))         
-B(p(X)) & G(q(Y) or r(X))  
-\end{verbatim}
-\caption{Example of Test actions}
-\label{fig:example_testaction}
-\end{figure}
-
-\emph{Goal dynamics action} are used to adopt and drop goals to and from an agent's goal base. The adopt goal action has two forms, the first one for adopting a goal giving it the maximum priority and another one for giving it the least priority. Also, the drop goal action has three different forms tha are used to drop from an agent’s goal base, respectively, exactly the goal specified, all goals that are subgoal of the goal specificied, and all goals that have the goal specified as a subgoal. The formal syntax is provided in Figure~\ref{fig:ebnf_goalactions}.
+\emph{Goal dynamics action} are used to adopt and drop goals to and from an agent's goal base. The adopt goal action has two forms, the first one for adopting a goal giving it the maximum priority and another one for giving it the least priority. Also, the drop goal action has three different forms tha are used to drop from an agent’s goal base, respectively, exactly the goal specified, all goals that are subgoal of the goal specificied and all goals that have the goal specified as a subgoal. The formal syntax is provided in Figure~\ref{fig:ebnf_goalactions}.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -308,21 +283,11 @@ B(p(X)) & G(q(Y) or r(X))
 \label{fig:ebnf_goalactions}
 \end{figure}
 
-To illustrate the use of these three different actions to drop a goal the following goal base is considered: \texttt{a(1), a(1) and b(1), a(1) and b(1)}. Figure~\ref{fig:example_goalactions} shows three different drop action that respectively drops the following goals: \texttt{a(1) and b(1)}, \texttt{a(1), a(1) and b(1)} and \texttt{a(1) and b(1), a(1) and b(1) and c(1)}.
-
-\begin{figure}[htp]
-\begin{verbatim}
-dropgoal(a(1) and b(1))
-dropsubgoal(a(1) and b(1))
-dropsupergoal(a(1) and b(1))
-\end{verbatim}
-\caption{Example of goal dynamics actions}
-\label{fig:example_goalactions}
-\end{figure}
+To illustrate the use of these three different actions to drop a goal the following three goals are considered: \texttt{a(1), a(1) and b(1), a(1) and b(1)}. Then a \texttt{dropgoal(a(1) and b(1))} action will drop exactly the \texttt{a(1) and b(1)}, the \texttt{dropsubgoal(a(1) and b(1))} will drop the goal \texttt{a(1) and b(1)} and its subgoal \texttt{a(1)} and, finally, the action \texttt{dropsupergoal(a(1) and b(1))} will drop the goal \texttt{a(1) and b(1)} and its supergoal \texttt{a(1) and b(1) and c(1)}.
 
 \paragraph{Plans}
 
-In order to reach its goals, a agent needs to adopt \emph{plans}. A plan consists of basic actions that can be composed by using different operators: sequence operator, conditional choice operators, conditional iteration operator and atomic operator for plans that must be executed atomically. The formal syntax for both specifying a plan and a plan base is provided in Figure~\ref{fig:ebnf_plans}.
+In order to reach its goals, a agent needs to adopt \emph{plans}. A plan consists of basic actions that can be composed by using the following operators: sequence operator, conditional choice operators, conditional iteration operator and atomic operator for plans that must be executed atomically. The formal syntax for both specifying a plan and a plan base is provided in Figure~\ref{fig:ebnf_plans}.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -341,10 +306,10 @@ Plans: <plans>
        <plans> := <plan> ( ``,'' <plan> )*
 \end{verbatim}
 \caption{EBNF syntax for specifying plans and a plan base}
-\label{fig:ebnf_planbase}
+\label{fig:ebnf_plans}
 \end{figure}
 
-Figure~\ref{ebnf_planbase} shows an example of the implementation of an initial plan base of \texttt{harry} that let him enter the \texttt{blockWorld} environment by performing an external action \texttt{enter}. It worth noting that during execution of the agent, the plan base will be filled with plans by means of reasoning rules.
+Figure~\ref{fig:ebnf_planbase} shows an example of the implementation of an initial plan base of \texttt{harry} that let him enter the \texttt{blockWorld} environment by performing a test action and then an external action. It worth noting that during execution of the agent, the plan base will be filled with plans by means of reasoning rules.
  
 \begin{figure}[htp]
 \begin{verbatim}
