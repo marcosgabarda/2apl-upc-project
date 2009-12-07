@@ -406,7 +406,7 @@ message(sally, inform, La, On, bombAt(X, Y)) <- true | {
 \label{fig:example_pcrules}
 \end{figure}
 
-Finally, PR rules are used to replace a plan whose execution has failed. Plan repair rules can be applied if the execution of a plan fails, there is a rule matching the failed action and the belief query expression is derivable from the agent's belief base. The formal syntax of PR rules is provided in Figure~\ref{fig:ebnf_prrules}.
+Finally, PR rules are used to replace a plan whose execution has failed. Plan repair rules can be applied if the following condition hold: the execution of a plan fails, there is a rule matching the failed action and the belief query expression is derivable from the agent's belief base. The formal syntax of PR rules is provided in Figure~\ref{fig:ebnf_prrules}.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -426,7 +426,7 @@ Finally, PR rules are used to replace a plan whose execution has failed. Plan re
 \label{fig:ebnf_prrules}
 \end{figure}
 
-An example of a plan repair rule of \texttt{harry} is provided in Figure~\ref{fig:example_pcrules}. This rule is used for the situation in which the execution of a plan that starts with the external action \texttt{@blockworld(pickup(),L)} fails. Such an action fails in case there is no bomb to be picked up; it is possibly removed by another agent. The rule states that then the plan should be replaced by a plan in which the agent updates its beliefs about the location of the bombs. It is worth noting that the rest of the original plan denoted by \texttt{REST} is dropped, as it is not used anymore within the rule.
+An example of a plan repair rule of \texttt{harry} is shown in Figure~\ref{fig:example_pcrules}. This rule is used for the situation in which the execution of a plan that starts with the external action \texttt{@blockworld(pickup(),L)} fails. Such an action fails in case there is no bomb to be picked up, may be because it has already been removed by another agent. The rule states that the plan should be replaced by a plan in which the agent updates its beliefs about the location of the bombs. It is worth noting that the rest of the original plan denoted by \texttt{REST} is dropped, as it is not used anymore within the rule.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -441,24 +441,31 @@ PR-rules:
 \label{fig:example_pcrules}
 \end{figure}
 
-The execution of a plan fails if the execution of its first action fail. When an action fails depends on the type of the action. Table~\ref{table:action_fail} provides a quick summary of possible causes.
+Finally, it is important to see that the execution of a plan fails if the execution of its first action fail and, when an action fails, depends on the type of the action. Table~\ref{table:action_fail} provides a quick summary of possible causes for each kind of action.
 
 \begin{table}[htp]
-  \begin{tabular}{l l}
+  \begin{tabular}{|l| p{8.5cm}|}
+  \hline
   Belief update action & It is not specified or the pre-condition is not entailed by the belief base  \\
+  \hline
   Abstract action & There is no applicable procedural rule \\
-  External action & The environment throws an \texttt{ExternalActionFailedException}, the agent has no access to the environment, the actions is not defined in the environment \\
+  \hline
+  External action & The environment throws an \texttt{ExternalActionFailedException},the agent has no access to the environment, the actions is not defined in the environment \\
+  \hline
   Test action & The test expression is no derivable from the belief or goal bases \\
+  \hline
   Goal adopt action & The goal is already entailed by the belief base, the goal to be adopted is not ground\\
-  Atomic plan & If one of its actions fails
+  \hline
+  Atomic plan & If one of its actions fails \\
+  \hline
   \end{tabular}
-  \caption{...}
+  \caption{Possible causes of failure}
   \label{table:action_fail}
 \end{table}
 
 \subsubsection{Programming the environment} %%%%%%% FABRIZIO HERE
 
-A 2APL environment can be any Java class implementing the \emph{environment interface} that contains the following two methods:\texttt{addAgent(String name)} and \texttt{removeAgent(String name)}. Any external action like \texttt{@env($a_1, \ldots, a_n$, R)} is translated into a call to a method $m$ with arguments $a_1, \ldots, a_n$ in environment $env$. Java exceptions are the mechanisms used to inform an agent that an execution of an action has failed and let it apply plan repair rules. Figure~\ref{fig:example_env} provide an example of a \texttt{move} external action that can fail if an unknown direction is specified.
+A 2APL environment can be any Java class implementing the \emph{environment interface} that contains the following two methods: \texttt{addAgent(String name)} and \texttt{removeAgent(String name)}. Any external action like \texttt{@env($a_1, \ldots, a_n$, R)} is translated into a call to a method $m$ with arguments $a_1, \ldots, a_n$ in environment $env$. Java exceptions are the mechanisms used to inform an agent that an execution of an action has failed and let it apply plan repair rules. Figure~\ref{fig:example_env} provide an example of a \texttt{move} external action that can fail if an unknown direction is specified.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -478,7 +485,7 @@ public Term move(String agent, String direction)
 \label{fig:example_env}
 \end{figure}
 
-Finally, it is important to state that the constructor of the environment must require exactly one parameter of the type \texttt{ExternalEventListener}. When implementing a 2APL environment, the programmer should decide when and which information from the environment should be passed to agents. This can be done in an environment by calling the method \texttt{notifyEvent(AF event, String... agents)} in the \texttt{ExternalEventListener} which was an argument of the environments constructor. The first argument of this method may be any valid atomic formula. The rest of the arguments may be filled with strings that represent local names of agents. The events can be received by agents whose name is listed in the argument list to trigger one of their procedure call rules. If the programmer does not specify any agents in the argument list, all agents can receive the event. 
+Finally, it is important to state that the constructor of the environment must require exactly one parameter of the type \texttt{ExternalEventListener}. Such class has the method \texttt{notifyEvent(AF event, String... agents)} that can be used to notify agents of events from the environment. The first argument of this method may be any valid atomic formula. The rest of the arguments may be filled with strings that represent local names of agents. If the programmer does not specify any agents in the argument list, all agents can receive the event. 
 
 \subsection{Formal Semantics} %%%%%%% MARCOS HERE
 
@@ -486,11 +493,14 @@ Marcos here
 
 \subsection{Deliberation Cycle} %%%%%%% FABRIZIO HERE
 
-In order to execute an individual agent, the 2APL interpreter follows a certain order of deliberation steps repeatedly and indefinitely. Each deliberation step is specified by a set of transition rules indicating which transitions an individual agent can make at each moment in time. This repeated and indefinite sequence of the deliberation steps can be generated by the agent’s deliberation cycle. The deliberation cycle is provided in Figure~\ref{fig:deliberation_cycle}.
+In order to execute an individual agent, the 2APL interpreter follows a certain order of deliberation steps repeatedly and indefinitely. Each deliberation step is specified by a set of transition rules indicating which transitions an individual agent can make at each moment in time. The predefined deliberation cycle is provided in Figure~\ref{fig:deliberation_cycle}.
 
-\begin{center}
-\includegraphics[keepaspectratio,scale=0.3]{fig/rcycle.png}
-\end{center}
+\begin{figure}[htp]
+\centering
+\includegraphics[keepaspectratio,scale=0.35]{fig/rcycle.png}
+\caption{Predefined deliberation Cycle}
+\label{fig:deliberation_cycle}
+\end{figure}
  
 Each cycle starts by applying all applicable PG-rules, each rule only one time. The deliberation cycle proceeds by executing only the first actions of all plans. This is in order to allow all plans to get a chance to be executed. The next deliberation steps are to
 process all events received from the external environment, all internal events indicating the failure of plans, and all messages received from other agents, respectively. An event from external environment is processed by applying the first applicable PC-rule to it. An internal event, which identifies a failed plan, is processed by applying the first applicable PR-rule to the failed plan. A received message is then processed by applying the first applicable PC-rule to it. It is worth noting that the application of rules
@@ -498,7 +508,7 @@ to process events generates and add plans to the corresponding agent’s plan ba
 
 If in a deliberation cycle no rule could be applied, no plan could be executed, and no event could be processed, then it makes no sense to try again a new cycleof deliberation steps, except when a new event or message has arrived.
 
-The deliberation cycle realized as this has the following two properties: first, if the execution of a plan fails, then the plan will either be repaired in the same deliberation cycle or get re-executed in the next deliberation cycle, since plans are executed before internal events are processed. Second, if the first action fails and there is no plan repair rule for it, then the failed plan may be successfully executed in the next deliberation cycle, since the belief and agoal bases can be modified in one deliberation cycle such that belief and goal test actions may be executed successfully in the next cycle.
+The predefined deliberation cycle has the two following properties: first, if the execution of a plan fails, then the plan will either be repaired in the same deliberation cycle or get re-executed in the next deliberation cycle, since plans are executed before internal events are processed. Second, if the first action fails and there is no plan repair rule for it, then the failed plan may be successfully executed in the next deliberation cycle, since the belief and agoal bases can be modified in one deliberation cycle such that belief and goal test actions may be executed successfully in the next cycle.
 
 \section{2APL Platform and Tools} %%%%%%% BORJA+MARCOS HERE
 
