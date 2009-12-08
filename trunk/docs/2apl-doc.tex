@@ -509,7 +509,7 @@ The configuration of an individual 2APL agent is defined as $ A_{\iota} = \langl
  \item $M$ is the set of messages sent to the agent.
 \end{itemize}
 
-Each plan entry is a tuple $(\pi, r, p)$, where $\pi$ is the executing plan, $r$ is the instatation of the PG-rule throug  which $\pi$ is generated, and $\pi$ is the plan identifier. The belief base and each goal in the goal base are consistent as only positive atoms are used to represent them.
+Each plan entry is a tuple $(\pi, r, p)$, where $\pi$ is the executing plan, $r$ is the instatation of the PG-rule throug  which $\pi$ is generated, and $p$ is the plan identifier. The belief base and each goal in the goal base are consistent as only positive atoms are used to represent them.
 
 \paragraph{Multi-agents system}
 
@@ -647,7 +647,7 @@ An agent executes its plans concurrently by interleaving the executions of their
 
 $$ {\langle \iota, \sigma, \gamma, \rho, \theta, \xi \rangle \rightarrow \langle \iota, \sigma', \gamma', \rho', \theta', \xi' \rangle } \over {\langle \iota, \sigma, \gamma, \Pi, \theta, \xi \rangle \rightarrow \langle \iota, \sigma', \gamma', \Pi', \theta', \xi' \rangle}$$
 
-where $\rho = \{\pi, r, id\} \subset \Pi $ and $\Pi' = (\Pi \diagdown \rho) \cup \rho'$.
+where $\rho = \{\pi, r, id\} \subset \Pi $ and $\Pi' = (\Pi/\rho) \cup \rho'$.
 
 \subsubsection{Practical reasoning rules}
 
@@ -677,7 +677,7 @@ A plan repair rule can be applied to replace a plan if an exception is received 
 the execution of the first action of the plan is failed. Suppose the execution (of the first action)
 of a plan $\pi$ of an agent fails. Then, a plan repair rule $\pi_{1} \leftarrow \beta \pi_{2}$ can be applied to repair $\pi$ if the abstract plan expression $\pi_{1}$ matches $\pi$ and $\beta$ is entailed by the agent's belief base. The result of the match will be used to instantiate the abstract plan expression $\pi_{2}$ and to generate a new plan that replaces the failed plan.
 
-$$ {Plan Unify(\pi, \pi_{1}) = (\tau_{d}, \tau_{p}, \pi *) \& \sigma \vDash \beta\tau_{d}\tau \& id ºin I} \over {\langle \iota, \sigma, \gamma, \{(\pi, r, id)\}, \theta, \langle E, I, M \rangle \rangle \rightarrow \langle \iota, \sigma, \gamma, \{(\pi_{2}\tau_{d}\tau\tau_{p};\pi *, r, id)\}, \theta, \langle E, I \diagdown \{id\}, M \rangle \rangle}$$
+$$ {Plan Unify(\pi, \pi_{1}) = (\tau_{d}, \tau_{p}, \pi *) \& \sigma \vDash \beta\tau_{d}\tau \& id ºin I} \over {\langle \iota, \sigma, \gamma, \{(\pi, r, id)\}, \theta, \langle E, I, M \rangle \rangle \rightarrow \langle \iota, \sigma, \gamma, \{(\pi_{2}\tau_{d}\tau\tau_{p};\pi *, r, id)\}, \theta, \langle E, I/\{id\}, M \rangle \rangle}$$
 
 Plan repair rules should be used cautiously. If the repaired part of a failed plan includes an action through which variables are bound (e.g., test or external actions), then the variables should not occur in the unrepaired part of the plan (i.e., plan part bound to plan variables or the plan part $\pi$*).
 
@@ -691,6 +691,21 @@ We assume that the external shared environments can change either by the executi
 Therefore, {\bf the configuration of a multi-agent system can be modified} when either the configuration of one of the involved individual agents is modified or when the shared environments change.
 
 \section{2APL Platform}\label{sec:platform} %%%%%%% BORJA+MARCOS HERE
+
+\subsection{Management of Messages}
+
+The fact that 2APL platform is built on the top of JADE (Java Agent DEvelopment Framework) allows to use all the functionality that this framework has to communicate to other agents. Thus, as JADE, 2APL follows FIPA specifications.
+
+In order to be able to sending messages to running agent, 2APL implements {\bf the message agent}.The message agent can be accessed by clicking on the message agent button in the toolbar. We must specify the receiver, that can be in JADE format, the performatice and the content. Moreover, optionaly, we can specify the language and the ontology of the message.
+
+In Figure~\ref{fig:message_agent} we can see the form to send a message to a running agent.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[keepaspectratio,scale=0.65]{fig/messageagent.png}
+\caption{Message agent}
+\label{fig:message_agent}
+\end{figure}
 
 \subsection{Deliberation Cycle} %%%%%%% FABRIZIO HERE
 
