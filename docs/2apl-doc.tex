@@ -491,65 +491,82 @@ Finally, it is important to state that the constructor of the environment must r
 
 In this section we present the formal semantics of 2APL in terms of transition system. A transition system is a set of transition rules for deriving transitions. A transitionis is a transformation of one configuration into another and it corresponds to a simple computation/execution step.
 
-%% TODO
+The execution of a 2APL multi-agent program modiﬁes its initial conﬁguration by means of transitions that are derivable from the transition rules. In fact, each transition rule indicates which execution step (i.e., transition) is possible from a given conﬁguration. It should be noted that for a given conﬁguration there may be
+several transition rules applicable. An interpreter is a deterministic choice of applying transition rules in a certain order.
 
 \subsubsection{2APL Configurations}
 
-$$ A_{\iota} = \langle \iota, \sigma, \gamma, \Pi, \theta, \xi \rangle $$
+The conﬁguration of an individual agent consists of its \textbf{identiﬁer}, \textbf{beliefs}, \textbf{goals}, \textbf{plans}, \textbf{substitutions that are resulted from queries to the belief and goal bases}, and the \textbf{received events}. Moreover, additional information is assigned to an agent's plan. In particular, a unique identiﬁer is assigned to each plan which can be used to identify and repair failed plans. Also, the practical reasoning rules by means of which plans are generated are assigned to plans in order to avoid redundant applications of practical reasoning rules, e.g., to avoid generating multiple plans for one and the same goal.
+
+\paragraph{Individual agent}
+
+The configuration of an individual 2APL agent is defined as $ A_{\iota} = \langle \iota, \sigma, \gamma, \Pi, \theta, \xi \rangle $ where $\iota$ is a set of belief expressions representig the agent's identifier, $\sigma$ is a list of goals expressions representing the agent's belief base, $\gamma$ is the agent's goal base,  $\Pi$ is a set of plan entries representing the agent's goal base, $\theta$ is a ground substitution that binds domain variables to gound terms, and $\xi = \langle E, I, M \rangle$ is the agent's event base, where
+
+\begin{itemize}
+ \item $E$ is a set of events from the external environments, which has the form $event(A,S)$, where $A$ is a ground atom originated from the environment $S$.
+ \item $I$ is a set of plans identifiers denoting failed plans.
+ \item $M$ is the set of messages sent to the agent.
+\end{itemize}
+
+Each plan entry is a tuple $(\pi, r, p)$, where $\pi$ is the executing plan, $r$ is the instatation of the PG-rule throug  which $\pi$ is generated, and $\p$ is the plan identifier. The belief base and each goal in the goal base are consistent as only positive atoms are used to represent them.
+
+\paragraph{Multi-agents system}
+
+Let $A_{\iota}$ be the configuration of agent $\iota$ and let $\chi$ be a set of external shared environments each of which is a consistent set of atoms. the configuration of a 2APL multi-agents system is defined as $ \langle A_{1}, \ldots, A_{n}, \chi \rangle $.
+
 
 \subsubsection{Transition rules for basic actions}
 
-Skip action 
+\paragraph{Skip action}
 $$ {{\gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\texttt{skip}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{\}, \theta, \xi \rangle}}$$
 
-Belief update action
+\paragraph{Belief update action}
 $$ {{T(\alpha \theta, \sigma) = \sigma' \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma', \gamma', \{\}, \theta, \xi \rangle}} $$
   
-Test action
+\paragraph{Test action}
 $$ {{( \sigma, \gamma) \vDash_{t} \varphi \theta \tau \& \gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\varphi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{\}, \theta \cup \tau, \xi \rangle}} $$
 
 
-Goal dynamics actions  
+\paragraph{Goal dynamics actions}
 $$ {{{\sigma \nvDash \phi \theta} \& {\texttt{ground}(\phi \theta)} \& {\gamma \vDash_{g} G(r)}}\over{\langle \iota, \sigma, \gamma, \{(\texttt{adoptX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
 
 $$ {{\gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{dropX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
 
 
-Abstract action
+\paragraph{Abstract action}
 $$ {{Unify(\alpha\theta, \phi = \tau_{1} \& \sigma \vDash \beta\tau_{1}\tau_{2} \& \gamma \vDash_{g} G(r) } \over {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{(\pi\tau_{1}\tau_{2}, r, id)\}, \theta, \xi \rangle}} $$
 
-Communication actions
+\paragraph{Communication actions}
 
-External actions
+\paragraph{External actions}
 
 
 \subsubsection{Transition rules for plans}
 
-Sequence plan
+\paragraph{Sequence plan}
 $${ {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta', \xi' \rangle} \over {\langle \iota, \sigma, \gamma, \{(\alpha:\pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi, r, id)\}, \theta', \xi' \rangle}}$$
 
-Conditional plan
+\paragraph{Conditional plan}
 $${ {(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{(\pi_{1}\tau, r, id)\}, \theta, \xi \rangle}}$$
   \vskip 0.2ex
-  $${ {�\exists\tau : (\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi_{2}\tau, r, id)\}, \theta, \xi \rangle}}$$
+  $${ {�\exists\tau : (\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi_{2}\tau, r, id)\}, \theta, \xi \rangle}}$$
   
-While plan
+\paragraph{While plan}
 $${ {(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi\tau;\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle}}$$
   \vskip 0.2ex
   $${ {¬\exists\tau:(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta, \xi \rangle}}$$
   
-Atomic plan
+\paragraph{Atomic plan}
 
-Multiple concurrent plans
-
+\paragraph{Multiple concurrent plans}
 
 \subsubsection{Practical reasoning rules}
 
-Planing goal rules
+\paragraph{Planing goal rules}
 
-Procedure call rules
+\paragraph{Procedure call rules}
 
-Plan repair rules
+\paragraph{Plan repair rules}
 
 \subsubsection{Multi-agent transition rules}
 
