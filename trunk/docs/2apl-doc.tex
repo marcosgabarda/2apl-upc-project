@@ -598,7 +598,7 @@ This assumption implies that external actions are blocking actions, but it does 
 
 The transition for external actions broadcast an event to the multi-agent system level and waits for the return value from the environment in one transition step.
 
-$$ {t \neq \bot \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(@env(\alpha(t_{1}, \ldots, t_{n}), V), r, id)\},\theta, \xi \rangle \underrightarrow{env(\alpha(t_{1}\theta, \ldots, t_{n}\theta), t)} \langle \iota, \sigma, \gamma, \{\}, \theta \cup \{ V \diagup t\}, \xi \rangle } $$
+$$ {t \neq \bot \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(@env(\alpha(t_{1}, \ldots, t_{n}), V), r, id)\},\theta, \xi \rangle \xrightarrow{env(\alpha(t_{1}\theta, \ldots, t_{n}\theta), t)} \langle \iota, \sigma, \gamma, \{\}, \theta \cup \{ V/t\}, \xi \rangle } $$
 
 If the return value is a failure exception, then the execution of the external action is considered as failed. As a consequence, the action is not removed from the plan base and its identifier is added to the agent's event base.
 
