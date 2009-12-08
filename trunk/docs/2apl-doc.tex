@@ -6,6 +6,8 @@
 \usepackage{fancybox}
 \usepackage{graphicx}
 \usepackage{tabularx}
+\usepackage{amssymb}
+\usepackage{amsmath}
 
 \begin{document}
 
@@ -491,12 +493,11 @@ Finally, it is important to state that the constructor of the environment must r
 
 In this section we present the formal semantics of 2APL in terms of transition system. A transition system is a set of transition rules for deriving transitions. A transitionis is a transformation of one configuration into another and it corresponds to a simple computation/execution step.
 
-The execution of a 2APL multi-agent program modiﬁes its initial conﬁguration by means of transitions that are derivable from the transition rules. In fact, each transition rule indicates which execution step (i.e., transition) is possible from a given conﬁguration. It should be noted that for a given conﬁguration there may be
-several transition rules applicable. An interpreter is a deterministic choice of applying transition rules in a certain order.
+The execution of a 2APL multi-agent program modifies its initial configuration by means of transitions that are derivable from the transition rules. In fact, each transition rule indicates which execution step (i.e., transition) is possible from a given configuration. It should be noted that for a given configuration there may be several transition rules applicable. An interpreter is a deterministic choice of applying transition rules in a certain order.
 
 \subsubsection{2APL Configurations}
 
-The conﬁguration of an individual agent consists of its \textbf{identiﬁer}, \textbf{beliefs}, \textbf{goals}, \textbf{plans}, \textbf{substitutions that are resulted from queries to the belief and goal bases}, and the \textbf{received events}. Moreover, additional information is assigned to an agent's plan. In particular, a unique identiﬁer is assigned to each plan which can be used to identify and repair failed plans. Also, the practical reasoning rules by means of which plans are generated are assigned to plans in order to avoid redundant applications of practical reasoning rules, e.g., to avoid generating multiple plans for one and the same goal.
+The configuration of an individual agent consists of its \textbf{identifier}, \textbf{beliefs}, \textbf{goals}, \textbf{plans}, \textbf{substitutions that are resulted from queries to the belief and goal bases}, and the \textbf{received events}. Moreover, additional information is assigned to an agent's plan. In particular, a unique identifier is assigned to each plan which can be used to identify and repair failed plans. Also, the practical reasoning rules by means of which plans are generated are assigned to plans in order to avoid redundant applications of practical reasoning rules, e.g., to avoid generating multiple plans for one and the same goal.
 
 \paragraph{Individual agent}
 
@@ -508,7 +509,7 @@ The configuration of an individual 2APL agent is defined as $ A_{\iota} = \langl
  \item $M$ is the set of messages sent to the agent.
 \end{itemize}
 
-Each plan entry is a tuple $(\pi, r, p)$, where $\pi$ is the executing plan, $r$ is the instatation of the PG-rule throug  which $\pi$ is generated, and $\p$ is the plan identifier. The belief base and each goal in the goal base are consistent as only positive atoms are used to represent them.
+Each plan entry is a tuple $(\pi, r, p)$, where $\pi$ is the executing plan, $r$ is the instatation of the PG-rule throug  which $\pi$ is generated, and $\pi$ is the plan identifier. The belief base and each goal in the goal base are consistent as only positive atoms are used to represent them.
 
 \paragraph{Multi-agents system}
 
@@ -518,11 +519,11 @@ Let $A_{\iota}$ be the configuration of agent $\iota$ and let $\chi$ be a set of
 
 A basic action can be executed at individual agent level. For some types of basic actions additional transition rules are given that specify when an action's execution fails and which transition an individual agent should make if the execution of the action fails. In general when the execution of a basic action fails, an exception with its corresponding plan identifier, is added to the set of failed plans. This exception can later be used to repais the corresponding plan by meabs of plan repair rules.
 
-Now, we present the differents transition rules that capture the execution of basic actions. We assume $\gamma \vDash_{g} \texttt{true}$ for any goal base $\gamma$. We use $G(r)$, $B(r)$ and $P(r)$ to indicate the head $\kappa$, the belief condition $\beta$, and the plan $\pi$ of a rule $r = (\kappa \leftarrow \beta \vert \pi)$.
+Now, we present the differents transition rules that capture the execution of basic actions. We assume $\gamma \vDash_{g} \texttt{true}$ for any goal base $\gamma$. We use $G(r)$, $B(r)$ and $P(r)$ to indicate the head $\kappa$, the belief condition $\beta$, and the plan $\pi$ of a rule $ r = (\kappa \leftarrow \beta \vert \pi)$.
 
 \paragraph{Skip action}
 
-The execution of \texttt{skip} action has no effect on an agent's conﬁguration. The execution of
+The execution of \texttt{skip} action has no effect on an agent's configuration. The execution of
 this action always succeeds resulting in its removal from the plan base.
 
 $$ {{\gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\texttt{skip}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{\}, \theta, \xi \rangle}}$$
@@ -531,17 +532,17 @@ This transition indicates that the execution of the plan entry $(\texttt{skip}, 
 
 \paragraph{Belief update action}
 
-A belief update action, which is speciﬁed in terms of a pre- and a post-condition, modiﬁes the belief base when it is executed. A belief update action can be executed if its pre-condition is entailed by the belief base. After the execution of the action, its post-condition should be entailed by the belief base. The modiﬁcation of the belief base to entail the post-condition is realized by adding positive literals of the post-condition to the belief base and removing the atoms of negative literals of the post-condition from the belief base.
+A belief update action, which is specified in terms of a pre- and a post-condition, modifies the belief base when it is executed. A belief update action can be executed if its pre-condition is entailed by the belief base. After the execution of the action, its post-condition should be entailed by the belief base. The modification of the belief base to entail the post-condition is realized by adding positive literals of the post-condition to the belief base and removing the atoms of negative literals of the post-condition from the belief base.
 
-A successful execution of a belief update action $\alpha$ is then deﬁned as follows.
+A successful execution of a belief update action $\alpha$ is then defined as follows.
 
 $$ {{T(\alpha \theta, \sigma) = \sigma' \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma', \gamma', \{\}, \theta, \xi \rangle}} $$
 
-where $T$ is a function that takes a belief update action and a belief base, and returns the modiﬁed belief base if the pre-condition of the action is entailed by the agent's belief base.
+where $T$ is a function that takes a belief update action and a belief base, and returns the modified belief base if the pre-condition of the action is entailed by the agent's belief base.
 
 The beliefs and goals of agents are related to each other. In fact, if an agent believes a
 certain fact, then the agent does not pursue that fact as a goal. This means that if an agent
-modifies its belief base, then its goal base may be modiﬁed as well.
+modifies its belief base, then its goal base may be modified as well.
 
 \paragraph{Test action}
 
@@ -555,13 +556,13 @@ A test action can fail if one or more of its involved query expressions are not 
 
 \paragraph{Goal dynamics actions}
 
-Goals can be adopted and added to the agent's goal base by means of basic actions $\texttt{adopta}(\phi)$ and $\texttt{adoptz}(\phi)$ . The ﬁrst action adds the goal $\phi$ to the beginning of the goal base and the second action adds the goal $\phi$ to the end of the goal base.
+Goals can be adopted and added to the agent's goal base by means of basic actions $\texttt{adopta}(\phi)$ and $\texttt{adoptz}(\phi)$ . The first action adds the goal $\phi$ to the beginning of the goal base and the second action adds the goal $\phi$ to the end of the goal base.
 
 $$ {{{\sigma \nvDash \phi \theta} \& {\texttt{ground}(\phi \theta)} \& {\gamma \vDash_{g} G(r)}}\over{\langle \iota, \sigma, \gamma, \{(\texttt{adoptX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
 
 If the agent believes that the goal to be adopted is already achieved (i.e., if the goal is entailed by the agent's belief base) or if the goal to be adopted is not ground, then the action is considered as failed. The action remains in the agent’s plan base and an exception is generated.
 
-Goals can be dropped and removed from the goal base by means of $\texttt{dropgoal}(\phi)$, $\texttt{dropsubgoals}(\phi)$, and $\texttt{dropsupergoals}(\phi)$ actions. The ﬁrst action removes from the goal base the goal $\phi$, the second removes all goals that are subgoals of $\phi$, and the third action removes all goals that have $\phi$ as a subgoal.
+Goals can be dropped and removed from the goal base by means of $\texttt{dropgoal}(\phi)$, $\texttt{dropsubgoals}(\phi)$, and $\texttt{dropsupergoals}(\phi)$ actions. The first action removes from the goal base the goal $\phi$, the second removes all goals that are subgoals of $\phi$, and the third action removes all goals that have $\phi$ as a subgoal.
 
 $$ {{\gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{dropX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
 
@@ -569,19 +570,19 @@ The three dropping goal actions will always succeed, even if there is no goal to
 
 \paragraph{Abstract action}
 
-Abstract actions are representations of plans. The execution of an abstract action replaces the action with the plan it represents. The relation between an abstract action and the plan it represents is speciﬁed by means of a procedure call rule (PC-rule) that has a head uniﬁcable with the abstract action.
+Abstract actions are representations of plans. The execution of an abstract action replaces the action with the plan it represents. The relation between an abstract action and the plan it represents is specified by means of a procedure call rule (PC-rule) that has a head unificable with the abstract action.
 
-Let $\alpha$ be an abstract action, $\varphi \leftarrow \beta \vert \pi$ be a variant of a PC-rule of agent and Unify be a function that returns the most general uniﬁer of $\alpha$ and $\varphi$ if they are uniﬁable, otherwise it returns $\bot$. A successful execution of an abstract action will replace it with a plan.
+Let $\alpha$ be an abstract action, $\varphi \leftarrow \beta \vert \pi$ be a variant of a PC-rule of agent and Unify be a function that returns the most general unifier of $\alpha$ and $\varphi$ if they are unificable, otherwise it returns $\bot$. A successful execution of an abstract action will replace it with a plan.
 
 $$ {{Unify(\alpha\theta, \phi = \tau_{1} \& \sigma \vDash \beta\tau_{1}\tau_{2} \& \gamma \vDash_{g} G(r) } \over {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{(\pi\tau_{1}\tau_{2}, r, id)\}, \theta, \xi \rangle}} $$
 
-If there is no PC-rule applicable (i.e., a PC-rule is not applicable if either its head cannot be uniﬁed with the abstract action or its belief condition is not entailed by the belief base), then the execution of the abstract action is considered as failed.
+If there is no PC-rule applicable (i.e., a PC-rule is not applicable if either its head cannot be unified with the abstract action or its belief condition is not entailed by the belief base), then the execution of the abstract action is considered as failed.
 
 \paragraph{Communication actions}
 
-Agents can communicate with each other by sending messages to each other. An agent can send a message to another agent by means of the send(j, p, l, o, φ) action. The execution of the send action broadcasts a message which will be added to the event base of the receiving agent. The broadcasted message will include the name of the sending agent.
+Agents can communicate with each other by sending messages to each other. An agent can send a message to another agent by means of the $send(j, p, l, o, \phi)$ action. The execution of the send action broadcasts a message which will be added to the event base of the receiving agent. The broadcasted message will include the name of the sending agent.
 
-${\varphi = \langle \iota, j, p, l, o, \phi \rangle} \& \gamma \vDash_{g} G(r))\over{ \langle \iota, \sigma, \gamma, \{(\texttt{send}(j, p, l, o, \phi),r, id)\}, \theta, \xi \langle \underrightarrow{\varphi\theta!} \langle \iota, \sigma, \gamma, \{\}, \theta, \xi \rangle}$
+$$ {\varphi = \langle \iota, j, p, l, o, \phi \rangle} \& \gamma \vDash_{g} G(r))\over{ \langle \iota, \sigma, \gamma, \{(\texttt{send}(j, p, l, o, \phi),r, id)\}, \theta, \xi \rangle \underrightarrow{\varphi\theta!} \langle \iota, \sigma, \gamma, \{\}, \theta, \xi \rangle} $$
 
 The broadcasting of the message is indicated buy de exclamation mark in $\varphi\theta!$ which means that the transitions proceeds by broadcasting the message event.
 
@@ -597,9 +598,9 @@ This assumption implies that external actions are blocking actions, but it does 
 
 The transition for external actions broadcast an event to the multi-agent system level and waits for the return value from the environment in one transition step.
 
-$$ {t \neq \bot & \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(@env(\alpha(t_{1}, \ldots, t_{n}), V), r, id)\},\theta, \xi \rangle \underrightarrow{nv(\alpha(t_{1}\theta, \ldots, t_{n}\theta), t)} \langle \iota, \sigma, \gamma, \{\}, \theta \cup \{ V \diagup t\}, \xi \rangle }  $$
+$$ {t \neq \bot \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(@env(\alpha(t_{1}, \ldots, t_{n}), V), r, id)\},\theta, \xi \rangle \underrightarrow{env(\alpha(t_{1}\theta, \ldots, t_{n}\theta), t)} \langle \iota, \sigma, \gamma, \{\}, \theta \cup \{ V \diagup t\}, \xi \rangle } $$
 
-If the return value is a failure exception, then the execution of the external action is considered as failed. As a consequence, the action is not removed from the plan base and its identiﬁer is added to the agent's event base.
+If the return value is a failure exception, then the execution of the external action is considered as failed. As a consequence, the action is not removed from the plan base and its identifier is added to the agent's event base.
 
 \subsubsection{Transition rules for plans}
 
@@ -607,7 +608,7 @@ In this section, we present the transition rules that capture the execution of p
 
 \paragraph{Sequence plan}
 
-The execution of a sequence plan $\alpha; \pi$ consists of the execution of the basic action $\alpha$ followed by the execution of plan $\pi$. Thus, an agent with a sequence plan $\alpha; \pi$ can make a transition through which the ﬁrst basic action $\alpha$ is executed. The rest $\pi$ of the plan remains in the resulting conﬁguration.
+The execution of a sequence plan $\alpha; \pi$ consists of the execution of the basic action $\alpha$ followed by the execution of plan $\pi$. Thus, an agent with a sequence plan $\alpha; \pi$ can make a transition through which the first basic action $\alpha$ is executed. The rest $\pi$ of the plan remains in the resulting configuration.
 
 $${ {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta', \xi' \rangle} \over {\langle \iota, \sigma, \gamma, \{(\alpha:\pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi, r, id)\}, \theta', \xi' \rangle}}$$
 
@@ -617,7 +618,7 @@ The execution of a conditional plan {\tt if $\varphi$ then $\pi_{1}$ else $\pi_{
 
 $${ {(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{(\pi_{1}\tau, r, id)\}, \theta, \xi \rangle}}$$
   \vskip 0.2ex
-  $${ {¬\exists\tau : (\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi_{2}\tau, r, id)\}, \theta, \xi \rangle}}$$
+  $${ {\neg\exists\tau : (\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi_{2}\tau, r, id)\}, \theta, \xi \rangle}}$$
 
 The execution of conditional plans will always succeed.
 
@@ -628,15 +629,15 @@ The execution of a while plan {\tt while $\varphi$ do $\pi$} depends on if $\var
 
 $${ {(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi\tau;\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle}}$$
   \vskip 0.2ex
-  $${ {¬\exists\tau:(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta, \xi \rangle}}$$
+  $${ {\neg\exists\tau:(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta, \xi \rangle}}$$
 
 The execution of a while loop always succeed.
 
 \paragraph{Atomic plan}
 
-The execution of an atomic plan is the non-interleaved execution of the maximum number of actions of the plan. An atomic plan can be defined like  $[\alpha_{1} ; \ldots ; \alpha_{n} ]$, where $\alpha_{i}$ is an action. The following transition rule speciﬁes the execution of atomic plan.
+The execution of an atomic plan is the non-interleaved execution of the maximum number of actions of the plan. An atomic plan can be defined like  $[\alpha_{1} ; \ldots ; \alpha_{n} ]$, where $\alpha_{i}$ is an action. The following transition rule specifies the execution of atomic plan.
 
-$$ {(\forall_{i} : 1 \leq i \leq m \rightarrow transition(A_{i}, A{i+1})) & \forall A: ¬transition(A_{m+1}, A)} \over { \langle \iota, \sigma_{1}, \gamma_{1}, \{([\alpha_{1} ; \ldots ; \alpha_{n} ],r, id)\}, \theta_{1}, \xi_{1} \rangle \rightarrow \langle \iota, \sigma_{m+1}, \gamma_{m+1}, \Pi, \theta_{m+1}, \xi_{m+1}\rangle}$$
+$$ {(\forall_{i} : 1 \leq i \leq m \rightarrow transition(A_{i}, A{i+1})) \& \forall A: \neg transition(A_{m+1}, A)} \over { \langle \iota, \sigma_{1}, \gamma_{1}, \{([\alpha_{1} ; \ldots ; \alpha_{n} ],r, id)\}, \theta_{1}, \xi_{1} \rangle \rightarrow \langle \iota, \sigma_{m+1}, \gamma_{m+1}, \Pi, \theta_{m+1}, \xi_{m+1}\rangle}$$
 
 This transition rule defines the transition of one initial configuration of an agent, to a final configuration, executing each intermediate transition.
 
@@ -646,18 +647,48 @@ An agent executes its plans concurrently by interleaving the executions of their
 
 $$ {\langle \iota, \sigma, \gamma, \rho, \theta, \xi \rangle \rightarrow \langle \iota, \sigma', \gamma', \rho', \theta', \xi' \rangle } \over {\langle \iota, \sigma, \gamma, \Pi, \theta, \xi \rangle \rightarrow \langle \iota, \sigma', \gamma', \Pi', \theta', \xi' \rangle}$$
 
-where $\rho = \{\pi, r, id} \subset \Pi $ and $\Pi' = (\Pi \diagdown \rho) \cup \rho'$.
+where $\rho = \{\pi, r, id\} \subset \Pi $ and $\Pi' = (\Pi \diagdown \rho) \cup \rho'$.
 
 \subsubsection{Practical reasoning rules}
 
+In the following section, we are going to present the transition rules that captures the application of the three types of practical reasoning rules.
+
 \paragraph{Planing goal rules}
+
+A 2APL agent generates plans by applying PG-rules of the form $\kappa \leftarrow \beta \vert \pi$. There are two types of PG-rules. The first type of PG-rule, characterized by $kappa \neq \texttt{true}$, indicates that plan $\pi$ should be generated to achieve goal $\kappa$. The second tupe of PG-rule, defined by $\kappa = \texttt{true}$ indicates that plan $\pi$ should be generated when the agent believes $\beta$.
+
+In general, an agent can apply one of its PG-rules $ r = \kappa \leftarrow \beta \vert \pi $, if $\kappa$ is entailed by one of the agent's goals, $\beta$ is entailed by the agent's belief base, and there is no plan in the plan base that has been generated (and perhaps partially executed) by applying the same PG-rule to achieve the same goal.
+
+$$ {\gamma \vDash_{g} \kappa'\tau' \& \sigma \vDash \beta'\tau_{1}\tau_{2} \& \neg\exists\pi * \in P : (\pi *, (\kappa'\tau_{1} \leftarrow \beta \vert \pi), id') \in \Pi} \over {\langle \iota, \sigma, \gamma, \Pi, \theta, \xi \rangle \rightarrow \langle \iota, \sigma, \gamma, \Pi \cup \{(\pi'\tau_{1}\tau_{2}, (\kappa'\tau_{1} \leftarrow \beta \vert \pi), id) \}, \theta, \xi \rangle} $$
 
 \paragraph{Procedure call rules}
 
+The transition rule for execution of abstract action is based on application of PC-rules that generate plans to be replaced for the executed abstract actions. The PC-rules are applied to generate plans in order to react to either the received events from the environments or the received messages from other agents.
+
+Events are broadcasted when the state of the environments change. These events are catched and included in the $E$ component of the event base. The messages received from other agents are included in the $M$ component of the event base.
+
+$${ \psi \in E \cup M \& Unify(\psi, \varphi) = \tau_{1} \& \sigma \vDash \beta \tau_{1} \tau_{2} } \over {\langle \iota, \sigma, \gamma, \Pi, \theta, \xi \rangle \rightarrow \langle \iota, \sigma, \gamma, \Pi', \theta, \xi' \rangle}$$
+
+However, if there is no PC-rule the head of which is unifiable with an event or message from the agent's event base ($E$ or $M$), then the event or message will be removed from $E$ and $M$, respectively.
+
 \paragraph{Plan repair rules}
+
+A plan repair rule can be applied to replace a plan if an exception is received indicating that
+the execution of the first action of the plan is failed. Suppose the execution (of the first action)
+of a plan $\pi$ of an agent fails. Then, a plan repair rule $\pi_{1} \leftarrow \beta \pi_{2}$ can be applied to repair $\pi$ if the abstract plan expression $\pi_{1}$ matches $\pi$ and $\beta$ is entailed by the agent's belief base. The result of the match will be used to instantiate the abstract plan expression $\pi_{2}$ and to generate a new plan that replaces the failed plan.
+
+$$ {Plan Unify(\pi, \pi_{1}) = (\tau_{d}, \tau_{p}, \pi *) \& \sigma \vDash \beta\tau_{d}\tau \& id ºin I} \over {\langle \iota, \sigma, \gamma, \{(\pi, r, id)\}, \theta, \langle E, I, M \rangle \rangle \rightarrow \langle \iota, \sigma, \gamma, \{(\pi_{2}\tau_{d}\tau\tau_{p};\pi *, r, id)\}, \theta, \langle E, I \diagdown \{id\}, M \rangle \rangle}$$
+
+Plan repair rules should be used cautiously. If the repaired part of a failed plan includes an action through which variables are bound (e.g., test or external actions), then the variables should not occur in the unrepaired part of the plan (i.e., plan part bound to plan variables or the plan part $\pi$*).
+
 
 \subsubsection{Multi-agent transition rules}
 
+The execution of a 2APL multi-agent system is the interleaved executions of the involved individual agents and the environments.
+
+We assume that the external shared environments can change either by the execution of an agent's external action in one of the environments or by the internal dynamics of the environments.
+
+Therefore, {\bf the configuration of a multi-agent system can be modified} when either the configuration of one of the involved individual agents is modified or when the shared environments change.
 
 \section{2APL Platform}\label{sec:platform} %%%%%%% BORJA+MARCOS HERE
 
