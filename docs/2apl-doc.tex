@@ -489,7 +489,70 @@ Finally, it is important to state that the constructor of the environment must r
 
 \subsection{Formal Semantics} %%%%%%% MARCOS HERE
 
-Marcos here
+In this section we present the formal semantics of 2APL in terms of transition system. A transition system is a set of transition rules for deriving transitions. A transitionis is a transformation of one configuration into another and it corresponds to a simple computation/execution step.
+
+%% TODO
+
+\subsubsection{2APL Configurations}
+
+$$ A_{\iota} = \langle \iota, \sigma, \gamma, \Pi, \theta, \xi \rangle $$
+
+\subsubsection{Transition rules for basic actions}
+
+Skip action 
+$$ {{\gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\texttt{skip}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{\}, \theta, \xi \rangle}}$$
+
+Belief update action
+$$ {{T(\alpha \theta, \sigma) = \sigma' \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma', \gamma', \{\}, \theta, \xi \rangle}} $$
+  
+Test action
+$$ {{( \sigma, \gamma) \vDash_{t} \varphi \theta \tau \& \gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\varphi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{\}, \theta \cup \tau, \xi \rangle}} $$
+
+
+Goal dynamics actions  
+$$ {{{\sigma \nvDash \phi \theta} \& {\texttt{ground}(\phi \theta)} \& {\gamma \vDash_{g} G(r)}}\over{\langle \iota, \sigma, \gamma, \{(\texttt{adoptX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
+
+$$ {{\gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{dropX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
+
+
+Abstract action
+$$ {{Unify(\alpha\theta, \phi = \tau_{1} \& \sigma \vDash \beta\tau_{1}\tau_{2} \& \gamma \vDash_{g} G(r) } \over {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{(\pi\tau_{1}\tau_{2}, r, id)\}, \theta, \xi \rangle}} $$
+
+Communication actions
+
+External actions
+
+
+\subsubsection{Transition rules for plans}
+
+Sequence plan
+$${ {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta', \xi' \rangle} \over {\langle \iota, \sigma, \gamma, \{(\alpha:\pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi, r, id)\}, \theta', \xi' \rangle}}$$
+
+Conditional plan
+$${ {(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{(\pi_{1}\tau, r, id)\}, \theta, \xi \rangle}}$$
+  \vskip 0.2ex
+  $${ {¬\exists\tau : (\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi_{2}\tau, r, id)\}, \theta, \xi \rangle}}$$
+  
+While plan
+$${ {(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi\tau;\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle}}$$
+  \vskip 0.2ex
+  $${ {Â¬\exists\tau:(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta, \xi \rangle}}$$
+  
+Atomic plan
+
+Multiple concurrent plans
+
+
+\subsubsection{Practical reasoning rules}
+
+Planing goal rules
+
+Procedure call rules
+
+Plan repair rules
+
+\subsubsection{Multi-agent transition rules}
+
 
 \section{2APL Platform}\label{sec:platform} %%%%%%% BORJA+MARCOS HERE
 
