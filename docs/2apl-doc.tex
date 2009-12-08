@@ -587,7 +587,6 @@ The broadcasting of the message is indicated buy de exclamation mark in $\varphi
 
 The send action will always succeed. A 2APL agent is assumed to be able to receive a message that is sent to it at any time. The received message is added to the event base of the agent.
 
-
 \paragraph{External actions}
 
 The execution of an external action by an individual agent affects the external environments that may be shared by other agents. An environment returns in turn a value back to the agent, which can be either some result of the successfully performed action (in the form of a list of terms) or $\bot$ indicating that the execution of the action is failed.
@@ -602,25 +601,52 @@ $$ {t \neq \bot & \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, 
 
 If the return value is a failure exception, then the execution of the external action is considered as failed. As a consequence, the action is not removed from the plan base and its identiﬁer is added to the agent's event base.
 
-
 \subsubsection{Transition rules for plans}
 
+In this section, we present the transition rules that capture the execution of plans consisting of basic actions composed by sequence, conditional choice, conditional iteration, and non-interleaving operators.
+
 \paragraph{Sequence plan}
+
+The execution of a sequence plan $\alpha; \pi$ consists of the execution of the basic action $\alpha$ followed by the execution of plan $\pi$. Thus, an agent with a sequence plan $\alpha; \pi$ can make a transition through which the ﬁrst basic action $\alpha$ is executed. The rest $\pi$ of the plan remains in the resulting conﬁguration.
+
 $${ {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta', \xi' \rangle} \over {\langle \iota, \sigma, \gamma, \{(\alpha:\pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi, r, id)\}, \theta', \xi' \rangle}}$$
 
 \paragraph{Conditional plan}
+
+The execution of a conditional plan {\tt if $\varphi$ then $\pi_{1}$ else $\pi_{2}$} consists of a choice between plans $\pi_{1}$ and $\pi_{2}$. The condition $\varphi$ is evaluated with respect to the agent's belief and goals base. If the the agent's belief and goal base entails the condition, then $\pi_{1}$ will be selected, otherwise plan $\pi_{2}$ is selected. If the conditional plan has no 'else' part, this will be considered as a \texttt{skip} plan.
+
 $${ {(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{(\pi_{1}\tau, r, id)\}, \theta, \xi \rangle}}$$
   \vskip 0.2ex
-  $${ {�\exists\tau : (\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi_{2}\tau, r, id)\}, \theta, \xi \rangle}}$$
-  
+  $${ {¬\exists\tau : (\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{if} \varphi \texttt{then} \pi_{1} \texttt{else} \pi_{2}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi_{2}\tau, r, id)\}, \theta, \xi \rangle}}$$
+
+The execution of conditional plans will always succeed.
+
+
 \paragraph{While plan}
+
+The execution of a while plan {\tt while $\varphi$ do $\pi$} depends on if $\varphi$ is entailed by the agent's belief and goal bases, then the plan $\pi$ should be executed after which the while plan should be tried again.
+
 $${ {(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{(\pi\tau;\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle}}$$
   \vskip 0.2ex
   $${ {¬\exists\tau:(\sigma, \gamma) \vDash_{t} \varphi\theta\tau \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{while} \varphi \texttt{do} \pi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota', \sigma', \gamma, \{\}, \theta, \xi \rangle}}$$
-  
+
+The execution of a while loop always succeed.
+
 \paragraph{Atomic plan}
 
+The execution of an atomic plan is the non-interleaved execution of the maximum number of actions of the plan. An atomic plan can be defined like  $[\alpha_{1} ; \ldots ; \alpha_{n} ]$, where $\alpha_{i}$ is an action. The following transition rule speciﬁes the execution of atomic plan.
+
+$$ {(\forall_{i} : 1 \leq i \leq m \rightarrow transition(A_{i}, A{i+1})) & \forall A: ¬transition(A_{m+1}, A)} \over { \langle \iota, \sigma_{1}, \gamma_{1}, \{([\alpha_{1} ; \ldots ; \alpha_{n} ],r, id)\}, \theta_{1}, \xi_{1} \rangle \rightarrow \langle \iota, \sigma_{m+1}, \gamma_{m+1}, \Pi, \theta_{m+1}, \xi_{m+1}\rangle}$$
+
+This transition rule defines the transition of one initial configuration of an agent, to a final configuration, executing each intermediate transition.
+
 \paragraph{Multiple concurrent plans}
+
+An agent executes its plans concurrently by interleaving the executions of their constituent actions. An agent executes one of its plans at each computation step, as we can see in the following transition.
+
+$$ {\langle \iota, \sigma, \gamma, \rho, \theta, \xi \rangle \rightarrow \langle \iota, \sigma', \gamma', \rho', \theta', \xi' \rangle } \over {\langle \iota, \sigma, \gamma, \Pi, \theta, \xi \rangle \rightarrow \langle \iota, \sigma', \gamma', \Pi', \theta', \xi' \rangle}$$
+
+where $\rho = \{\pi, r, id} \subset \Pi $ and $\Pi' = (\Pi \diagdown \rho) \cup \rho'$.
 
 \subsubsection{Practical reasoning rules}
 
