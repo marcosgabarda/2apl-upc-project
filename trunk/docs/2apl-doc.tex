@@ -514,31 +514,93 @@ Each plan entry is a tuple $(\pi, r, p)$, where $\pi$ is the executing plan, $r$
 
 Let $A_{\iota}$ be the configuration of agent $\iota$ and let $\chi$ be a set of external shared environments each of which is a consistent set of atoms. the configuration of a 2APL multi-agents system is defined as $ \langle A_{1}, \ldots, A_{n}, \chi \rangle $.
 
-
 \subsubsection{Transition rules for basic actions}
 
+A basic action can be executed at individual agent level. For some types of basic actions additional transition rules are given that specify when an action's execution fails and which transition an individual agent should make if the execution of the action fails. In general when the execution of a basic action fails, an exception with its corresponding plan identifier, is added to the set of failed plans. This exception can later be used to repais the corresponding plan by meabs of plan repair rules.
+
+Now, we present the differents transition rules that capture the execution of basic actions. We assume $\gamma \vDash_{g} \texttt{true}$ for any goal base $\gamma$. We use $G(r)$, $B(r)$ and $P(r)$ to indicate the head $\kappa$, the belief condition $\beta$, and the plan $\pi$ of a rule $r = (\kappa \leftarrow \beta \vert \pi)$.
+
 \paragraph{Skip action}
+
+The execution of \texttt{skip} action has no effect on an agent's conﬁguration. The execution of
+this action always succeeds resulting in its removal from the plan base.
+
 $$ {{\gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\texttt{skip}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{\}, \theta, \xi \rangle}}$$
 
+This transition indicates that the execution of the plan entry $(\texttt{skip}, r, id)$ proceeds resulting in the removal os this entry from the plan base. This transition rule can be applied only if the goal that is assigned to the \texttt{skip} action is entailed by the agent's goal base.
+
 \paragraph{Belief update action}
+
+A belief update action, which is speciﬁed in terms of a pre- and a post-condition, modiﬁes the belief base when it is executed. A belief update action can be executed if its pre-condition is entailed by the belief base. After the execution of the action, its post-condition should be entailed by the belief base. The modiﬁcation of the belief base to entail the post-condition is realized by adding positive literals of the post-condition to the belief base and removing the atoms of negative literals of the post-condition from the belief base.
+
+A successful execution of a belief update action $\alpha$ is then deﬁned as follows.
+
 $$ {{T(\alpha \theta, \sigma) = \sigma' \& \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma', \gamma', \{\}, \theta, \xi \rangle}} $$
-  
+
+where $T$ is a function that takes a belief update action and a belief base, and returns the modiﬁed belief base if the pre-condition of the action is entailed by the agent's belief base.
+
+The beliefs and goals of agents are related to each other. In fact, if an agent believes a
+certain fact, then the agent does not pursue that fact as a goal. This means that if an agent
+modifies its belief base, then its goal base may be modiﬁed as well.
+
 \paragraph{Test action}
+
+The objective of a test action is to check if the belief and goal queries within a test expression are entailed by the agent's belief and goal bases. Since we have the substitution $\theta$ that should be applied to the variables in the test expression, this can still contain unbound variables. Therefore, the test action results in another substitution $\tau$ added to $\theta$.
+
+A test action $\varphi$ can be exevuted successfully if $\varphi$ is entailed by the agent's belief and goal bases.
+
 $$ {{( \sigma, \gamma) \vDash_{t} \varphi \theta \tau \& \gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\varphi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{\}, \theta \cup \tau, \xi \rangle}} $$
 
+A test action can fail if one or more of its involved query expressions are not entailed by the belief or goal bases. In such a case, the test action remains in the agent's plan base and an exception is generated to indicate the failure of this action.
 
 \paragraph{Goal dynamics actions}
+
+Goals can be adopted and added to the agent's goal base by means of basic actions $\texttt{adopta}(\phi)$ and $\texttt{adoptz}(\phi)$ . The ﬁrst action adds the goal $\phi$ to the beginning of the goal base and the second action adds the goal $\phi$ to the end of the goal base.
+
 $$ {{{\sigma \nvDash \phi \theta} \& {\texttt{ground}(\phi \theta)} \& {\gamma \vDash_{g} G(r)}}\over{\langle \iota, \sigma, \gamma, \{(\texttt{adoptX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
+
+If the agent believes that the goal to be adopted is already achieved (i.e., if the goal is entailed by the agent's belief base) or if the goal to be adopted is not ground, then the action is considered as failed. The action remains in the agent’s plan base and an exception is generated.
+
+Goals can be dropped and removed from the goal base by means of $\texttt{dropgoal}(\phi)$, $\texttt{dropsubgoals}(\phi)$, and $\texttt{dropsupergoals}(\phi)$ actions. The ﬁrst action removes from the goal base the goal $\phi$, the second removes all goals that are subgoals of $\phi$, and the third action removes all goals that have $\phi$ as a subgoal.
 
 $$ {{\gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(\texttt{dropX}(\phi), r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{\}, \theta, \xi \rangle}} $$
 
+The three dropping goal actions will always succeed, even if there is no goal to be removed from the goal base.
 
 \paragraph{Abstract action}
+
+Abstract actions are representations of plans. The execution of an abstract action replaces the action with the plan it represents. The relation between an abstract action and the plan it represents is speciﬁed by means of a procedure call rule (PC-rule) that has a head uniﬁcable with the abstract action.
+
+Let $\alpha$ be an abstract action, $\varphi \leftarrow \beta \vert \pi$ be a variant of a PC-rule of agent and Unify be a function that returns the most general uniﬁer of $\alpha$ and $\varphi$ if they are uniﬁable, otherwise it returns $\bot$. A successful execution of an abstract action will replace it with a plan.
+
 $$ {{Unify(\alpha\theta, \phi = \tau_{1} \& \sigma \vDash \beta\tau_{1}\tau_{2} \& \gamma \vDash_{g} G(r) } \over {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{(\pi\tau_{1}\tau_{2}, r, id)\}, \theta, \xi \rangle}} $$
+
+If there is no PC-rule applicable (i.e., a PC-rule is not applicable if either its head cannot be uniﬁed with the abstract action or its belief condition is not entailed by the belief base), then the execution of the abstract action is considered as failed.
 
 \paragraph{Communication actions}
 
+Agents can communicate with each other by sending messages to each other. An agent can send a message to another agent by means of the send(j, p, l, o, φ) action. The execution of the send action broadcasts a message which will be added to the event base of the receiving agent. The broadcasted message will include the name of the sending agent.
+
+${\varphi = \langle \iota, j, p, l, o, \phi \rangle} \& \gamma \vDash_{g} G(r))\over{ \langle \iota, \sigma, \gamma, \{(\texttt{send}(j, p, l, o, \phi),r, id)\}, \theta, \xi \langle \underrightarrow{\varphi\theta!} \langle \iota, \sigma, \gamma, \{\}, \theta, \xi \rangle}$
+
+The broadcasting of the message is indicated buy de exclamation mark in $\varphi\theta!$ which means that the transitions proceeds by broadcasting the message event.
+
+The send action will always succeed. A 2APL agent is assumed to be able to receive a message that is sent to it at any time. The received message is added to the event base of the agent.
+
+
 \paragraph{External actions}
+
+The execution of an external action by an individual agent affects the external environments that may be shared by other agents. An environment returns in turn a value back to the agent, which can be either some result of the successfully performed action (in the form of a list of terms) or $\bot$ indicating that the execution of the action is failed.
+
+We assume that there is no time between performing an action in an environment and the reception of the return value, so no other external action can be executed between performing an external action and the reception of its corresponding return value.
+
+This assumption implies that external actions are blocking actions, but it does not mean that the execution of an agent's plan should wait until the actual and intended effect of the action is realized.
+
+The transition for external actions broadcast an event to the multi-agent system level and waits for the return value from the environment in one transition step.
+
+$$ {t \neq \bot & \gamma \vDash_{g} G(r)} \over {\langle \iota, \sigma, \gamma, \{(@env(\alpha(t_{1}, \ldots, t_{n}), V), r, id)\},\theta, \xi \rangle \underrightarrow{nv(\alpha(t_{1}\theta, \ldots, t_{n}\theta), t)} \langle \iota, \sigma, \gamma, \{\}, \theta \cup \{ V \diagup t\}, \xi \rangle }  $$
+
+If the return value is a failure exception, then the execution of the external action is considered as failed. As a consequence, the action is not removed from the plan base and its identiﬁer is added to the agent's event base.
 
 
 \subsubsection{Transition rules for plans}
