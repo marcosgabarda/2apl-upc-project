@@ -684,21 +684,81 @@ Plan repair rules should be used cautiously. If the repaired part of a failed pl
 
 \subsubsection{Multi-agent transition rules}
 
-The execution of a 2APL multi-agent system is the interleaved executions of the involved individual agents and the environments.
-
-We assume that the external shared environments can change either by the execution of an agent's external action in one of the environments or by the internal dynamics of the environments.
+The execution of a 2APL multi-agent system is the interleaved executions of the involved individual agents and the environments. We assume that the external shared environments can change either by the execution of an agent's external action in one of the environments or by the internal dynamics of the environments.
 
 Therefore, {\bf the configuration of a multi-agent system can be modified} when either the configuration of one of the involved individual agents is modified or when the shared environments change.
 
 \section{2APL Platform}\label{sec:platform} %%%%%%% BORJA+MARCOS HERE
 
-\subsection{Management of Messages}
+The 2APL platform is built on the top of JADE (Java Agent DEvelopment Framework). JADE is a software framework fully implemented in Java with the goal to simplify the implementation of multi-agent systems through a middleware that complies with the FIPA specifications and through a set of graphical tools that supports the debugging and deployment phases. We will briefly discuss the tools that can be used in the 2APL platform. Besides the tools from the JADE platform the 2APL platform provides some 2APL specific tools. We describe these tools which can be accessed through the toolbar buttons of the 2APL platform.
+
+\subsection{JADE tools}
+
+The current 2APL platform comes with three JADE tools: the {\bf RMA} tool, {\bf sniffer} tool, and the
+{\bf introspecto}r tool. The RMA (Remote Monitoring Agent) tool can be used to control the life cycle of the agent platform and of all the registered agents. We can see this tool in the figure~\ref{fig:rma}.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[keepaspectratio,scale=0.7]{fig/rma.png}
+\caption{Remote Monitoring Agent}
+\label{fig:rma}
+\end{figure}
+
+The sniffer (figure ~\ref{fig:sniffer}) can be used for tracking messages exchanged in a JADE based environment.
+You can select agents to be sniffed. Every message directed to this agent(s) or coming from this
+agent(s) is tracked and displayed in the sniffer window.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[keepaspectratio,scale=0.7]{fig/sniffer.png}
+\caption{Sniffer}
+\label{fig:sniffer}
+\end{figure}
+
+The introspector (figure ~\ref{fig:introspector}) allows to monitor and control the life-cycle of a running agent and its exchanged messages, both the queue of sent and received messages. It allows also to monitor the queue of behaviours, including executing them step-by-step.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[keepaspectratio,scale=0.7]{fig/introspector.png}
+\caption{Introspector}
+\label{fig:introspector}
+\end{figure}
+
+\subsection{2APL specific tools}
+
+\subsubsection{The FGDC tool}
+
+The FGDC (Flexible Graphical Deliberation Cycle) tool (figure~\ref{fig:fgdc}) can be used to visualize and \textbf{program the deliberation cycle of an agent}.
+
+The agent's deliberation cycle is used to determine what the agent should do next, e.g., execute an action, or select a plan to reach a goal. By clicking on the FGDC button of the toolbar, an extra tab will become available in the agent panel. The left panel of the FGDC window shows the deliberation cycle of the currently selected agent. In this panel, the rectangles represent the steps, whereas the arrows represent the sequence in which the steps are to be executed. The panel on the right shows the predefined deliberation steps that can be used. A deliberation step can be added to the deliberation cycle by double clicking on a predefined deliberation steps. The selected predefined deliberation step will then appear in the left panel. Deliberation steps can be linked by arrows by right clicking on the source, dragging the arrow to its destination and dropping it there. The steps and arrows can be deleted by right clicking on them. Some appearance settings of the FGDC can be changed in the FGDC settings window that can be accessed via the settings button located on the right panel. Any modification of the deliberation cycle will be lost by reloading the agent.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[keepaspectratio,scale=0.7]{fig/fgdc.png}
+\caption{Flexible Graphical Deliberation Cycle}
+\label{fig:fgdc}
+\end{figure}
+
+\subsubsection{The state tracer}
+
+The state tracer (figure~\ref{fig:state}) can be used for showing the execution trace of an agent. Each state shows the beliefs, plans, goals, and log of the agent as a result of executing one deliberation step. With the state tracer it is possible to browse through the history of the execution of the agent.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[keepaspectratio,scale=0.7]{fig/state.png}
+\caption{The state tracer}
+\label{fig:state}
+\end{figure}
+
+The state tracer can be accessed by clicking on the state tracer tab in the agent panel. With the buttons in the upper part of the tab you can navigate through the state trace. You can select how many states (one, two, or three) to show on one screen and whether to show the beliefs, plans, goals, and log with the menu on the lower part of the tab.
+
+\subsubsection{Management of Messages}
 
 The fact that 2APL platform is built on the top of JADE (Java Agent DEvelopment Framework) allows to use all the functionality that this framework has to communicate to other agents. Thus, as JADE, 2APL follows FIPA specifications.
 
 In order to be able to sending messages to running agent, 2APL implements {\bf the message agent}.The message agent can be accessed by clicking on the message agent button in the toolbar. We must specify the receiver, that can be in JADE format, the performatice and the content. Moreover, optionaly, we can specify the language and the ontology of the message.
 
-In Figure~\ref{fig:message_agent} we can see the form to send a message to a running agent.
+In figure~\ref{fig:message_agent} we can see the form to send a message to a running agent.
 
 \begin{figure}[htp]
 \centering
