@@ -30,24 +30,25 @@ Universitat Polit\`ecnica de Catalunya}
 
 \tableofcontents
 
-\section{Introduction} %%%%%%% BORJA HERE
+\section{Introduction}
 
-The 2APL (pronounced double-a-p-l) Platform is a development tool that is designed to support the implementation and execution of multi-agent systems programmed in 2APL Language. 2APL has been designed and developed at the Intelligent Systems Group at the University of Utrecht. 2APL language is a BDI-based agent-oriented programming language that supports an integration of declarative programming constructs such as belief and goals and imperative style programming constructs such as events and plans. The 2APL platform
+2APL has been designed and developed at the Intelligent Systems Group at the University of Utrecht. The \emph{2APL Platform} is a development tool that is designed to support the implementation and execution of multi-agent systems programmed in \emph{2APL Language}. 2APL language is a BDI-based agent-oriented programming language that supports an integration of declarative programming constructs such as belief and goals and imperative style programming constructs such as events and plans. The 2APL platform
 provides a graphical interface through which a programmer can develop and execute 2APL multi-agent systems using several facilities. The platform allows communication among agents and can run on several machines connected in a network.
-In section~\ref{sec:lang} we will introduce the 2APL language describing its syntax, operational and formal semantics for specifying a multi-agent system and individual agents. Also, the deliberation cycle will be discussed. In section~\ref{sec:platform} we will discuss the 2APL Platform ...
+
+The rest of the report is organized as follows. Section~\ref{sec:lang} gives an introduction to the 2APL language describing its syntax along with both operational and formal semantics. Section~\ref{sec:platform} introduces the 2APL platform describing the tools available for development. Finally, Section~\ref{sec:concl} offers our concluding remarks and a short overview about future features.
 
 
-\section{2APL Language}\label{sec:lang} %%%%%%% BORJA HERE 
+\section{2APL Language}\label{sec:lang} 
 
-2APL language is a BDI-based agent-oriented programming language that realizes an integration of declarative and imperative style programming. The declarative style programming supports the implementation of the mental state of agents allowing them to reason about their mental states and update them accordingly. The imperative style programming supports the implementation of  processes allowing programming constructs to implement both the flow of control as well as mechanisms such as procedure call, recursion, plan revision, and interface to existing imperative programming languages. In this section, we will proceed illustrating the syntax of the language and both the operational and formal semantics. We will conclude the section discussing the execution of a multi-agent system and the 2APL deliberation process.
+2APL language is a BDI-based agent-oriented programming language that realizes an integration of declarative and imperative style programming. The declarative style programming supports the implementation of the mental state of agents allowing them to reason about their mental states and update them accordingly. The imperative style programming supports the implementation of  processes allowing programming constructs to implement both the flow of control as well as mechanisms such as procedure call, recursion, plan revision, and interface to existing imperative programming languages. In this section, we will proceed illustrating the syntax of the language and both the operational and formal semantics. % We will conclude the section discussing the execution of a multi-agent system and the 2APL deliberation process.
 
 \subsection{Syntax and operational semantics} %%%%%%% FABRIZIO HERE
 
-There are 2 distinguished set of programming constructs for specifying a multi-agent system and individual agents. Our approach will be to illustrate the formal syntax little by little providing the explanation of operational semantics through simple fragments of code.
+There are 2 distinguished set of programming constructs for specifying a multi-agent system and individual agents. Our approach will be to illustrate the syntax little by little providing the explanation of operational semantics through simple fragments of code. All the examples provided here will be related to a environment modeled as a grid and called \texttt{blockWorld}. In this environment, there are two agents named \texttt{harry} and \texttt{sally} which objective is to clean the environment from bombs.
 
 \subsubsection{Multi-agent system specification} %%%%%%% FABRIZIO HERE
 
-A multi-agent system is specified as a set of couples, each of them, specifying an agent of the society and a set of environments it has access to. The formal syntax for specifying a multi-agent system is provided in Figure~\ref{fig:ebnf_mas}. 
+A multi-agent system is specified as a set of couples, each of them, specifying an agent of the society and the set of environments it has access to. The formal syntax for specifying a multi-agent system is provided in Figure~\ref{fig:ebnf_mas}. 
 
 \begin{figure}[htbp]
 \begin{verbatim}
@@ -99,7 +100,7 @@ Basically, 2APL agents are implemented in terms of beliefs, goals, actions, plan
 \label{fig:ebnf_agent}
 \end{figure}
 
-The basic building elements of the language are \texttt{<atom>} that denotes a Prolog like atomic formula starting with a lowercase letter used for stating Prolog atomic formulas, \texttt{<Atom>} that, again, denotes a Prolog like atomic formula starting with a capital letter but, in this case, it is used for invoking functions, \texttt{<ground\_atom>} that denotes a Prolog ground atomic formula\footnote{Prolog formula that does not contain variables}, \texttt{<Var>} that denotes as a string with a capital letter and it is used for variables and, finally, \texttt{<ident>} that denotes a string with a lowercase letter and it used for identifiers.
+The basic building elements of the language are \texttt{<atom>} that looks like a Prolog like atomic formula starting with a lowercase letter and it used for denoting Prolog formulas, \texttt{<Atom>} that looks like a Prolog like atomic formula starting with a capital letter but, in this case, it is used for denoting functions, \texttt{<ground\_atom>} that looks like a Prolog ground formula\footnote{Prolog formula that does not contain variables} and it used for denoting Prolog ground formulas, \texttt{<Var>} that looks like a string with a capital letter and it is used for denoting variables and, finally, \texttt{<ident>} that looks like a string with a lowercase letter and it used for denoting identifiers.
 
 \paragraph{Beliefs and Goals}
 
@@ -123,7 +124,7 @@ The formal syntax for specifying a belief base is provided in Figure~\ref{fig:eb
 \label{fig:ebnf_beliefbase}
 \end{figure}
 
-Figure~\ref{fig:example_beliefbase} shows an example of a belief base for an agent that believes that there is a bomb at position $(3,4)$ and that \texttt{blockWorld} environment is clean if does contain no bombs anymore and the agent itself is not carrying a bomb. Actually, looking back to the basic elements of the language, it can be easy to realize that a belief base is a Prolog program where each belief is either a Prolog rule or fact that must be ground.
+Figure~\ref{fig:example_beliefbase} shows an example of a belief base for an agent that believes that there is a bomb at position $(3,4)$ and that \texttt{blockWorld} environment is clean if does contain no more bombs and the agent itself is not carrying a bomb. It is easy to realize that a belief base is a Prolog program where each belief is either a Prolog rule or fact that must be ground.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -175,8 +176,8 @@ A 2APL agent may choose among 6 types of basic actions in order to achieve its g
 \label{fig:ebnf_actions}
 \end{figure}
 
-A \emph{belief update action} updates the belief base exploiting the \emph{precondition-delete-add} formalism. An agent can
-execute a belief update action if the precondition of the action is entailed by its belief base. The execution of the action then modifies the belief base in such a way that after the execution the post-condition of the action is derivable from the belief base. It is worth noting that the execution of a belief base has as side-effect that goals that become believed to be achieved are removed. The formal syntax of a \emph{belief base update action} is provided in Figure~\ref{fig:ebnf_beliefupdate}.
+First, a \emph{belief update action} updates the belief base exploiting the \emph{precondition-delete-add} formalism. An agent can
+execute a belief update action if and only if the precondition of the action is entailed by its belief base. The execution of the action then modifies the belief base in such a way that after the execution the post-condition of the action is derivable from the belief base. It is worth noting that the execution of a belief base has as side-effect that goals that become believed to be achieved are removed. The formal syntax of a \emph{belief base update action} is provided in Figure~\ref{fig:ebnf_beliefupdate}.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -199,7 +200,7 @@ execute a belief update action if the precondition of the action is entailed by 
 \label{fig:ebnf_beliefupdate}
 \end{figure}
 
-Figure~\ref{fig:example_beliefupdate} provides an excerpt of belief update actions available in agent \texttt{harry}. For instance, the agent can pickup a bomb if the agent believes it does not already carrying a bomb and, if the action will succeed, the agent will believe that it is carrying a bomb. %It important to see that the agent cannot pickup a bomb consecutively.
+Figure~\ref{fig:example_beliefupdate} provides a fragment of code from the belief update actions currently available in agent \texttt{harry}. In this case, for instance, the agent can pickup a bomb if the agent believes it is not already carrying a bomb. If the action succeeds, then the agent will believe that it is actually carrying a bomb now. %It important to see that the agent cannot pickup a bomb consecutively.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -213,7 +214,7 @@ BeliefUpdates:
 \label{fig:example_beliefupdate}
 \end{figure}
 
-A \emph{communication action} is used to pass a message to other agents. Figure~\ref{fig:ebnf_sendaction} provides the formal specification of the action. Let consider the action \texttt{send(harry, inform, La, On, bombAt(X\_1, Y\_1)}. In this case, the agent \texttt{sally} is sending a message to the agent \texttt{harry} using the perfomative of informing him that there is a bomb at position $(X_1, Y_1)$ using the content language \texttt{La} and the ontology \texttt{On}.
+Second, a \emph{communication action} is used to pass a message to other agents. Figure~\ref{fig:ebnf_sendaction} provides the formal specification of the action. Let consider the action \texttt{send(harry, inform, La, On, bombAt(X\_1, Y\_1)} for agent \texttt{sally}. In this case, the agent \texttt{sally} is sending a message to the agent \texttt{harry} using the perfomative of informing him that there is a bomb at position $(X_1, Y_1)$ using the content language specified by \texttt{La} and the ontology specified by \texttt{On}.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -227,7 +228,7 @@ A \emph{communication action} is used to pass a message to other agents. Figure~
 
 Actually, a send action can be also performed omitting the specification of the content language and ontology, if it reasonable to assume that all the agents in system share the same content language and ontologies.
 
-An \emph{external action} is supposed to change the state of an external environment. The effects of external actions are, in fact, assumed to be determined by the environment. Thus, a sense action (that is also an external action) has to be performed in order to determine the effect of a previous external action. The formal syntax is provided in Figure~\ref{fig:ebnf_extaction}. An example of external actions is \texttt{@blockworld(east(), L)} that would try to get the agent one step to the east in the \texttt{blockWorld} environment.
+Third, an \emph{external action} is supposed to change the state of an external environment. The effects of external actions are, in fact, assumed to be determined by the environment. Thus, a sense action (that is also an external action) has to be performed in order to determine the effect of a previous external action. The formal syntax is provided in Figure~\ref{fig:ebnf_extaction}. An example of external actions is \texttt{@blockworld(east(), L)} that would try to get the agent one step to the east in the \texttt{blockWorld} environment.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -237,7 +238,7 @@ An \emph{external action} is supposed to change the state of an external environ
 \label{fig:ebnf_extaction}
 \end{figure}
 
-An \emph{abstract action} is used to instantiate a new plan when the action is executed in the way a procedure call would instantiate a new procedure. The formal syntax is provided in Figure~\ref{fig:ebnf_absaction}. A example of this action will be shown later in a concrete scenario.
+Fourth, an \emph{abstract action} is used to instantiate a new plan when the action is executed in the way a procedure call would instantiate a new procedure. The formal syntax is provided in Figure~\ref{fig:ebnf_absaction}. A example of this action will be shown later in a concrete example.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -247,7 +248,7 @@ An \emph{abstract action} is used to instantiate a new plan when the action is e
 \label{fig:ebnf_absaction}
 \end{figure}
 
-\emph{Test actions} are query expressions used to check if an agent can derive certain beliefs and goals from its bases. The formal syntax is provided in Figure~\ref{fig:ebnf_testaction}.
+Fifth, \emph{test actions} are query expressions used to check if an agent can derive certain beliefs and goals from its bases. The formal syntax is provided in Figure~\ref{fig:ebnf_testaction}.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -268,7 +269,7 @@ An \emph{abstract action} is used to instantiate a new plan when the action is e
 
 Let imagine that, for instance, an agent has a certain belief \texttt{p(a)} and it is  pursing the goal of achieving a situation \texttt{q(b)} and we are querying first for \texttt{B(p(X)) \& G(q(X))} and then for \texttt{B(p(X)) \& G(q(Y) or r(X))}. In the first case the query will fail since no substitution is possible, while in the second case the query will succeed by the substitution $\rho=\{X/a, Y/b\}$.
 
-\emph{Goal dynamics action} are used to adopt and drop goals to and from an agent's goal base. The adopt goal action has two forms, the first one for adopting a goal giving it the maximum priority and another one for giving it the least priority. Also, the drop goal action has three different forms they are used to drop from an agent’s goal base, respectively, exactly the goal specified, all goals that are subgoal of the goal specified and all goals that have the goal specified as a subgoal. The formal syntax is provided in Figure~\ref{fig:ebnf_goalactions}.
+Sixth, \emph{goal dynamics actions} are used to adopt and drop goals to and from an agent's goal base. The adopt goal action has two forms, the first one is for adopting a goal giving it the maximum priority while the second one is for giving it the minimum priority. The drop goal action has three different forms as well and they are used to drop goals from an agent’s goal base: the first form is to drop exactly the goal specified, the second form is to drop all goals that are subgoal of the specified goal while the third form is to drop all goals that have the goal specified as a subgoal. The formal syntax is provided in Figure~\ref{fig:ebnf_goalactions}.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -285,11 +286,11 @@ Let imagine that, for instance, an agent has a certain belief \texttt{p(a)} and 
 \label{fig:ebnf_goalactions}
 \end{figure}
 
-To illustrate the use of these three different actions to drop a goal the following three goals are considered: \texttt{a(1), a(1) and b(1), a(1) and b(1)}. Then a \texttt{dropgoal(a(1) and b(1))} action will drop exactly the \texttt{a(1) and b(1)}, the \texttt{dropsubgoal(a(1) and b(1))} will drop the goal \texttt{a(1) and b(1)} and its subgoal \texttt{a(1)} and, finally, the action \texttt{dropsupergoal(a(1) and b(1))} will drop the goal \texttt{a(1) and b(1)} and its supergoal \texttt{a(1) and b(1) and c(1)}.
+To illustrate the use of these three different forms of drop goal actions the following three goals are considered: \texttt{a(1), a(1) and b(1), a(1) and b(1)}. Then a \texttt{dropgoal(a(1) and b(1))} action will drop exactly the \texttt{a(1) and b(1)}, the \texttt{dropsubgoal(a(1) and b(1))} will drop the goal \texttt{a(1) and b(1)} and its subgoal \texttt{a(1)} while the action \texttt{dropsupergoal(a(1) and b(1))} will drop the goal \texttt{a(1) and b(1)} and its supergoal \texttt{a(1) and b(1) and c(1)}.
 
 \paragraph{Plans}
 
-In order to reach its goals, a agent needs to adopt \emph{plans}. A plan consists of basic actions that can be composed by using the following operators: sequence operator, conditional choice operators, conditional iteration operator and atomic operator for plans that must be executed atomically. The formal syntax for both specifying a plan and a plan base is provided in Figure~\ref{fig:ebnf_plans}.
+In order to reach its goals, a agent needs to adopt \emph{plans}. A plan consists of basic actions that can be composed by the use of the following operators: sequence operator, conditional choice operators, conditional iteration operator and atomic operator for plans that must be executed atomically. The formal syntax for specifying both a plan and a \emph{plan base} is provided in Figure~\ref{fig:ebnf_plans}.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -311,7 +312,7 @@ Plans: <plans>
 \label{fig:ebnf_plans}
 \end{figure}
 
-Figure~\ref{fig:ebnf_planbase} shows an example of the implementation of an initial plan base of \texttt{harry} that let him enter the \texttt{blockWorld} environment by performing a test action and then an external action. It worth noting that during execution of the agent, the plan base will be filled with plans by means of reasoning rules.
+Figure~\ref{fig:ebnf_planbase} shows an example of the implementation of an initial plan base of \texttt{harry} where there is the plan to let him enter the \texttt{blockWorld} environment by performing a test action \texttt{start} followed by an external action \texttt{enter}. It worth noting that during execution of the agent, the plan base will be filled with plans by means of reasoning rules.
  
 \begin{figure}[htp]
 \begin{verbatim}
@@ -326,7 +327,7 @@ Plans:
 
 There are three kind of \emph{practical reasoning rules} that are used to implement the generation of plans: planning goal rules (PG rules), procedural rules (PC rules) and plan repair rules (PR rules). 
 
-PG rules are used to generate plans starting from certain beliefs and goals. The formal syntax is provided in Figure~\ref{fig:ebnf_pgrules}.
+First, PG rules are used to generate plans starting from certain beliefs and goals. The formal syntax is provided in Figure~\ref{fig:ebnf_pgrules}.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -339,7 +340,7 @@ PG rules are used to generate plans starting from certain beliefs and goals. The
 \label{fig:ebnf_pgrules}
 \end{figure}
 
-An example of a planning goal rule is provided in Figure~\ref{fig:example_pgrules} indicating that a plan to achieve the goal \texttt{clean(blockWorld)} can be generated if the agent believes there is a bomb at position $(X,Y)$. Note that \texttt{goto(X,Y)} is an example of abstract action, \texttt{@blockworld(pickup(), L1)} is an external action and \texttt{PickUp()} is a belief update action.
+An example of a planning goal rule is provided in Figure~\ref{fig:example_pgrules} indicating that a plan to achieve the goal \texttt{clean(blockWorld)} can be generated if the agent believes there is a bomb at position $(X,Y)$. It is worth noting that \texttt{goto(X,Y)} is an example of abstract action, \texttt{@blockworld(pickup(), L1)} is an external action and \texttt{PickUp()} is a belief update action.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -359,7 +360,8 @@ Drop();
 \label{fig:example_pgrules}
 \end{figure}
 
-PC rules are used to generate plans as a response to the execution of abstract actions or the reception of messages from other agents or events generated from the environment. A procedural rule is applied if and only if the belief condition is entailed by the belief base. The formal syntax is provided in Figure~\ref{fig:ebnf_pcrules}.
+Second, PC rules are used to generate plans as a response to the execution of abstract actions or the reception of messages from other agents or \emph{events} generated from the environment. A procedural rule is applied if and only if the belief condition is entailed by the belief base. The formal syntax is provided in Figure~\ref{fig:ebnf_pcrules}.
+Figure~\ref{fig:example_pcrules} shows an example of two procedural rules for \texttt{harry}. The first PC-rule indicates that the abstract action \texttt{goto} is actually a certain sequence of actions that can be always executed independent from what it is entailed from the belief base (\texttt{true}). The second PC-rule indicates that if \texttt{harry} receives a message from \texttt{sally} informing him that there is a bomb at position $(X,Y)$ and \texttt{harry} does not believe there are any bombs, then harry updates his beliefs with this new fact and adds a goal to clean the \texttt{blockWorld} again.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -371,8 +373,6 @@ PC rules are used to generate plans as a response to the execution of abstract a
 \caption{EBNF syntax for specifying PC rules}
 \label{fig:ebnf_pcrules}
 \end{figure}
-
-Figure~\ref{fig:example_pcrules} shows an example of two procedural rules for \texttt{harry}, the first one indicating that the abstract action \texttt{goto} is actually a certain sequence of actions, while second one indicating that if \texttt{harry} receives a message from \texttt{sally} informing him that there is a bomb at position $(X,Y)$ and \texttt{harry} does not believe there are any bombs, then harry updates his beliefs with this new fact and adds a goal to clean the \texttt{blockWorld} again.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -408,7 +408,8 @@ message(sally, inform, La, On, bombAt(X, Y)) <- true | {
 \label{fig:example_pcrules}
 \end{figure}
 
-Finally, PR rules are used to replace a plan whose execution has failed. Plan repair rules can be applied if the following condition hold: the execution of a plan fails, there is a rule matching the failed action and the belief query expression is derivable from the agent's belief base. The formal syntax of PR rules is provided in Figure~\ref{fig:ebnf_prrules}.
+Third, PR rules are used to replace a plan whose execution has failed. Plan repair rules can be applied if the following conditions hold: the execution of a plan fails, there is a rule matching the failed action and the belief query expression is derivable from the agent's belief base. The formal syntax of PR rules is provided in Figure~\ref{fig:ebnf_prrules}. 
+An example of a plan repair rule of \texttt{harry} is shown in Figure~\ref{fig:example_pcrules}. This rule is used for the situation in which the execution of a plan that starts with the external action \texttt{@blockworld(pickup(),L)} fails. Such an action fails in case there is no bomb to be picked up, may be because it has already been removed by another agent. The rule states that the plan should be replaced by a plan in which the agent updates its beliefs about the location of the bombs. It is worth noting that the rest of the original plan denoted by \texttt{REST} is dropped, as it is not used anymore within the rule. It is important to note that the execution of a plan fails if the execution of its first action fails. An action fails according to some causes that depends on the type of the action. Table~\ref{table:action_fail} provides a quick summary of possible causes for each kind of action.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -428,8 +429,6 @@ Finally, PR rules are used to replace a plan whose execution has failed. Plan re
 \label{fig:ebnf_prrules}
 \end{figure}
 
-An example of a plan repair rule of \texttt{harry} is shown in Figure~\ref{fig:example_pcrules}. This rule is used for the situation in which the execution of a plan that starts with the external action \texttt{@blockworld(pickup(),L)} fails. Such an action fails in case there is no bomb to be picked up, may be because it has already been removed by another agent. The rule states that the plan should be replaced by a plan in which the agent updates its beliefs about the location of the bombs. It is worth noting that the rest of the original plan denoted by \texttt{REST} is dropped, as it is not used anymore within the rule.
-
 \begin{figure}[htp]
 \begin{verbatim}
 PR-rules:
@@ -443,8 +442,6 @@ PR-rules:
 \label{fig:example_pcrules}
 \end{figure}
 
-Finally, it is important to see that the execution of a plan fails if the execution of its first action fail and, when an action fails, depends on the type of the action. Table~\ref{table:action_fail} provides a quick summary of possible causes for each kind of action.
-
 \begin{table}[htp]
   \begin{tabular}{|l| p{8.5cm}|}
   \hline
@@ -452,11 +449,11 @@ Finally, it is important to see that the execution of a plan fails if the execut
   \hline
   Abstract action & There is no applicable procedural rule \\
   \hline
-  External action & The environment throws an \texttt{ExternalActionFailedException},the agent has no access to the environment, the actions is not defined in the environment \\
+  External action & The environment throws an \texttt{ExternalActionFailedException} or the agent has no access to the environment or the actions is not defined in the environment \\
   \hline
   Test action & The test expression is no derivable from the belief or goal bases \\
   \hline
-  Goal adopt action & The goal is already entailed by the belief base, the goal to be adopted is not ground\\
+  Goal adopt action & The goal is already entailed by the belief base or the goal to be adopted is not ground\\
   \hline
   Atomic plan & If one of its actions fails \\
   \hline
@@ -467,7 +464,7 @@ Finally, it is important to see that the execution of a plan fails if the execut
 
 \subsubsection{Programming the environment} %%%%%%% FABRIZIO HERE
 
-A 2APL environment can be any Java class implementing the \emph{environment interface} that contains the following two methods: \texttt{addAgent(String name)} and \texttt{removeAgent(String name)}. Any external action like \texttt{@env($a_1, \ldots, a_n$, R)} is translated into a call to a method $m$ with arguments $a_1, \ldots, a_n$ in environment $env$. Java exceptions are the mechanisms used to inform an agent that an execution of an action has failed and let it apply plan repair rules. Figure~\ref{fig:example_env} provide an example of a \texttt{move} external action that can fail if an unknown direction is specified.
+A 2APL environment can be any Java class implementing the \emph{environment interface}. The environment interface contains the following two methods for adding and removing an agent from the system: \texttt{addAgent(String name)} and \texttt{removeAgent(String name)}. Any external action like \texttt{@env($a_1, \ldots, a_n$, R)} is actually translated into a call to a method $m$ with arguments $a_1, \ldots, a_n$ in environment specified by the $env$ Java class. It is important to note that the constructor of the environment must require exactly one parameter of the type \texttt{ExternalEventListener}. Such class has the method \texttt{notifyEvent(AF event, String... agents)} that should be used to notify agents of \emph{events} from the environment. The first argument of this method may be any valid atomic formula. The rest of the arguments may be filled with strings that represent local names of agents. If the programmer does not specify any agents in the argument list, all agents can receive the event. Finally, Java exceptions represent the mechanisms to inform an agent that an execution of an external action on the environment has failed. Figure~\ref{fig:example_env} provides an example of a \texttt{move} external action that can fail throwing an \texttt{ExternalActionFailedException} exception if an unknown direction is specified.
 
 \begin{figure}[htp]
 \begin{verbatim}
@@ -487,21 +484,19 @@ public Term move(String agent, String direction)
 \label{fig:example_env}
 \end{figure}
 
-Finally, it is important to state that the constructor of the environment must require exactly one parameter of the type \texttt{ExternalEventListener}. Such class has the method \texttt{notifyEvent(AF event, String... agents)} that can be used to notify agents of events from the environment. The first argument of this method may be any valid atomic formula. The rest of the arguments may be filled with strings that represent local names of agents. If the programmer does not specify any agents in the argument list, all agents can receive the event. 
-
 \subsection{Formal Semantics} %%%%%%% MARCOS HERE
 
-In this section we present the formal semantics of 2APL in terms of transition system. A transition system is a set of transition rules for deriving transitions. A transitionis is a transformation of one configuration into another and it corresponds to a simple computation/execution step.
+In this section we present the formal semantics of 2APL in terms of transition system. A transition system is a set of transition rules for deriving transitions. A transitions is a transformation of one configuration into another and it corresponds to a simple computation/execution step.
 
 The execution of a 2APL multi-agent program modifies its initial configuration by means of transitions that are derivable from the transition rules. In fact, each transition rule indicates which execution step (i.e., transition) is possible from a given configuration. It should be noted that for a given configuration there may be several transition rules applicable. An interpreter is a deterministic choice of applying transition rules in a certain order.
 
 \subsubsection{2APL Configurations}
 
-The configuration of an individual agent consists of its \textbf{identifier}, \textbf{beliefs}, \textbf{goals}, \textbf{plans}, \textbf{substitutions that are resulted from queries to the belief and goal bases}, and the \textbf{received events}. Moreover, additional information is assigned to an agent's plan. In particular, a unique identifier is assigned to each plan which can be used to identify and repair failed plans. Also, the practical reasoning rules by means of which plans are generated are assigned to plans in order to avoid redundant applications of practical reasoning rules, e.g., to avoid generating multiple plans for one and the same goal.
+The configuration of an individual agent consists of its identifier, beliefs, goals, plans, substitutions that are resulted from queries to the belief and goal bases, and the received events. Moreover, additional information is assigned to an agent's plan. In particular, a unique identifier is assigned to each plan which can be used to identify and repair failed plans. Also, the practical reasoning rules by means of which plans are generated are assigned to plans in order to avoid redundant applications of practical reasoning rules, e.g., to avoid generating multiple plans for one and the same goal.
 
 \paragraph{Individual agent}
 
-The configuration of an individual 2APL agent is defined as $ A_{\iota} = \langle \iota, \sigma, \gamma, \Pi, \theta, \xi \rangle $ where $\iota$ is a set of belief expressions representig the agent's identifier, $\sigma$ is a list of goals expressions representing the agent's belief base, $\gamma$ is the agent's goal base,  $\Pi$ is a set of plan entries representing the agent's goal base, $\theta$ is a ground substitution that binds domain variables to gound terms, and $\xi = \langle E, I, M \rangle$ is the agent's event base, where
+The configuration of an individual 2APL agent is defined as $ A_{\iota} = \langle \iota, \sigma, \gamma, \Pi, \theta, \xi \rangle $ where $\iota$ is a set of belief expressions representing the agent's identifier, $\sigma$ is a list of goals expressions representing the agent's belief base, $\gamma$ is the agent's goal base,  $\Pi$ is a set of plan entries representing the agent's goal base, $\theta$ is a ground substitution that binds domain variables to ground terms, and $\xi = \langle E, I, M \rangle$ is the agent's event base, where
 
 \begin{itemize}
  \item $E$ is a set of events from the external environments, which has the form $event(A,S)$, where $A$ is a ground atom originated from the environment $S$.
@@ -509,7 +504,7 @@ The configuration of an individual 2APL agent is defined as $ A_{\iota} = \langl
  \item $M$ is the set of messages sent to the agent.
 \end{itemize}
 
-Each plan entry is a tuple $(\pi, r, p)$, where $\pi$ is the executing plan, $r$ is the instatation of the PG-rule throug  which $\pi$ is generated, and $p$ is the plan identifier. The belief base and each goal in the goal base are consistent as only positive atoms are used to represent them.
+Each plan entry is a tuple $(\pi, r, p)$, where $\pi$ is the executing plan, $r$ is the instantiation of the PG-rule through  which $\pi$ is generated, and $p$ is the plan identifier. The belief base and each goal in the goal base are consistent as only positive atoms are used to represent them.
 
 \paragraph{Multi-agents system}
 
@@ -517,9 +512,9 @@ Let $A_{\iota}$ be the configuration of agent $\iota$ and let $\chi$ be a set of
 
 \subsubsection{Transition rules for basic actions}
 
-A basic action can be executed at individual agent level. For some types of basic actions additional transition rules are given that specify when an action's execution fails and which transition an individual agent should make if the execution of the action fails. In general when the execution of a basic action fails, an exception with its corresponding plan identifier, is added to the set of failed plans. This exception can later be used to repais the corresponding plan by meabs of plan repair rules.
+A basic action can be executed at individual agent level. For some types of basic actions additional transition rules are given that specify when an action's execution fails and which transition an individual agent should make if the execution of the action fails. In general when the execution of a basic action fails, an exception with its corresponding plan identifier, is added to the set of failed plans. This exception can later be used to repair the corresponding plan by means of plan repair rules.
 
-Now, we present the differents transition rules that capture the execution of basic actions. We assume $\gamma \vDash_{g} \texttt{true}$ for any goal base $\gamma$. We use $G(r)$, $B(r)$ and $P(r)$ to indicate the head $\kappa$, the belief condition $\beta$, and the plan $\pi$ of a rule $ r = (\kappa \leftarrow \beta \vert \pi)$.
+Now, we present the different transition rules that capture the execution of basic actions. We assume $\gamma \vDash_{g} \texttt{true}$ for any goal base $\gamma$. We use $G(r)$, $B(r)$ and $P(r)$ to indicate the head $\kappa$, the belief condition $\beta$, and the plan $\pi$ of a rule $ r = (\kappa \leftarrow \beta \vert \pi)$.
 
 \paragraph{Skip action}
 
@@ -528,7 +523,7 @@ this action always succeeds resulting in its removal from the plan base.
 
 $$ {{\gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\texttt{skip}, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{\}, \theta, \xi \rangle}}$$
 
-This transition indicates that the execution of the plan entry $(\texttt{skip}, r, id)$ proceeds resulting in the removal os this entry from the plan base. This transition rule can be applied only if the goal that is assigned to the \texttt{skip} action is entailed by the agent's goal base.
+This transition indicates that the execution of the plan entry $(\texttt{skip}, r, id)$ proceeds resulting in the removal of this entry from the plan base. This transition rule can be applied only if the goal that is assigned to the \texttt{skip} action is entailed by the agent's goal base.
 
 \paragraph{Belief update action}
 
@@ -540,15 +535,13 @@ $$ {{T(\alpha \theta, \sigma) = \sigma' \& \gamma \vDash_{g} G(r)} \over {\langl
 
 where $T$ is a function that takes a belief update action and a belief base, and returns the modified belief base if the pre-condition of the action is entailed by the agent's belief base.
 
-The beliefs and goals of agents are related to each other. In fact, if an agent believes a
-certain fact, then the agent does not pursue that fact as a goal. This means that if an agent
-modifies its belief base, then its goal base may be modified as well.
+% REPETITION The beliefs and goals of agents are related to each other. In fact, if an agent believes a certain fact, then the agent does not pursue that fact as a goal. This means that if an agent modifies its belief base, then its goal base may be modified as well.
 
 \paragraph{Test action}
 
 The objective of a test action is to check if the belief and goal queries within a test expression are entailed by the agent's belief and goal bases. Since we have the substitution $\theta$ that should be applied to the variables in the test expression, this can still contain unbound variables. Therefore, the test action results in another substitution $\tau$ added to $\theta$.
 
-A test action $\varphi$ can be exevuted successfully if $\varphi$ is entailed by the agent's belief and goal bases.
+A test action $\varphi$ can be executed successfully if $\varphi$ is entailed by the agent's belief and goal bases.
 
 $$ {{( \sigma, \gamma) \vDash_{t} \varphi \theta \tau \& \gamma \vDash_{g} G(r)}\over{\langle \iota, \sigma, \gamma, \{(\varphi, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma, \{\}, \theta \cup \tau, \xi \rangle}} $$
 
@@ -570,9 +563,9 @@ The three dropping goal actions will always succeed, even if there is no goal to
 
 \paragraph{Abstract action}
 
-Abstract actions are representations of plans. The execution of an abstract action replaces the action with the plan it represents. The relation between an abstract action and the plan it represents is specified by means of a procedure call rule (PC-rule) that has a head unificable with the abstract action.
+Abstract actions are representations of plans. The execution of an abstract action replaces the action with the plan it represents. The relation between an abstract action and the plan it represents is specified by means of a procedure call rule (PC-rule) that has a head unifiable with the abstract action.
 
-Let $\alpha$ be an abstract action, $\varphi \leftarrow \beta \vert \pi$ be a variant of a PC-rule of agent and Unify be a function that returns the most general unifier of $\alpha$ and $\varphi$ if they are unificable, otherwise it returns $\bot$. A successful execution of an abstract action will replace it with a plan.
+Let $\alpha$ be an abstract action, $\varphi \leftarrow \beta \vert \pi$ be a variant of a PC-rule of agent and Unify be a function that returns the most general unifier of $\alpha$ and $\varphi$ if they are unifiable, otherwise it returns $\bot$. A successful execution of an abstract action will replace it with a plan.
 
 $$ {{Unify(\alpha\theta, \phi = \tau_{1} \& \sigma \vDash \beta\tau_{1}\tau_{2} \& \gamma \vDash_{g} G(r) } \over {\langle \iota, \sigma, \gamma, \{(\alpha, r, id)\}, \theta, \xi \rangle  \rightarrow \langle \iota, \sigma, \gamma', \{(\pi\tau_{1}\tau_{2}, r, id)\}, \theta, \xi \rangle}} $$
 
@@ -655,7 +648,7 @@ In the following section, we are going to present the transition rules that capt
 
 \paragraph{Planing goal rules}
 
-A 2APL agent generates plans by applying PG-rules of the form $\kappa \leftarrow \beta \vert \pi$. There are two types of PG-rules. The first type of PG-rule, characterized by $kappa \neq \texttt{true}$, indicates that plan $\pi$ should be generated to achieve goal $\kappa$. The second tupe of PG-rule, defined by $\kappa = \texttt{true}$ indicates that plan $\pi$ should be generated when the agent believes $\beta$.
+A 2APL agent generates plans by applying PG-rules of the form $\kappa \leftarrow \beta \vert \pi$. There are two types of PG-rules. The first type of PG-rule, characterized by $kappa \neq \texttt{true}$, indicates that plan $\pi$ should be generated to achieve goal $\kappa$. The second type of PG-rule, defined by $\kappa = \texttt{true}$ indicates that plan $\pi$ should be generated when the agent believes $\beta$.
 
 In general, an agent can apply one of its PG-rules $ r = \kappa \leftarrow \beta \vert \pi $, if $\kappa$ is entailed by one of the agent's goals, $\beta$ is entailed by the agent's belief base, and there is no plan in the plan base that has been generated (and perhaps partially executed) by applying the same PG-rule to achieve the same goal.
 
@@ -665,7 +658,7 @@ $$ {\gamma \vDash_{g} \kappa'\tau' \& \sigma \vDash \beta'\tau_{1}\tau_{2} \& \n
 
 The transition rule for execution of abstract action is based on application of PC-rules that generate plans to be replaced for the executed abstract actions. The PC-rules are applied to generate plans in order to react to either the received events from the environments or the received messages from other agents.
 
-Events are broadcasted when the state of the environments change. These events are catched and included in the $E$ component of the event base. The messages received from other agents are included in the $M$ component of the event base.
+Events are broadcasted when the state of the environments change. These events are caught and included in the $E$ component of the event base. The messages received from other agents are included in the $M$ component of the event base.
 
 $${ \psi \in E \cup M \& Unify(\psi, \varphi) = \tau_{1} \& \sigma \vDash \beta \tau_{1} \tau_{2} } \over {\langle \iota, \sigma, \gamma, \Pi, \theta, \xi \rangle \rightarrow \langle \iota, \sigma, \gamma, \Pi', \theta, \xi' \rangle}$$
 
@@ -679,14 +672,34 @@ of a plan $\pi$ of an agent fails. Then, a plan repair rule $\pi_{1} \leftarrow 
 
 $$ {Plan Unify(\pi, \pi_{1}) = (\tau_{d}, \tau_{p}, \pi *) \& \sigma \vDash \beta\tau_{d}\tau \& id ºin I} \over {\langle \iota, \sigma, \gamma, \{(\pi, r, id)\}, \theta, \langle E, I, M \rangle \rangle \rightarrow \langle \iota, \sigma, \gamma, \{(\pi_{2}\tau_{d}\tau\tau_{p};\pi *, r, id)\}, \theta, \langle E, I/\{id\}, M \rangle \rangle}$$
 
-Plan repair rules should be used cautiously. If the repaired part of a failed plan includes an action through which variables are bound (e.g., test or external actions), then the variables should not occur in the unrepaired part of the plan (i.e., plan part bound to plan variables or the plan part $\pi$*).
+Plan repair rules should be used cautiously. If the repaired part of a failed plan includes an action through which variables are bound (e.g., test or external actions), then the variables should not occur in the unrepairable part of the plan (i.e., plan part bound to plan variables or the plan part $\pi$*).
 
 
 \subsubsection{Multi-agent transition rules}
 
 The execution of a 2APL multi-agent system is the interleaved executions of the involved individual agents and the environments. We assume that the external shared environments can change either by the execution of an agent's external action in one of the environments or by the internal dynamics of the environments.
 
-Therefore, {\bf the configuration of a multi-agent system can be modified} when either the configuration of one of the involved individual agents is modified or when the shared environments change.
+Therefore, the configuration of a multi-agent system can be modified when either the configuration of one of the involved individual agents is modified or when the shared environments change.
+
+\subsubsection{Deliberation Cycle} %%%%%%% FABRIZIO HERE
+
+In order to execute an individual agent, the 2APL interpreter follows a certain order of deliberation steps repeatedly and indefinitely. Each deliberation step is specified by a set of transition rules indicating which transitions an individual agent can make at each moment in time. The predefined deliberation cycle is provided in Figure~\ref{fig:deliberation_cycle}.
+
+\begin{figure}[htp]
+\centering
+\includegraphics[keepaspectratio,scale=0.35]{fig/rcycle.png}
+\caption{Predefined deliberation Cycle}
+\label{fig:deliberation_cycle}
+\end{figure}
+ 
+Each cycle starts by applying all applicable PG-rules, each rule only one time. The deliberation cycle proceeds by executing only the first actions of all plans. This is in order to allow all plans to get a chance to be executed. The next deliberation steps are to
+process all events received from the external environment, all internal events indicating the failure of plans, and all messages received from other agents, respectively. An event from external environment is processed by applying the first applicable PC-rule to it. An internal event, which identifies a failed plan, is processed by applying the first applicable PR-rule to the failed plan. A received message is then processed by applying the first applicable PC-rule to it. It is worth noting that the application of rules
+to process events generates and add plans to the corresponding agent’s plan base.
+
+If in a deliberation cycle no rule could be applied, no plan could be executed, and no event could be processed, then it makes no sense to try again a new cycle of deliberation steps, except when a new event or message has arrived.
+
+The predefined deliberation cycle has the two following properties: first, if the execution of a plan fails, then the plan will either be repaired in the same deliberation cycle or get re-executed in the next deliberation cycle, since plans are executed before internal events are processed. Second, if the first action fails and there is no plan repair rule for it, then the failed plan may be successfully executed in the next deliberation cycle, since the belief and a goal bases can be modified in one deliberation cycle such that belief and goal test actions may be executed successfully in the next cycle.
+
 
 \section{2APL Platform}\label{sec:platform} %%%%%%% BORJA+MARCOS HERE
 
@@ -694,8 +707,8 @@ The 2APL platform is built on the top of JADE (Java Agent DEvelopment Framework)
 
 \subsection{JADE tools}
 
-The current 2APL platform comes with three JADE tools: the {\bf RMA} tool, {\bf sniffer} tool, and the
-{\bf introspecto}r tool. The RMA (Remote Monitoring Agent) tool can be used to control the life cycle of the agent platform and of all the registered agents. We can see this tool in the figure~\ref{fig:rma}.
+The current 2APL platform comes with three JADE tools: the \emph{RMA} tool, \emph{sniffer} tool, and the
+\emph{introspector} tool. The RMA (Remote Monitoring Agent) tool can be used to control the life cycle of the agent platform and of all the registered agents. We can see this tool in the figure~\ref{fig:rma}.
 
 \begin{figure}[htp]
 \centering
@@ -705,8 +718,7 @@ The current 2APL platform comes with three JADE tools: the {\bf RMA} tool, {\bf 
 \end{figure}
 
 The sniffer (figure ~\ref{fig:sniffer}) can be used for tracking messages exchanged in a JADE based environment.
-You can select agents to be sniffed. Every message directed to this agent(s) or coming from this
-agent(s) is tracked and displayed in the sniffer window.
+You can select agents to be sniffed. Every message directed to or coming from the sniffed agent is tracked and displayed in the sniffer window.
 
 \begin{figure}[htp]
 \centering
@@ -715,7 +727,7 @@ agent(s) is tracked and displayed in the sniffer window.
 \label{fig:sniffer}
 \end{figure}
 
-The introspector (figure ~\ref{fig:introspector}) allows to monitor and control the life-cycle of a running agent and its exchanged messages, both the queue of sent and received messages. It allows also to monitor the queue of behaviours, including executing them step-by-step.
+The introspector (figure ~\ref{fig:introspector}) allows to monitor and control the life-cycle of a running agent and its exchanged messages, both the queue of sent and received messages. It allows also to monitor the queue of behaviors, including executing them step-by-step.
 
 \begin{figure}[htp]
 \centering
@@ -728,7 +740,7 @@ The introspector (figure ~\ref{fig:introspector}) allows to monitor and control 
 
 \subsubsection{The FGDC tool}
 
-The FGDC (Flexible Graphical Deliberation Cycle) tool (figure~\ref{fig:fgdc}) can be used to visualize and \textbf{program the deliberation cycle of an agent}.
+The FGDC (Flexible Graphical Deliberation Cycle) tool (figure~\ref{fig:fgdc}) can be used to visualize and program the deliberation cycle of an agent.
 
 The agent's deliberation cycle is used to determine what the agent should do next, e.g., execute an action, or select a plan to reach a goal. By clicking on the FGDC button of the toolbar, an extra tab will become available in the agent panel. The left panel of the FGDC window shows the deliberation cycle of the currently selected agent. In this panel, the rectangles represent the steps, whereas the arrows represent the sequence in which the steps are to be executed. The panel on the right shows the predefined deliberation steps that can be used. A deliberation step can be added to the deliberation cycle by double clicking on a predefined deliberation steps. The selected predefined deliberation step will then appear in the left panel. Deliberation steps can be linked by arrows by right clicking on the source, dragging the arrow to its destination and dropping it there. The steps and arrows can be deleted by right clicking on them. Some appearance settings of the FGDC can be changed in the FGDC settings window that can be accessed via the settings button located on the right panel. Any modification of the deliberation cycle will be lost by reloading the agent.
 
@@ -756,7 +768,7 @@ The state tracer can be accessed by clicking on the state tracer tab in the agen
 
 The fact that 2APL platform is built on the top of JADE (Java Agent DEvelopment Framework) allows to use all the functionality that this framework has to communicate to other agents. Thus, as JADE, 2APL follows FIPA specifications.
 
-In order to be able to sending messages to running agent, 2APL implements {\bf the message agent}.The message agent can be accessed by clicking on the message agent button in the toolbar. We must specify the receiver, that can be in JADE format, the performatice and the content. Moreover, optionaly, we can specify the language and the ontology of the message.
+In order to be able to sending messages to running agent, 2APL implements the message agent.The message agent can be accessed by clicking on the message agent button in the toolbar. We must specify the receiver, that can be in JADE format, the perfomative and the content. Moreover, optionally, we can specify the language and the ontology of the message.
 
 In figure~\ref{fig:message_agent} we can see the form to send a message to a running agent.
 
@@ -767,32 +779,12 @@ In figure~\ref{fig:message_agent} we can see the form to send a message to a run
 \label{fig:message_agent}
 \end{figure}
 
-\subsection{Deliberation Cycle} %%%%%%% FABRIZIO HERE
+\section{Conclusion}\label{sec:concl} 
 
-In order to execute an individual agent, the 2APL interpreter follows a certain order of deliberation steps repeatedly and indefinitely. Each deliberation step is specified by a set of transition rules indicating which transitions an individual agent can make at each moment in time. The predefined deliberation cycle is provided in Figure~\ref{fig:deliberation_cycle}.
+In this report, we presented a BDI-based multi-agent programming language called 2APL, which provides practical constructs for the implementation of cognitive agents onto the 2APL platform that support the development and execution of multi-agent systems. The execution of a multi-agent system is the interleaving execution of individual agent programs and the shared environments. The execution of an individual agent program is based on the deliberation cycle where each cycle determines which transitions in which order should take place. The 2APL platform provides graphical tools to let a programmer load, edit, run, and debug a 2APL multi-agent system, browse through an agent’s states generated by the execution of its corresponding agent program and modify the deliberation cycle. The 2APL platform is built on the top of JADE and it complies with the FIPA specifications. Both 2APL language and platform are still under development. Future work includes improvements both at multi-agent level and individual agent level. At multi-agent level, future work counts the implementation of social and organizational issues such as norms, obligations, prohibition, permissions, power relation, delegations of tasks, responsibility, and trust. At individual level, future work counts the introduction of programming constructs  for the implementation of various goals types such as perform, achieve and maintenance goals, the specification of conflicting goals and the implementation of various commitment strategies such as blindly-minded, single-minded, and open-minded through the introduction of intentions.
 
-\begin{figure}[htp]
-\centering
-\includegraphics[keepaspectratio,scale=0.35]{fig/rcycle.png}
-\caption{Predefined deliberation Cycle}
-\label{fig:deliberation_cycle}
-\end{figure}
- 
-Each cycle starts by applying all applicable PG-rules, each rule only one time. The deliberation cycle proceeds by executing only the first actions of all plans. This is in order to allow all plans to get a chance to be executed. The next deliberation steps are to
-process all events received from the external environment, all internal events indicating the failure of plans, and all messages received from other agents, respectively. An event from external environment is processed by applying the first applicable PC-rule to it. An internal event, which identifies a failed plan, is processed by applying the first applicable PR-rule to the failed plan. A received message is then processed by applying the first applicable PC-rule to it. It is worth noting that the application of rules
-to process events generates and add plans to the corresponding agent’s plan base.
-
-If in a deliberation cycle no rule could be applied, no plan could be executed, and no event could be processed, then it makes no sense to try again a new cycle of deliberation steps, except when a new event or message has arrived.
-
-The predefined deliberation cycle has the two following properties: first, if the execution of a plan fails, then the plan will either be repaired in the same deliberation cycle or get re-executed in the next deliberation cycle, since plans are executed before internal events are processed. Second, if the first action fails and there is no plan repair rule for it, then the failed plan may be successfully executed in the next deliberation cycle, since the belief and a goal bases can be modified in one deliberation cycle such that belief and goal test actions may be executed successfully in the next cycle.
-
-
-\section{Conclusion} %%%%%%% BORJA HERE
-
-%Borja here: conclusion + connecting with other alternatives (jadex etc)
-The main objective of 2APL, a BDI-based multi-agent programming language, is providing practical constructs for the implementation of cognitive agents. One of the most important feature that 2APL provedes is the theoretical model . Other important feature is the use of Prolog resolution system, its brings a powerfull way to reasoning about the beliefs of the agent, the goals and the plans.
-
-%% TODO Complete the conclusion... Copy paste from the documentation? 
+%The main objective of 2APL, a BDI-based multi-agent programming language, is providing practical constructs for the implementation of cognitive agents. One of the most important feature that 2APL provides is the theoretical model . Other important feature is the use of Prolog resolution system, its brings a powerful way to reasoning about the beliefs of the agent, the goals and the plans.
+%%
 
 \section{Bibliography}
 \nocite{*}
