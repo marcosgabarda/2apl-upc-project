@@ -11,11 +11,26 @@ Description: [http://en.wikipedia.org/wiki/Briscola#Briscola_Chiamata]
 == Scenario ==
   * 5 players (3 against 2)
   * Game split into 2 phases
-    * 1st phase: partners are chosen (but nobody knows who is its partner)
+    * 1st phase: partners are chosen (but actually nobody knows who is its partner)
     * 2st phase: card game
   * Only looking at the game in the second phase, players can start believing who is its partner
 
 == What make SMA a suitable solution ==
 
-  * Uncertainity
-  * Sociality
+  * Uncertainity (nobody knows who is actually its partner)
+  * Sociality (its needed in order to discover partners/cheat opponents)
+
+=== Main agent properties ==
+  * Autonomy (players are autonomous)
+  * Flexibility
+    * Reactivity (players has to play when its their turn)
+    * Proactivity (players can decide if they want to play even if it's not their turn, players can decide to start cheating other players by sending them messages)
+    * Social (players have to interact with each others in order to discover their partners)
+
+=== Environment properties ===
+  * The environment is basically the table 
+    * fully accessible (all the players can watch to all the cards on the table)
+    * deterministic (playing cards cannot fail, simplicistic view but can work)
+    * episodic (if i play a card, then i don't have that card anymore)
+    * dynamic (players can play their cards even if it is not its turn)
+    * discrete (it's a matter of philosophy ;-)
