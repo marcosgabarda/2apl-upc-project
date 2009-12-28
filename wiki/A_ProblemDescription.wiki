@@ -21,7 +21,7 @@ Description: [http://en.wikipedia.org/wiki/Briscola#Briscola_Chiamata]
   * Sociality (its needed in order to discover partners/cheat opponents)
 
 === Main agent properties ==
-  * Autonomy (players are autonomous)
+  * Autonomy (players are autonomous, they plan alone once there are at least 5 players)
   * Flexibility
     * Reactivity (players has to play when its their turn)
     * Proactivity (players can decide if they want to play even if it's not their turn, players can decide to start cheating other players by sending them messages)
