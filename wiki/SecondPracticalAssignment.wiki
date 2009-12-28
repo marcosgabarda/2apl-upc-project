@@ -2,7 +2,7 @@
 
 In all cases you shoud cover the following aspects: 
 
-A. Description of the problem to solve 
+A. Description of the problem to solve [A_ProblemDescription]
 
 Explain which is the scenario that you want to solve, and 
 whic are the issues that make Multiagents a suitable solution 
