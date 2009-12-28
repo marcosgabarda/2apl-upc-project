@@ -1,0 +1,5 @@
+Notes about desing of 2APL Multiagent System. 
+
+= Introduction =
+
+I propose to use the Prometheus metodology to to de MAS desing. We can find the PDT software here http://www.cs.rmit.edu.au/agents/pdt/pdt.shtml and it is a `*`.jar file.
