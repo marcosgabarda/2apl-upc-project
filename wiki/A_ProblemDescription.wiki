@@ -1,4 +1,4 @@
-1#summary Description of the problem to solve: Briscola Chiamata
+#summary Description of the problem to solve: Briscola Chiamata
 
 = Work description =
 
