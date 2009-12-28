@@ -1,5 +1,12 @@
 Notes about desing of 2APL Multiagent System. 
 
+= Work description =
+
+Design your multiagent system using an Agent-oriented methodology (GAIA, Prometheus or any other existing, of your choice). The diagrams of concepts, roles, agents... shoudl 
+be part of your documentation. You should also explain in the report your design decisions (e.g why grouping these functionalities or roles in Agent X).
+
 = Introduction =
 
 I propose to use the Prometheus metodology to to de MAS desing. We can find the PDT software here http://www.cs.rmit.edu.au/agents/pdt/pdt.shtml and it is a `*`.jar file.
+
+Fabrizio: I agree
