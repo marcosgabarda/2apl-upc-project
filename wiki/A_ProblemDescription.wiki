@@ -1,9 +1,21 @@
-#summary Description of the problem to solve: Briscola Chiamata
+1#summary Description of the problem to solve: Briscola Chiamata
 
-= Description of the problem to solve: Briscola Chiamata =
+= Work description =
 
-[http://en.wikipedia.org/wiki/Briscola#Briscola_Chiamata]
+Explain which is the scenario that you want to solve, and which are the issues that make Multiagents a suitable solution
 
-= Details =
+= Briscola Chiamata =
 
-... TODO
+Description: [http://en.wikipedia.org/wiki/Briscola#Briscola_Chiamata]
+
+== Scenario ==
+  * 5 players (3 against 2)
+  * Game split into 2 phases
+    * 1st phase: partners are chosen (but nobody knows who is its partner)
+    * 2st phase: card game
+  * Only looking at the game in the second phase, players can start believing who is its partner
+
+== What make SMA a suitable solution ==
+
+  * Uncertainity
+  * Sociality
