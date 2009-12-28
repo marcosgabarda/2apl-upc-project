@@ -7,7 +7,7 @@ A. Description of the problem to solve [A_ProblemDescription]
 Explain which is the scenario that you want to solve, and 
 whic are the issues that make Multiagents a suitable solution 
 
-B. Multiagent design 
+B. Multiagent design [desisn]
 
 Design your multiagent system using an Agent-oriented 
 methodology (GAIA, Prometheus or any other existing, of your 
