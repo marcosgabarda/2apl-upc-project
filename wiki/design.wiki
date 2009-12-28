@@ -7,6 +7,6 @@ be part of your documentation. You should also explain in the report your design
 
 = Introduction =
 
-I propose to use the Prometheus metodology to to de MAS desing. We can find the PDT software here http://www.cs.rmit.edu.au/agents/pdt/pdt.shtml and it is a `*`.jar file.
+Marcos: I propose to use the Prometheus metodology to to de MAS desing. We can find the PDT software here http://www.cs.rmit.edu.au/agents/pdt/pdt.shtml and it is a `*`.jar file.
 
 Fabrizio: I agree
