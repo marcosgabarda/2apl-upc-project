@@ -19,6 +19,9 @@ Description: [http://en.wikipedia.org/wiki/Briscola#Briscola_Chiamata]
 
   * Uncertainity (nobody knows who is actually its partner)
   * Sociality (its needed in order to discover partners/cheat opponents)
+  * Cooperation inside teams needed once partners are discovered
+  * Competition between teams needed once partners are discovered
+  * Trust/Reputation models needed 
 
 === Main agent properties ==
   * Autonomy (players are autonomous, they plan alone once there are at least 5 players)
