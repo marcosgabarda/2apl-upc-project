@@ -43,7 +43,16 @@ else
   * Competition between teams needed once partners are discovered
   * Trust/Reputation models needed 
 
+
+==Agents tasks==
+
+An agent is a player (for other games a dealer agent would need development however in this case the environment can deal with the shuffling and dealing of the deck)
+
+As a player, the Main goal is to win the game (ie: accumulate the amount of points required to win). The subgoal is to win each round.
+
+
 === Main agent properties ==
+
   * Autonomy (players are autonomous, they plan alone once there are at least 5 players)
   * Flexibility
     * Reactivity (players has to play when its their turn)
