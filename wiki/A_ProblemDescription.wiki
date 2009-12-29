@@ -8,12 +8,32 @@ Explain which is the scenario that you want to solve, and which are the issues t
 
 Description: [http://en.wikipedia.org/wiki/Briscola#Briscola_Chiamata]
 
+== Game Phases ==
+Game phases :
+   **Card giving phase**
+   **Bidding phase**
+   **Partner selection phase**
+   **Game phase**
+   **Winner/Loser phase**
+   **Point distribution phase**
+   
+if (player achieves max amount of points) 
+   **Victor phase**
+else
+   restart phases.
+   
+-------------------------------------------------
+
 == Scenario ==
+
   * 5 players (3 against 2)
   * Game split into 2 phases
     * 1st phase: partners are chosen (but actually nobody knows who is its partner)
     * 2st phase: card game
   * Only looking at the game in the second phase, players can start believing who is its partner
+
+
+
 
 == What make SMA a suitable solution ==
 
