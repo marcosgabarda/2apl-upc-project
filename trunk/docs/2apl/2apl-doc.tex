@@ -708,31 +708,31 @@ The 2APL platform is built on the top of JADE (Java Agent DEvelopment Framework)
 \subsection{JADE tools}
 
 The current 2APL platform comes with three JADE tools: the \emph{RMA} tool, \emph{sniffer} tool, and the
-\emph{introspector} tool. The RMA (Remote Monitoring Agent) tool can be used to control the life cycle of the agent platform and of all the registered agents. We can see this tool in the figure~\ref{fig:rma}.
+\emph{introspector} tool. The RMA (Remote Monitoring Agent) tool can be used to control the life cycle of the agent platform and of all the registered agents as shown in Figure~\ref{fig:rma}.
 
 \begin{figure}[htp]
 \centering
 \includegraphics[keepaspectratio,scale=0.7]{fig/rma.png}
-\caption{Remote Monitoring Agent}
+\caption{Remote Monitoring Agent tool}
 \label{fig:rma}
 \end{figure}
 
-The sniffer (figure ~\ref{fig:sniffer}) can be used for tracking messages exchanged in a JADE based environment.
+The Sniffer tool showin Figure~\ref{fig:sniffer} can be used for tracking messages exchanged in a JADE based environment.
 You can select agents to be sniffed. Every message directed to or coming from the sniffed agent is tracked and displayed in the sniffer window.
 
 \begin{figure}[htp]
 \centering
 \includegraphics[keepaspectratio,scale=0.7]{fig/sniffer.png}
-\caption{Sniffer}
+\caption{Sniffer tool}
 \label{fig:sniffer}
 \end{figure}
 
-The introspector (figure ~\ref{fig:introspector}) allows to monitor and control the life-cycle of a running agent and its exchanged messages, both the queue of sent and received messages. It allows also to monitor the queue of behaviors, including executing them step-by-step.
+The Introspector tool shown in Figure ~\ref{fig:introspector} allows to monitor and control the life-cycle of a running agent and its exchanged messages, both the queue of sent and received messages. It allows also to monitor the queue of behaviors, including executing them step-by-step.
 
 \begin{figure}[htp]
 \centering
-\includegraphics[keepaspectratio,scale=0.7]{fig/introspector.png}
-\caption{Introspector}
+\includegraphics[keepaspectratio,scale=0.8]{fig/introspector.png}
+\caption{Introspector tool}
 \label{fig:introspector}
 \end{figure}
 
@@ -740,25 +740,25 @@ The introspector (figure ~\ref{fig:introspector}) allows to monitor and control 
 
 \subsubsection{The FGDC tool}
 
-The FGDC (Flexible Graphical Deliberation Cycle) tool (figure~\ref{fig:fgdc}) can be used to visualize and program the deliberation cycle of an agent.
+The Flexible Graphical Deliberation Cycle tool (FGDC) shown in Figure~\ref{fig:fgdc} can be used to visualize and program the deliberation cycle of an agent.
 
 The agent's deliberation cycle is used to determine what the agent should do next, e.g., execute an action, or select a plan to reach a goal. By clicking on the FGDC button of the toolbar, an extra tab will become available in the agent panel. The left panel of the FGDC window shows the deliberation cycle of the currently selected agent. In this panel, the rectangles represent the steps, whereas the arrows represent the sequence in which the steps are to be executed. The panel on the right shows the predefined deliberation steps that can be used. A deliberation step can be added to the deliberation cycle by double clicking on a predefined deliberation steps. The selected predefined deliberation step will then appear in the left panel. Deliberation steps can be linked by arrows by right clicking on the source, dragging the arrow to its destination and dropping it there. The steps and arrows can be deleted by right clicking on them. Some appearance settings of the FGDC can be changed in the FGDC settings window that can be accessed via the settings button located on the right panel. Any modification of the deliberation cycle will be lost by reloading the agent.
 
 \begin{figure}[htp]
 \centering
-\includegraphics[keepaspectratio,scale=0.7]{fig/fgdc.png}
-\caption{Flexible Graphical Deliberation Cycle}
+\includegraphics[keepaspectratio,scale=0.6]{fig/fgdc.png}
+\caption{FGDC tool}
 \label{fig:fgdc}
 \end{figure}
 
-\subsubsection{The state tracer}
+\subsubsection{The State Tracer tool}
 
-The state tracer (figure~\ref{fig:state}) can be used for showing the execution trace of an agent. Each state shows the beliefs, plans, goals, and log of the agent as a result of executing one deliberation step. With the state tracer it is possible to browse through the history of the execution of the agent.
+The State Tracer (figure~\ref{fig:state}) can be used for showing the execution trace of an agent. Each state shows the beliefs, plans, goals, and log of the agent as a result of executing one deliberation step. With the state tracer it is possible to browse through the history of the execution of the agent.
 
 \begin{figure}[htp]
 \centering
 \includegraphics[keepaspectratio,scale=0.7]{fig/state.png}
-\caption{The state tracer}
+\caption{State Tracer tool}
 \label{fig:state}
 \end{figure}
 
@@ -770,7 +770,7 @@ The fact that 2APL platform is built on the top of JADE (Java Agent DEvelopment 
 
 In order to be able to sending messages to running agent, 2APL implements the message agent.The message agent can be accessed by clicking on the message agent button in the toolbar. We must specify the receiver, that can be in JADE format, the perfomative and the content. Moreover, optionally, we can specify the language and the ontology of the message.
 
-In figure~\ref{fig:message_agent} we can see the form to send a message to a running agent.
+In Figure~\ref{fig:message_agent} we can see the form to send a message to a running agent.
 
 \begin{figure}[htp]
 \centering
