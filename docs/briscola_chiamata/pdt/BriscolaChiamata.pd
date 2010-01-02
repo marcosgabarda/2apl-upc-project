@@ -16,26 +16,281 @@
 	<object type="DiagramSettings" id="2">
 	    <field name="diagramId">
 		<object type="DiagramId" id="3">
-		    <field name="stringId">Analysis Overview</field>
+		    <field name="stringId">Goal Overview</field>
 		</object>
 	    </field>
 	    <field name="entitySettings"><list>
 		<object type="DiagramEntitySetting" id="4">
 		    <field name="entity">
-			<object type="Actor" id="5">
+			<object type="Goal" id="5">
+			    <base type="Entity">
+				<field name="name">Cheat opponents</field>
+				<field name="uniqueId">21</field>
+			    </base>
+
+			</object>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="6">
+			    <field name="x">587</field>
+			    <field name="y">260</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="7">
+		    <field name="entity">
+			<object type="Goal" id="8">
+			    <base type="Entity">
+				<field name="name">Identify partners</field>
+				<field name="uniqueId">20</field>
+			    </base>
+
+			    <field name="subGoals"><list>
+				<object type="Goal" id="9">
+				    <base type="Entity">
+					<field name="name">Update player beliefs</field>
+					<field name="uniqueId">25</field>
+				    </base>
+
+				</object>
+
+				<object type="Goal" id="10">
+				    <base type="Entity">
+					<field name="name">Obtain reputation</field>
+					<field name="uniqueId">26</field>
+				    </base>
+
+				</object>
+
+				<object type="Goal" id="11">
+				    <base type="Entity">
+					<field name="name">Calculate trust</field>
+					<field name="uniqueId">27</field>
+				    </base>
+
+				</object>
+				</list>
+			    </field>
+			</object>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="12">
+			    <field name="x">413</field>
+			    <field name="y">294</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="13">
+		    <field name="entity">
+			<object type="Goal" id="14">
+			    <base type="Entity">
+				<field name="name">Giving cards</field>
+				<field name="description"></field>
+				<field name="uniqueId">5</field>
+			    </base>
+
+			</object>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="15">
+			    <field name="x">237</field>
+			    <field name="y">211</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="16">
+		    <field name="entity">
+			<object type="Goal" id="17">
+			    <base type="Entity">
+				<field name="name">Receive join request</field>
+				<field name="uniqueId">23</field>
+			    </base>
+
+			</object>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="18">
+			    <field name="x">16</field>
+			    <field name="y">229</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="19">
+		    <field name="entity">
+			<object type="Goal" id="20">
+			    <base type="Entity">
+				<field name="name">Play cards</field>
+				<field name="uniqueId">22</field>
+			    </base>
+
+			</object>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="21">
+			    <field name="x">750</field>
+			    <field name="y">259</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="22">
+		    <field name="entity">
+			<object type="Goal" id="23">
+			    <base type="Entity">
+				<field name="name">Welcome players</field>
+				<field name="uniqueId">7</field>
+			    </base>
+
+			    <field name="subGoals"><list>
+				<object ref="17"/>
+
+				<object type="Goal" id="24">
+				    <base type="Entity">
+					<field name="name">Inform players the game has begun</field>
+					<field name="description"></field>
+					<field name="uniqueId">24</field>
+				    </base>
+
+				</object>
+
+				<object ref="14"/>
+
+				<object type="Goal" id="25">
+				    <base type="Entity">
+					<field name="name">Partner selection</field>
+					<field name="uniqueId">11</field>
+				    </base>
+
+				</object>
+				</list>
+			    </field>
+			</object>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="26">
+			    <field name="x">217</field>
+			    <field name="y">71</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="27">
+		    <field name="entity">
+			<object ref="9"/>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="28">
+			    <field name="x">513</field>
+			    <field name="y">378</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="29">
+		    <field name="entity">
+			<object ref="24"/>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="30">
+			    <field name="x">16</field>
+			    <field name="y">301</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="31">
+		    <field name="entity">
+			<object ref="11"/>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="32">
+			    <field name="x">373</field>
+			    <field name="y">376</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="33">
+		    <field name="entity">
+			<object ref="10"/>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="34">
+			    <field name="x">232</field>
+			    <field name="y">369</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="35">
+		    <field name="entity">
+			<object ref="25"/>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="36">
+			    <field name="x">364</field>
+			    <field name="y">204</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="37">
+		    <field name="entity">
+			<object type="Goal" id="38">
+			    <base type="Entity">
+				<field name="name">Win the Game</field>
+				<field name="description"></field>
+				<field name="uniqueId">15</field>
+			    </base>
+
+			    <field name="subGoals"><list>
+				<object ref="8"/>
+
+				<object ref="5"/>
+
+				<object ref="20"/>
+				</list>
+			    </field>
+			</object>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="39">
+			    <field name="x">582</field>
+			    <field name="y">159</field>
+			</object>
+		    </field>
+		</object>
+		</list>
+	    </field>
+	</object>
+
+	<object type="DiagramSettings" id="40">
+	    <field name="diagramId">
+		<object type="DiagramId" id="41">
+		    <field name="stringId">Analysis Overview</field>
+		</object>
+	    </field>
+	    <field name="entitySettings"><list>
+		<object type="DiagramEntitySetting" id="42">
+		    <field name="entity">
+			<object type="Actor" id="43">
 			    <base type="Entity">
 				<field name="name">Player</field>
 				<field name="description">The agent/user who play the game</field>
 				<field name="uniqueId">1</field>
 				<field name="connectTo"><list>
-				    <object type="Percept" id="6">
+				    <object type="Percept" id="44">
 					<base type="Interaction">
 					    <base type="Entity">
 						<field name="name">Join the game</field>
 						<field name="description">Request sent from the user to join the game</field>
 						<field name="uniqueId">9</field>
 						<field name="connectTo"><list>
-						    <object type="Scenario" id="7">
+						    <object type="Scenario" id="45">
 							<base type="Entity">
 							    <field name="name">Welcome players scenario</field>
 							    <field name="description">The process which welcoms the players and waits for 5 players in the system</field>
@@ -45,13 +300,7 @@
 							<field name="context"></field>
 							<field name="variation"></field>
 							<field name="linkedGoals"><list>
-							    <object type="Goal" id="8">
-								<base type="Entity">
-								    <field name="name">Welcome players</field>
-								    <field name="uniqueId">7</field>
-								</base>
-
-							    </object>
+							    <object ref="23"/>
 							    </list>
 							</field>
 						    </object>
@@ -69,26 +318,26 @@
 					<field name="externalPath"></field>
 				    </object>
 
-				    <object type="Percept" id="9">
+				    <object type="Percept" id="46">
 					<base type="Interaction">
 					    <base type="Entity">
 						<field name="name">Playing cards</field>
 						<field name="description"></field>
 						<field name="uniqueId">14</field>
 						<field name="connectTo"><list>
-						    <object type="Scenario" id="10">
+						    <object type="Scenario" id="47">
 							<base type="Entity">
-							    <field name="name">Game scenario</field>
+							    <field name="name">Win the Game scenario</field>
 							    <field name="description">The process which handles the whole game phase</field>
 							    <field name="uniqueId">16</field>
 							    <field name="connectTo"><list>
-								<object type="Action" id="11">
+								<object type="Action" id="48">
 								    <base type="Interaction">
 									<base type="Entity">
 									    <field name="name">Turn selection</field>
 									    <field name="uniqueId">18</field>
 									    <field name="connectTo"><list>
-										<object ref="5"/>
+										<object ref="43"/>
 										</list>
 									    </field>
 									</base>
@@ -97,14 +346,14 @@
 
 								</object>
 
-								<object type="Percept" id="12">
+								<object type="Percept" id="49">
 								    <base type="Interaction">
 									<base type="Entity">
 									    <field name="name">Talking player</field>
 									    <field name="description"></field>
 									    <field name="uniqueId">17</field>
 									    <field name="connectTo"><list>
-										<object ref="5"/>
+										<object ref="43"/>
 										</list>
 									    </field>
 									</base>
@@ -119,13 +368,13 @@
 								    <field name="externalPath"></field>
 								</object>
 
-								<object type="Action" id="13">
+								<object type="Action" id="50">
 								    <base type="Interaction">
 									<base type="Entity">
 									    <field name="name">Point distribution</field>
 									    <field name="uniqueId">19</field>
 									    <field name="connectTo"><list>
-										<object ref="5"/>
+										<object ref="43"/>
 										</list>
 									    </field>
 									</base>
@@ -140,13 +389,7 @@
 							<field name="context"></field>
 							<field name="variation"></field>
 							<field name="linkedGoals"><list>
-							    <object type="Goal" id="14">
-								<base type="Entity">
-								    <field name="name">Game</field>
-								    <field name="uniqueId">15</field>
-								</base>
-
-							    </object>
+							    <object ref="38"/>
 							    </list>
 							</field>
 						    </object>
@@ -170,16 +413,16 @@
 			</object>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="15">
+			<object type="Coordinate" id="51">
 			    <field name="x">349</field>
 			    <field name="y">126</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="16">
+		<object type="DiagramEntitySetting" id="52">
 		    <field name="entity">
-			<object type="Actor" id="17">
+			<object type="Actor" id="53">
 			    <base type="Entity">
 				<field name="name">Croupier</field>
 				<field name="description">The agent/user who shuffles and gives the card plus counts the points at the end|</field>
@@ -189,29 +432,29 @@
 			</object>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="18">
+			<object type="Coordinate" id="54">
 			    <field name="x">274</field>
 			    <field name="y">379</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="19">
+		<object type="DiagramEntitySetting" id="55">
 		    <field name="entity">
-			<object type="Scenario" id="20">
+			<object type="Scenario" id="56">
 			    <base type="Entity">
 				<field name="name">Begin game scenario</field>
 				<field name="description">The process which shuffles and start giving the cards</field>
 				<field name="uniqueId">4</field>
 				<field name="connectTo"><list>
-				    <object type="Action" id="21">
+				    <object type="Action" id="57">
 					<base type="Interaction">
 					    <base type="Entity">
 						<field name="name">Begin the game</field>
 						<field name="description"></field>
 						<field name="uniqueId">10</field>
 						<field name="connectTo"><list>
-						    <object ref="5"/>
+						    <object ref="43"/>
 						    </list>
 						</field>
 					    </base>
@@ -231,9 +474,8 @@
 			    <field name="context"></field>
 			    <field name="variation"></field>
 			    <field name="linkedGoals"><list>
-				<object type="Goal" id="22">
+				<object type="Goal" id="58">
 				    <base type="Entity">
-					<field name="name">Begin game</field>
 					<field name="uniqueId">3</field>
 				    </base>
 
@@ -243,16 +485,16 @@
 			</object>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="23">
+			<object type="Coordinate" id="59">
 			    <field name="x">114</field>
 			    <field name="y">359</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="24">
+		<object type="DiagramEntitySetting" id="60">
 		    <field name="entity">
-			<object type="Scenario" id="25">
+			<object type="Scenario" id="61">
 			    <base type="Entity">
 				<field name="name">Giving cards scenario</field>
 				<field name="description">The process which gives cards</field>
@@ -262,76 +504,70 @@
 			    <field name="context"></field>
 			    <field name="variation"></field>
 			    <field name="linkedGoals"><list>
-				<object type="Goal" id="26">
-				    <base type="Entity">
-					<field name="name">Giving cards</field>
-					<field name="uniqueId">5</field>
-				    </base>
-
-				</object>
+				<object ref="14"/>
 				</list>
 			    </field>
 			</object>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="27">
+			<object type="Coordinate" id="62">
 			    <field name="x">409</field>
 			    <field name="y">248</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="28">
+		<object type="DiagramEntitySetting" id="63">
 		    <field name="entity">
-			<object ref="7"/>
+			<object ref="45"/>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="29">
+			<object type="Coordinate" id="64">
 			    <field name="x">12</field>
 			    <field name="y">300</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="30">
+		<object type="DiagramEntitySetting" id="65">
 		    <field name="entity">
-			<object ref="6"/>
+			<object ref="44"/>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="31">
+			<object type="Coordinate" id="66">
 			    <field name="x">25</field>
 			    <field name="y">208</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="32">
+		<object type="DiagramEntitySetting" id="67">
 		    <field name="entity">
-			<object ref="21"/>
+			<object ref="57"/>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="33">
+			<object type="Coordinate" id="68">
 			    <field name="x">176</field>
 			    <field name="y">251</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="34">
+		<object type="DiagramEntitySetting" id="69">
 		    <field name="entity">
-			<object type="Scenario" id="35">
+			<object type="Scenario" id="70">
 			    <base type="Entity">
 				<field name="name">Partner selection scenario</field>
 				<field name="description">The process which handles the partern selection phase</field>
 				<field name="uniqueId">12</field>
 				<field name="connectTo"><list>
-				    <object type="Action" id="36">
+				    <object type="Action" id="71">
 					<base type="Interaction">
 					    <base type="Entity">
 						<field name="name">Score declaration</field>
 						<field name="uniqueId">13</field>
 						<field name="connectTo"><list>
-						    <object ref="5"/>
+						    <object ref="43"/>
 						    </list>
 						</field>
 					    </base>
@@ -346,93 +582,157 @@
 			    <field name="context"></field>
 			    <field name="variation"></field>
 			    <field name="linkedGoals"><list>
-				<object type="Goal" id="37">
-				    <base type="Entity">
-					<field name="name">Partner selection</field>
-					<field name="uniqueId">11</field>
-				    </base>
-
-				</object>
+				<object ref="25"/>
 				</list>
 			    </field>
 			</object>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="38">
+			<object type="Coordinate" id="72">
 			    <field name="x">278</field>
 			    <field name="y">322</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="39">
+		<object type="DiagramEntitySetting" id="73">
 		    <field name="entity">
-			<object ref="36"/>
+			<object ref="71"/>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="40">
+			<object type="Coordinate" id="74">
 			    <field name="x">306</field>
 			    <field name="y">219</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="41">
+		<object type="DiagramEntitySetting" id="75">
 		    <field name="entity">
-			<object ref="9"/>
+			<object ref="46"/>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="42">
+			<object type="Coordinate" id="76">
 			    <field name="x">478</field>
 			    <field name="y">356</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="43">
+		<object type="DiagramEntitySetting" id="77">
 		    <field name="entity">
-			<object ref="12"/>
+			<object ref="49"/>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="44">
+			<object type="Coordinate" id="78">
 			    <field name="x">610</field>
 			    <field name="y">258</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="45">
+		<object type="DiagramEntitySetting" id="79">
 		    <field name="entity">
-			<object ref="10"/>
+			<object ref="47"/>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="46">
+			<object type="Coordinate" id="80">
 			    <field name="x">649</field>
 			    <field name="y">414</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="47">
+		<object type="DiagramEntitySetting" id="81">
 		    <field name="entity">
-			<object ref="13"/>
+			<object ref="50"/>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="48">
+			<object type="Coordinate" id="82">
 			    <field name="x">750</field>
 			    <field name="y">219</field>
 			</object>
 		    </field>
 		</object>
 
-		<object type="DiagramEntitySetting" id="49">
+		<object type="DiagramEntitySetting" id="83">
 		    <field name="entity">
-			<object ref="11"/>
+			<object ref="48"/>
 		    </field>
 		    <field name="location">
-			<object type="Coordinate" id="50">
+			<object type="Coordinate" id="84">
 			    <field name="x">552</field>
 			    <field name="y">306</field>
+			</object>
+		    </field>
+		</object>
+		</list>
+	    </field>
+	</object>
+
+	<object type="DiagramSettings" id="85">
+	    <field name="diagramId">
+		<object type="DiagramId" id="86">
+		    <field name="stringId">Scenarios</field>
+		</object>
+	    </field>
+	    <field name="entitySettings"><list>
+		<object type="DiagramEntitySetting" id="87">
+		    <field name="entity">
+			<object ref="47"/>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="88">
+			    <field name="x">618</field>
+			    <field name="y">105</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="89">
+		    <field name="entity">
+			<object ref="56"/>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="90">
+			    <field name="x">264</field>
+			    <field name="y">225</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="91">
+		    <field name="entity">
+			<object ref="61"/>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="92">
+			    <field name="x">498</field>
+			    <field name="y">230</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="93">
+		    <field name="entity">
+			<object ref="45"/>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="94">
+			    <field name="x">69</field>
+			    <field name="y">40</field>
+			</object>
+		    </field>
+		</object>
+
+		<object type="DiagramEntitySetting" id="95">
+		    <field name="entity">
+			<object ref="70"/>
+		    </field>
+		    <field name="location">
+			<object type="Coordinate" id="96">
+			    <field name="x">148</field>
+			    <field name="y">123</field>
 			</object>
 		    </field>
 		</object>
@@ -442,92 +742,106 @@
 	</list>
     </field>
     <field name="model">
-	<object type="PrometheusModelData" id="51">
+	<object type="PrometheusModelData" id="97">
 	    <field name="projectData">
 		<object ref="1"/>
 	    </field>
 	    <field name="actions"><list>
-		<object ref="21"/>
+		<object ref="57"/>
 
-		<object ref="36"/>
+		<object ref="71"/>
 
-		<object ref="11"/>
+		<object ref="48"/>
 
-		<object ref="13"/>
+		<object ref="50"/>
 		</list>
 	    </field>
 	    <field name="goals"><list>
-		<object ref="22"/>
-
-		<object ref="26"/>
-
-		<object ref="8"/>
-
-		<object ref="37"/>
-
 		<object ref="14"/>
-		</list>
-	    </field>
-	    <field name="percepts"><list>
-		<object ref="6"/>
 
-		<object ref="9"/>
-
-		<object ref="12"/>
-		</list>
-	    </field>
-	    <field name="scenarios"><list>
-		<object ref="20"/>
+		<object ref="23"/>
 
 		<object ref="25"/>
 
-		<object ref="7"/>
+		<object ref="38"/>
 
-		<object ref="35"/>
+		<object ref="8"/>
+
+		<object ref="5"/>
+
+		<object ref="20"/>
+
+		<object ref="17"/>
+
+		<object ref="24"/>
+
+		<object ref="9"/>
 
 		<object ref="10"/>
+
+		<object ref="11"/>
+		</list>
+	    </field>
+	    <field name="percepts"><list>
+		<object ref="44"/>
+
+		<object ref="46"/>
+
+		<object ref="49"/>
+		</list>
+	    </field>
+	    <field name="scenarios"><list>
+		<object ref="56"/>
+
+		<object ref="61"/>
+
+		<object ref="45"/>
+
+		<object ref="70"/>
+
+		<object ref="47"/>
 		</list>
 	    </field>
 	    <field name="actors"><list>
-		<object ref="5"/>
+		<object ref="43"/>
 
-		<object ref="17"/>
+		<object ref="53"/>
 		</list>
 	    </field>
 	    <field name="systemOverviewDiagramData">
-		<object type="SystemOverviewDiagramData" id="52">
+		<object type="SystemOverviewDiagramData" id="98">
 		</object>
 	    </field>
 	    <field name="rolesDiagramData">
-		<object type="RolesDiagramData" id="53">
+		<object type="RolesDiagramData" id="99">
 		</object>
 	    </field>
 	    <field name="analysisOverviewDiagramData">
-		<object type="AnalysisOverviewDiagramData" id="54">
+		<object type="AnalysisOverviewDiagramData" id="100">
 		    <field name="entities"><list>
-			<object ref="5"/>
+			<object ref="43"/>
 
-			<object ref="20"/>
+			<object ref="56"/>
 
-			<object ref="7"/>
+			<object ref="45"/>
 
-			<object ref="6"/>
+			<object ref="44"/>
 
-			<object ref="21"/>
+			<object ref="57"/>
 
-			<object ref="35"/>
+			<object ref="70"/>
 
-			<object ref="36"/>
+			<object ref="71"/>
 
-			<object ref="9"/>
+			<object ref="46"/>
 
-			<object ref="10"/>
+			<object ref="47"/>
 
-			<object ref="12"/>
+			<object ref="49"/>
 
-			<object ref="11"/>
+			<object ref="48"/>
 
-			<object ref="13"/>
+			<object ref="50"/>
 			</list>
 		    </field>
 		</object>
@@ -535,28 +849,34 @@
 	    <field name="actorsDiagramNotes">
 </field>
 	    <field name="scenariosDiagramData">
-		<object type="ScenariosDiagramData" id="55">
+		<object type="ScenariosDiagramData" id="101">
 		</object>
 	    </field>
 	    <field name="goalOverviewDiagramData">
-		<object type="GoalOverviewDiagramData" id="56">
+		<object type="GoalOverviewDiagramData" id="102">
 		</object>
 	    </field>
 	    <field name="dataCouplingDiagramData">
-		<object type="DataCouplingDiagramData" id="57">
+		<object type="DataCouplingDiagramData" id="103">
 		</object>
 	    </field>
 	    <field name="agentRoleCouplingDiagramData">
-		<object type="AgentRoleCouplingDiagramData" id="58">
+		<object type="AgentRoleCouplingDiagramData" id="104">
 		</object>
 	    </field>
 	    <field name="agentOverviewDiagramData">
-		<object type="AgentOverviewDiagramData" id="59">
+		<object type="AgentOverviewDiagramData" id="105">
 		</object>
 	    </field>
 	    <field name="capabilityOverviewDiagramData">
-		<object type="CapabilityOverviewDiagramData" id="60">
+		<object type="CapabilityOverviewDiagramData" id="106">
 		</object>
+	    </field>
+	    <field name="deletedEntitiesForCodeGen"><list>
+		<object type="Entity" id="107">
+		    <field name="name">Begin game</field>
+		</object>
+		</list>
 	    </field>
 	</object>
     </field>

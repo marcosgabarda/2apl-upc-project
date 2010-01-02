@@ -55,7 +55,7 @@ Actors:
 
 Scenarios:
 \begin{itemize}
-  \item Waiting for players scenario: the process which waits for 5 players in the system
+  \item Welcome players scenario: the process which waits for 5 players in the system
   \item Begin game scenario: The process which shuffles and start giving the cards
   \item Partner selection scenario: The process which handles the partern selection phase
   \item Game scenario: The process which handles the whole game phase
@@ -78,13 +78,32 @@ Actions:
 
 % Analysis overview diagram here
 
-\section{Design}\label{sec:design} 
+\subsection{Scenarios}
 
-Design choices
+Scenarios are an example of the dynamics, the process of how something can happen. Conversely, the goal hierarchy is a static representation  - it tries to break down all the high level goals into subgoals. Each scenario must be associated with some goal, that represents what that scenario is trying to achieve. 
+
+\paragram{Welcome players scenario}
+
+This scenario covers the necessary processes to subscribe a user to the system. First, the user must make the subscription attempt. This subscription is received by the system, passed to the appropriate agent and stored appropriately. ....
+
+\subsection{Goal overview}
+
+\subsection{System roles}
+The next stage of the process is to group similar goals together into roles. Each role should be limited in scope, and be able to be described fully be 1-2 sentences. Grouping is done using the System Roles diagram. 
+
+\section{Architectural Design}\label{sec:design} 
+
+\subsection{Data Coupling}
+
+\subsection{Agent-Role Grouping}
+
+\subsection{Agent Acquaintance}
+
+\subsection{System overview}
 
 \section{Prototype}\label{sec:proto} 
 
-Description. Pieces of code.
+Description. Excerpt from the code.
 
 \section{Conclusion}\label{sec:concl} 
 
