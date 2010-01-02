@@ -1,0 +1,112 @@
+/* headings */
+
+.h1 {font-size:20px;
+padding:3px;
+border:1px solid black;
+}
+.h2 {font-size:17px;
+font-weight:bold;
+background-color:#F0F0F0;
+}
+.h3 {font-size:16px;
+font-weight:bold;
+padding-left:30px;
+}
+.h4 {font-size:14px;
+padding-left:45px;
+}
+
+/* end headings */
+
+/* list */
+
+.mylist {
+list-style-type:none;
+border:solid black 1px;
+padding:15px;
+}
+.mylist a {
+color:black;
+text-decoration:none;
+font-weight:bold;
+}
+li {
+list-style-type:none;
+}
+ul a:link {
+font-size:15px;
+padding-top:5px;
+border-top:5px;
+padding-left:-10px;
+
+}
+ul a:hover {
+color:#0066FF
+}
+ul a:visited:hover {
+color:#0066FF
+}
+
+ul ul a:link {
+list-style-type:none;
+font-size:14px;
+font-weight:normal;
+}
+ul ul a:hover {
+color:#0066FF;
+}
+ul ul a:visited {
+list-style-type:none;
+font-size:14px;
+font-weight:normal;
+}
+ul ul ul a:link {
+list-style-type:none;
+font-size:13px;
+color:#333333;
+font-style:italic
+
+}
+ul ul ul a:visited {
+list-style-type:none;
+font-size:13px;
+color:#333333;
+font-style:italic
+
+}
+ul ul ul a:hover {
+color:#0066FF;
+}
+ul ul ul ul a:link {
+list-style-type:none;
+font-size:11px;
+font-style:normal;
+}
+ul ul ul ul a:visited {
+list-style-type:none;
+font-size:11px;
+font-style:normal;
+}
+ul ul ul ul a:hover {
+color:#0066FF;
+}
+ul ul a:visited:hover {
+color:#0066FF;
+}
+
+/* end list */
+
+/* back to top */
+
+.backtotop a {
+font-size:12px;
+text-decoration:none;
+background:url(up_arrow_blue.gif) left no-repeat;
+padding-left:12px;
+float:right;
+color:#0000CC;
+}
+
+.backtotop a:visited {
+color:#0000CC;
+}

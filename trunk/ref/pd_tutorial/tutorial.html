@@ -1,0 +1,1078 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Tutorial</title><link rel="stylesheet" type="text/css" href="http://www.westciv.com/style/style.css"><link href="styles.css" rel="stylesheet" type="text/css"></head>
+<body>
+<p></p><h1 style="text-align: center;">Meteorology example.</h1><p>
+  <br>
+For
+this example we will be creating an agent-based weather warning system
+using the <a href="http://www.cs.rmit.edu.au/agents/pdt/">Prometheus Design Tool</a> and the JACK programming language. The associated PDT design file can be found <a href="Meteorology%20v0.3.pd">here</a>.</p>
+<a name="top"></a>Contents:<br>
+<ul class="mylist">
+<li><a href="#problem_specification">Problem Specification</a>
+  <ul>
+    <li><a href="#analysis_overview">Analysis Overview</a></li>
+    <li><a href="#scenarios">Scenarios</a></li>
+    <li><a href="#goal_overview">Goal Overview </a>
+      <ul>
+        <li><a href="#obtain_data_scenario">Obtain Data Scenario          
+          </a>
+          <ul>
+            <li><a href="#obtain_aws_data_h4">Obtain AWS data</a></li>
+            <li><a href="#obtain_taf_data_h4">Obtain TAF data  </a></li>
+          </ul>
+        </li>
+        <li><a href="#alert_user">Alert User</a> 
+          <ul>
+            <li><a href="#detect_alertable_situation">Detect alertable situation </a></li>
+          </ul>
+        </li>
+        <li><a href="#subscribe_user">Subscribe User </a></li>
+      </ul>
+    </li>
+    <li><a href="#system_roles">System Roles </a>
+      <ul>
+        <li><a href="#obtain_aws_data">Obtain AWS data</a></li>
+        <li><a href="#obtain_taf_data">Obtain TAF data</a></li>
+        <li><a href="#create_forecast">Create Forecast</a></li>
+        <li><a href="#check_for_high_wind">Check for High Wind</a></li>
+        <li><a href="#check_for_forecast">Check for forecast discrepancy</a></li>
+        <li><a href="#check_for_change_in_immediate_forecast">Check for change in immediate forecast</a></li>
+        <li><a href="#create_warning">Create Warning</a></li>
+        <li><a href="#add_subscription">Add Subscription</a></li>
+        <li><a href="#subscribe_to_airport">Subscribe to Airport</a></li>
+        <li><a href="#display_warning">Display Warning    </a></li>
+        <li>  </li>
+      </ul>
+    </li>
+    </ul>
+</li>
+<li><a href="#architectural_design">Architectural Design</a>
+  <ul>
+    <li><a href="#data_coupling">Data Coupling </a></li>
+    <li><a href="#agentrole_grouping">Agent Role Grouping </a>
+      <ul>
+        <li><a href="#airport_agent">Airport Agent</a></li>
+        <li><a href="#gui_agent">GUI Agent</a></li>
+        <li><a href="#forecaster_agent">Forecaster Agent   </a></li>
+        </ul>
+    </li>
+    <li><a href="#agent_acquaintance">Agent Acquaintance </a></li>
+    <li><a href="#system_overview">System Overview</a>
+      <ul>
+        <li><a href="#data_retrival">Data Retrieval</a></li>
+        <li><a href="#subscriptions_protocol">Subscriptions Protocol</a></li>
+        <li><a href="#warnings_protocol">Warnings Protocol   </a></li>
+      </ul>
+    </li>
+    </ul>
+</li>
+<li><a href="#detailed_design">Detailed Design </a>
+  <ul>
+    <li>Airport Agent </li>
+    <li>Gui Agent </li>
+    <li>Forecaster Agent </li>
+  </ul>
+</li>
+</ul>
+<span style="font-weight: bold;"><p class="h1"><a name="problem_specification"></a>Problem Specification</p>
+<span class="backtotop"><a href="#top">back to top</a></span>
+</span>The
+problem calls for a multi-agent system to provide various types of
+weather warnings to users based on forecasts and actual sensor readings
+from various airports. Any number of users should be able to subscribe
+to one or more airports and receive warnings for specific scenarios at
+those airports.<br>
+<br style="font-weight: bold;"><span style="font-weight: bold;">
+Forecast data</span><br>
+The forecast data will be sent
+from one central forecaster and will contain hourly predictions for all
+airports for 12 hours into the future. These predictions will include:<br>
+&nbsp;&nbsp;&nbsp; -Predicted wind speed (in knots)<br>
+&nbsp;&nbsp;&nbsp; -Predicted rainfall (in mm)<br>
+&nbsp;&nbsp;&nbsp; -Predicted temperature (in degrees
+celsius)<span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span></span><span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span><br>
+&nbsp;&nbsp;&nbsp; -</span>Predicted fog<br>
+<br><span style="font-weight: bold;">
+AWS data</span><br>
+The
+AWS data is produced from sensors on the ground at the various
+airports. This data changes every minute however will only be sent to
+the system every 15 minutes. The system is able to request additional,
+up-to-date data and this will be accurate to the nearest minute. Each
+airport will produce and send its own set of AWS data so each set will
+only contain readings for a single airport. The data includes:<br>
+&nbsp;&nbsp;&nbsp; -Actual current wind speed (in knots)<br>
+&nbsp;&nbsp;&nbsp; -Actual rainfall (in mm)<br>
+&nbsp;&nbsp;&nbsp; -Actual current temperature (in degrees
+celsius)<br>
+&nbsp;&nbsp;&nbsp; -The presence of fog<br>
+<br><span style="font-weight: bold;">
+Warnings</span><br>
+There
+are several specified situations which should trigger a warning which
+will be sent to all subscribed users. Users can then select which types
+of warnings they want displayed.<br>
+<br><span style="font-weight: bold;">
+Discrepancy between forecast and actual reading</span><br>
+A
+warning should be displayed when there is a significant difference
+between the forecast for a given hour and the actual reading.
+Specifically where:<br>
+&nbsp;&nbsp;&nbsp; - There is a difference of 5 knots in
+wind speed<br>
+&nbsp;&nbsp;&nbsp; - There is a difference in the presence
+of fog<br>
+<br style="font-weight: bold;"><span style="font-weight: bold;">
+High wind situation likely</span><br>
+A
+warning should be displayed where there is a significant concern that
+there will be a high wind situation at an airport in the next 6 hours.
+A high wind situation is considered likely if :<br>
+&nbsp;&nbsp;&nbsp; -There is a forecast for wind greater
+than 30 knots<br>
+&nbsp;&nbsp;&nbsp;
+-Current wind strength is greater than 5 knots, is significantly higher
+than forecast, and is increasing fairly rapidly.<br>
+&nbsp;&nbsp;&nbsp; -Wind strength is increasing, is over 20
+knots, and is higher than forecast<br>
+<br><span style="font-weight: bold;">
+Significant change in the forecast for the next 2 hours</span><br>
+A
+warning should be displayed where there is a significant difference in
+the forecast for the next 2 hours from what was previously forecast
+with respect to any of the following :<br>
+&nbsp;&nbsp;&nbsp; -Whether there is a high wind situation
+of not (where high wind is considered to be 30 knots or greater)<br>
+&nbsp;&nbsp;&nbsp; - The presence of fog<br>
+&nbsp;&nbsp;&nbsp; -Temperature below zero<br>
+&nbsp;&nbsp;&nbsp; -High rainfall situation (over 10mm)<br>
+<br><span style="font-weight: bold;">
+Starting a new Prometheus Design file</span><br>
+1. Open the Prometheus Design Tool using the command<br>
+&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">java
+-jar pdt_jar_file.jar<br>
+&nbsp;&nbsp;&nbsp; </span>where <span style="font-style: italic;"><span style="font-style: italic;">pdt_jar_file.jar </span></span>is
+the pdt application file.<br>
+<br>
+2. Start a new design document using File | New.<br>
+<br>
+3. Give the document a name and description as shown below:<br>
+&nbsp;<img src="fig1.jpg" style="width: 340px; height: 290px;" alt="Figure 1"><br>
+Figure 1: Project properties<br><br><h2 style="text-align: center;">System Specification</h2>
+<p class="h2"><a name="analysis_overview"></a>Analysis Overview Diagram</p>
+<span class="backtotop"><a href="#top">back to top</a></span>
+<br>
+The
+analysis overview diagram is designed to show the interactions between
+the system and the environment. At this abstract level it is necessary
+to identify the actors, scenarios, percepts and actions involved in the
+system. This consists of a two step process. Firstly, we identify the
+actors and the scenarios they participate in with the system. Secondly,
+we identify and define the actions and percepts between the actors and
+the system.<br>
+<br>
+The actors are all the people or external systems associated with the
+system. In our system we can identify three actors :<br>
+User
+-&nbsp;the end user who will be accessing the system via GUI and
+will
+be capable of viewing warnings and making subsriptions.<br>
+AWS Sensor - the individual sensors at each airport which will produce
+the actual readings<br>
+Forecaster - the person/system which will produce the 12 hour forecasts
+for each airport<br>
+<br style="color: black;"><span style="color: black;">
+The
+scenarios are the processes which the system uses to handle the
+percepts and produce the actions.</span> <span style="font-weight: bold;"></span>In our system we can identify three
+high level scenarios:<br>
+Subscribe User Scenario - the process which handles the user
+subscription and stores it.<br>
+Alert User Scenario - the process which detects an alertable situation
+and displays the warning to the user<br>
+Obtain Data Scenario - the process which subscribes to the
+sensor/forecaster and stores the incoming data.<br><span style="font-style: italic;">Note
+PDT will automatically add the name Scenario to help differentiate
+between goals with the same name and as such it is not necessary to
+include yourself.</span><br><br>
+The
+percepts are all the types information which come into the system from
+the environment. In our system we can identify three percepts:<br>
+Subscription - the subscription sent to an airport from a user.<br>
+AWS readings - the actual readings from sensors sent to the system
+every 15 minutes<br>
+TAF data - the forecasts sent from a central forecaster to the system
+every hour<br>
+<br>
+The actions are everything that is sent from the system to the
+environment. &nbsp;In our system we can identify four actions:<br>
+Show Warning - the warning that is displayed to the User actor via a
+GUI.<br>
+Subscribe
+AWS source/Subscribe TAF source - the system must send a subscrption to
+the airport sensors and the central forecaster, registering it as the
+destination for AWS readings and TAF data.<br>
+Request data - a request sent to an airport sensor for up to date data.<br>
+<br>
+Using
+the various buttons in the toolbar we can create the analysis diagram
+from the components we have identified. We can then link these
+components as appropriate using the Edge tool which is found in the toolbar on the left and circled in the diagram below..<br>
+<br><span style="font-weight: bold; font-style: italic;">
+Exercise: - Using the information provided above, create the Analysis
+Overview Diagram.</span><br>
+<img src="fig2.jpg" style="width: 905px; height: 447px;" alt="Figure 2. Analysis Overview Diagram"><br>
+Figure 2 : Analysis Overview Diagram<br>
+<br>
+<p class="h2"><a name="scenarios"></a>Scenarios Details </p>
+<span class="backtotop"><a href="#top">back to top</a></span>
+<br>You iterate over the scenario specification and goal diagram. They
+are inter-related. Scenarios are an example of the dynamics - the
+process of how something will (or rather, can - its just one example)
+happen. It is a sequence for simplicity of understanding, and is
+therefore <span style="font-style: italic;">one possible</span>
+sequence and should be thought of as a high level trace of a particular
+possible (common) run. Conversely, the goal hierarchy is a static
+representation &nbsp;- it tries to break down all the high level goals
+into subgoals.<br>&nbsp;&nbsp;&nbsp; Each scenario must be associated
+with some goal, that represents what that scenario is trying to
+achieve. By default, a goal is created with the same name as the
+scenario, though this can be changed: you can edit the name of the goal
+associated with the scenario in the scenario descriptor).<br>&nbsp;&nbsp;&nbsp;
+The scenario diagram (in the diagram pane) is not always useful. It
+exists to allow access to scenario specifications by clicking on an
+icon although these cannot also be accessed via the Entities menu. It
+also shows which scenarios are used within other scenarios which may be
+useful. While it may not need to be used in the design process, it can
+be used in cases where the top level scenario in the Analysis overview
+diagram is really a collection of discrete scenarios. This is in fact
+the case for the Obtain Data Scenario.<br><br>From the Analysis overview diagram three key scenarios which the
+system must perform have been identified. The scenario diagram can be
+used to go into&nbsp;these processes in more depth and identify the key
+goals, actions and percepts and the sequence in which they take place.
+It must be made clear here that the designing of a system using PDT is
+an <span style="font-style: italic;">iterative </span>process
+and it is not expected that in the first iteration, all of the
+information will be known. For example, in each of the scenario
+editors, it is possible to specify which role each goal and action
+applies to however much of this information will not be known at this
+stage of the process. Instead, leave these fields blank, and as they
+are identified in later sections of the design, you should come back
+and fill them in appropriately.<br><br><span style="font-weight: bold;">Obtain data scenario</span><br><div style="margin-left: 40px;">This
+scenario can logically be split into two separate high level processes
+- obtaining AWS data and obtaining TAF data. As these are relatively
+isolated processes, they can be separated into two different scenarios
+before describing the details. Using the Scenario diagram, you can add
+two new scenarios, namely the Obtain TAF data scenario and the Obtain
+AWS data scenario. Then using the edge tool, create a link from the
+Obtain Data scenario to each of the new scenarios.<br><br>To
+edit the details of a scenario, double click on its icon in the
+Scenario diagram to bring up the Scenario Dialog. Steps can now be
+added, removed or rearranged using the buttons at the bottom. To insert
+a step, click the Insert Step button, then choose the step type and
+name.<br>Note: This dialog can also be accessed via the Entiites menu.<br><img src="fig45.jpg" style="width: 468px; height: 539px;" alt="Fig 45"><br>Figure 45: Scenario details can be described using the Scenario Dialog, accessed by double clicking on the icon.<br><br><img src="fig27.JPG" style="width: 401px; height: 131px;" alt="Figure 27"><br>Figure 27: The Obtain Data Scenario is split into two separate scenarios<br><br><span style="font-weight: bold;">Obtain TAF data scenario</span><br><div style="margin-left: 40px;">&nbsp;This
+scenario covers the necessary processes to obtain forecasts. This
+includes all goals, actions and percepts relating to the system in the
+order in which they take place:<br><div style="margin-left: 40px;">- Subscribing to the forecaster<br>- Data arriving for all airports<br>- Splitting the data into individual airports and communicating individual forecasts to the appropriate airports<br>- Receiving the individual forecast at the airport<br>- Storing the forecast in an appropriate data store</div><br>&nbsp;For
+each of the above processes, each can be identified as either an
+Action, Percept or Goal. Actions are processes inside the system which
+affect the external environment. Percepts are changes to the
+environment which may affect the system. Goals relate to processes
+which the system should complete internally.<br><br><span style="font-style: italic;"><span style="font-weight: bold;">Exercise:
+Using the information provided in the Analysis Overview diagram and
+your knowledge of Goals, Actions and percepts, can you identify which
+of the above processes are Goals, Percepts and Actions? Create the
+Obtain TAF scenario, adding each of the above&nbsp;steps with the
+correct identifier.</span></span><br><br></div></div><div style="margin-left: 40px;"><br><span style="font-weight: bold;">Obtain AWS data scenario<br></span><div style="margin-left: 40px;"><span style="font-weight: bold;">&nbsp;</span>This
+scenario covers the necessary processes to obtain AWS readings from the
+sensors and store them appropriately. The following steps can be
+identified as was done with the Obtain TAF scenario:<br><br><div style="margin-left: 40px;">- Data arriving for an individual airport (Percept)<br>- Reading the incoming data (Goal)<br>- Updating beliefsets with new data (Goal)<br>- Subcribing to the forecaster (Action)<span style="font-weight: bold;"></span></div></div><div style="margin-left: 40px;">The
+sequence of steps is an important part of a scenario as knowing the
+order of events can help determine the roles which will be associated
+with them.<br><br><span style="font-style: italic;"><span style="font-weight: bold;">Exercise:
+The above steps are in a random order. Can you identify a feasible
+sequence of the steps shown above? Create the Obtain AWS Data Scenario,
+adding each of the above steps in the correct order.</span></span><br></div></div>
+<br><span style="font-weight: bold;">Subscribe User Scenario<br></span>This
+scenario covers the necessary processes to subscribe a user to the
+system. First, the user must make the subscription attempt, probably
+via a GUI. This subscription is received by the system, passed to the
+appropriate agent and stored appropriately<span style="font-weight: bold;">.</span> Thus we can identify the following steps, in order:<br><div style="margin-left: 40px;">- User makes a Subscription attempt via GUI (Percept)<br>- Create subcription and communicate with relevant agent (Goal)<br>- Update beliefs with new subscription (Goal)</div><br><span style="font-weight: bold;">Alert User Scenario<br><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span></span>This
+scenario covers the steps necessary to warn a user about an alertable
+situation. &nbsp;Once a situation is detected, by testing if any of the
+conditions described in the Problem Specification hold against the
+beliefs, a warning containing the appropriate information must be
+created. The list of subscribed users should be checked to determine
+those subscribed to receive warnings about the given airport. The
+warning should then be displayed to the user via a GUI. Thus we can
+identify the following steps, in order:<br><div style="margin-left: 40px;">- Detect Alertable situation (Goal)<br>- Create warning with relevant information (Goal)<br>- Check subscribers for given airport (Goal)<br>- Display warning to user (Action)</div><br>
+<p class="h2"><a name="goal_overview"></a>Goal Overview Diagram</p>
+<span class="backtotop"><a href="#top">back to top</a></span> <br>The
+iterative nature of the design process is very important to note when
+working with the goal overview diagram and the Scenario specifications.
+Changes made to one diagram should be reflected in the other, and PDT
+helps to ensure this by propogating some changes across automatically.
+The goal overview should still be considered a high level diagram, and
+although there is some control information (specifically with AND vs
+OR), this diagram does not show the control structure of a program.
+ANDed subgoals may not be used in all cases, only some. This detail is not considered/need at this level.<br>
+<br>
+<img src="fig3.jpg" style="width: 506px; height: 187px;" alt="Figure 3: Base goals" title="Figure 3: Base goals"><br>
+Figure 3: The automatically created high-level goals.<br>
+<br>
+From these high-level goals several sub goals can be defined. For each
+set of sub-goals either an AND or OR constraint can be attached. AND
+constraints indicate that all of the sub-goals must be achieved in
+order to achieve the parent goal. An OR constraint indicates that only
+one of the sub-goals needs to be achieved in order for the parent goal
+to be achieved. By default PDT uses an AND constraint however you can
+change to an OR constraint using the OR refinement checkbox under the
+parent goal's descriptor.<br><img src="fig41.jpg" style="width: 522px; height: 174px;" alt="Fig 41"><br>Figure 41: The OR refinement.<br>
+<br>
+<span class="h3"><a name="obtain_data_scenario" id="obtain_data_scenario"></a>Obtain Data</span><br>
+<div style="margin-left: 40px;"><span class="backtotop"><a href="#top">back to top</a></span>
+From the Problem Description it is clear that we have two distinct data
+sources and as such, the parent goal of Obtain Data can easily be split
+into two sub-goals
+of obtaining AWS data and TAF data. Each of these are seperate
+processes which must both be completed to achieve the parent goal and
+thus an AND constraint is used.<br>
+We can then break each of these sub-goals down further:<br></div>
+<p class="h4"><a style="font-weight: bold;" name="obtain_aws_data_h4"></a><span style="font-weight: bold;">Obtain AWS data</span>
+</p><p>
+<span class="backtotop"><a href="#top">back to top</a></span>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;Subgoals:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Request AWS data - as AWS data can
+optionally be requested, this goal can be added and marked as optional.<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Recieve AWS data - the system needs to
+receive the AWS data and translate it into the appropriate format<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Update AWS beliefs - the system needs
+to store the incoming data in an appropriate data store.<br>
+<br>
+</p><p class="h4"><a name="obtain_taf_data_h4"></a><span style="font-weight: bold;">Obtain TAF data</span></p>
+
+<span class="backtotop"><a href="#top">back to top</a></span>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Subgoals:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Send to airports - as the TAF data
+arrives with data for all airports, it will need to be split up and
+sent to each individual airport<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Receive TAF data - each airport needs
+to receive the TAF data and translate it into the appropriate format<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Update TAF beliefs - each airport needs
+to store the incoming data in an appropriate data store.<br>
+<br>
+<img src="fig4.jpg" style="width: 637px; height: 162px;" alt="Figure 4 - Obtain data subgoals"><br>
+<br>
+<br>
+<span class="h3"><a name="alert_user"></a>Alert User<br>
+</span>The alert user goal is a very high-level goal that
+encapsulates much of the system logic. There are 4 key goals we can
+identify that will need to be achieved in order to achieve the goal of
+alerting the user:
+<p class="h4"><a name="detect_alertable_situation"></a><span style="font-weight: bold;">Detect alertable situation</span></p>
+<span class="backtotop"><a href="#top">back to top</a></span><span style="font-weight: bold;">
+&nbsp;&nbsp;&nbsp; &nbsp; </span>This
+high-level goal encapsulates all of the processing involved in
+determining if there is an alertable situation at an airport. It can
+very logically be broken down into detecting each of the different
+types of alertable situations as specified in the problem description:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Recognise change in immediate forecast<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Recognise forecast discrepancy<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Recognise high wind situation<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp; As it is only necessary for one of the sub-goals to succeed
+in order for the parent goal to succeed, an OR constraint can be
+utilised.<br>
+<br>
+<div style="margin-left: 40px;">&nbsp;Each of these
+goals can then be broken down further into their respective subgoals:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">Recognise change in immediate
+forecast</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Subgoals:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Check high wind change -<span style="font-style: italic;"> identify if there has been a
+change in the high wind situation in the immediate forecast</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Check fog change - <span style="font-style: italic;">identify if there has been a
+change in the presence of fog in the immediate forecast</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Check temp below zero -<span style="font-style: italic;"> identify if there has been a
+change in the presence of below zero temperatures in the immediate
+forecast</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Check high rain - <span style="font-style: italic;">identify if there has been a
+change in the presence of high rain in the immediate forecast</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <img src="fig5.jpg" style="width: 425px; height: 105px;" alt="Figure 5 - Recognise change in immediate forecast"><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Figure 5: Recognise change in
+immediate forecast</span><br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-weight: bold;">Recognise forecast discrepancy</span><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Subgoals:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Check wind - <span style="font-style: italic;">identify a discrepancy of 5
+knots or more between the forecast and actual reading</span><br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -</span>Check
+fog - <span style="font-style: italic;">identify a
+discrepancy in the presence of fog between the forecast and actual
+reading</span><br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; <img src="fig6.jpg" style="width: 248px; height: 109px;" alt="Figure 6: Recognise forecast discrepancy"></span><br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; Figure 6: Recognise forecast discrepancy</span><br>
+<span style="font-style: italic;"></span><br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </span><span style="font-weight: bold;">Recognise high wind situation</span><br>
+<span style="font-weight: bold;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </span>Subgoals:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; -Check high wind - <span style="font-style: italic;">identify wind speeds of greater
+than 30 knots</span><br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -</span>Check
+really unexpected, increasing wind - <span style="font-style: italic;">identify wind that is greater
+than 5 knots, is significantly higher than forecast and is increasing</span><br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; -</span>Check
+high, unexpected, increasing wind - <span style="font-style: italic;">identify wind that is greater
+than 20 knots, higher than forecast and </span>is increasing<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <img src="fig7.jpg" style="width: 625px; height: 119px;" alt="Figure 7 - Recognise high wind situation"><br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="font-style: italic;">Figure 7: Recognise high wind
+situation</span><br>
+<br>
+</div>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp; As well as detecting an alertable
+situation, there are three other goals which must be achieved in order
+to achieve the Alert User goal:<br>
+<div style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; Create Warning - <span style="font-style: italic;">create a warning with an
+appropriate message<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span>Send
+to Users - <span style="font-style: italic;">determine
+which users are subscribed and send the warning to them<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; </span>Display
+Warning - <span style="font-style: italic;">display the
+warning to the user via the GUI.</span>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<img src="fig8.jpg" style="width: 693px; height: 361px;" alt="Fig 8 - Alert Users"><br>
+<span style="font-style: italic;">Figure 8 - Alert User
+goal hierarchy</span><br>
+<span class="h3" style="font-weight: bold;"><a name="subscribe_user"></a>Subscribe
+User<br></span>
+<span class="backtotop"><a href="#top">back to top</a></span>
+
+<div style="margin-left: 40px;">The subscribe user goal is
+relatively simple and can be split into two subgoals:<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; Make
+Subscription - <span style="font-style: italic;">create a
+subscription and send it to the appropriate airport</span><br>
+<span style="font-style: italic;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; </span>Update Subscriptions
+Beliefs - <span style="font-style: italic;">store the
+subscription in an appropriate data store.</span><br>
+</div>
+<p class="h2"><a name="system_roles"></a>System Roles</p>
+
+<span class="backtotop"><a href="#top">back to top</a></span>
+<br>
+<div style="margin-left: 40px;">The next stage of the process is to
+group similar goals together into roles. Each role should be limited in
+scope, and be able to be described fully be 1-2 sentences. Grouping is
+done using the System Roles diagram. Select a tole icon, click on the
+diagram pane, and provide a suitable name. Then select the goal icon,
+and one by one, add goals, and connect them to the role icon using the
+arrow. Do this for each grouping of goals. It is not necessary to
+include <span style="font-style: italic;">every </span>goal
+from
+the goal hierarchy. If all of the sub goals are related to the same
+role, it will suffice to simply add the parent goal. Likewise, if all
+the sub-goals are displayed amongst various roles, it is not necessary
+to add the parent goal anywhere. The actions and percepts identified in
+the analysis overview diagram will automatically be placed in this
+diagram. Percepts and actions are also part of roles, and should be
+linked to a role in the same way as goals. Each percept and action
+should be part of some role. They can also be part of multiple roles.<br><br>While
+at this stage it is not strictly necessary to consider the agents to
+which these roles will be allocated, it is a good practice to keep
+roles small and specific so that at the appropriate time it is possible
+to consider different ways of combining things within agents.<br>
+<br>
+For this system, the following roles were identified:<br>
+<br>
+</div>
+<div style="margin-left: 40px;"><span class="h3" style="font-weight: bold;"><a name="obtain_aws_data"></a>Obtain AWS data</span><br>
+<span class="backtotop"><a href="#top">back to top</a></span>
+This role receives AWS data, both automatically and on request, and updates all necessary storage of this data..<br>
+<div style="margin-left: 40px;">Goals:<br>
+<div style="margin-left: 40px;">-Update AWS beliefs<br>
+-Recieve AWS data<br>
+-Request AWS data<br>
+</div>
+Actions:<br>
+<div style="margin-left: 40px;">-Request Data<br>
+-Subsribe AWS source data</div>
+Percepts:<br>
+<div style="margin-left: 40px;">-AWS data <br>
+</div>
+<br>
+</div>
+</div>
+<div style="margin-left: 40px;"><img src="fig9.jpg" style="width: 391px; height: 145px;" alt="Figure 9 - Obtain AWS role"><br>
+<span style="font-style: italic;">Figure 9: Obtain AWS
+data role diagram</span><br>
+<br>
+<span style="font-weight: bold;"><span class="h3"><a name="obtain_taf_data"></a>Obtain TAF data</span><br>
+<span class="backtotop"><a href="#top">back to top</a></span> </span>This is&nbsp; This role deals solely with receiving an individual forecast,
+translating it into the appropriate format and then storing it into an
+appropriate data store.<br>
+<div style="margin-left: 40px;">Goals:<br>
+<div style="margin-left: 40px;">-Receive TAF data<br>
+-Update TAF beliefs</div>
+</div>
+<span style="font-weight: bold;"></span><br>
+<img src="fig10.jpg" style="width: 137px; height: 124px;" alt=""><br>
+<span style="font-style: italic;">Figure 10: Obtain TAF
+data role diagram</span><br>
+<br>
+<span style="font-weight: bold;"><span class="h3"><a name="create_forecast"></a>Create Forecast</span><br>
+<span class="backtotop"><a href="#top">back to top</a></span>
+</span>This roles handles the incoming percept, then splits it and sends individual forecasts to the appropriate locations<br>
+<div style="margin-left: 40px;">Goals:<br>
+<div style="margin-left: 40px;">-Send to airports <br>
+</div>
+Percepts:<br>
+<div style="margin-left: 40px;">-TAF data</div>
+</div>
+<span style="font-weight: bold;"><span style="font-weight: bold;"></span><br>
+<img src="fig11.jpg" style="width: 225px; height: 104px;" alt=""><br>
+</span><span style="font-style: italic;">Figure 11:
+Create forecast role diagram</span><span style="font-weight: bold;"><br>
+<br>
+<span class="h3" style="font-weight: bold;"><a name="check_for_high_wind"></a>Check for High Wind</span><br>
+<span class="backtotop"><a href="#top">back to top</a></span>
+</span>This role&nbsp;detects high
+wind situations, which involves checking the AWS readings and TAF
+forecasts for the presence of high wind, really unexpected, increasing
+wind and high, unexpected, increasing wind.<br>
+<div style="margin-left: 40px;">Goals:<br>
+<div style="margin-left: 40px;">-Check for High wind<br>
+-Check for really unexpected, increasing wind<br>
+-Check for high, unexpected, increasing wind&nbsp;<br>
+</div>
+</div>
+<br>
+<img src="fig12.jpg" style="width: 408px; height: 129px;" alt=""><br>
+<span style="font-style: italic;">Figure 12: Check for
+High wind role diagram</span><br>
+<span class="h3"><a name="check_for_forecast"></a>Check for forecast
+discrepancy</span><br>
+<span class="backtotop"><a href="#top">back to top</a></span>This
+role&nbsp;detects a
+discrepancy in the presence of fog or high wind between forecasts and
+actual readings by comparing the AWS readings and TAF forecasts.<br>
+<div style="margin-left: 40px;">Goals:<br>
+<div style="margin-left: 40px;">-Check for fog<br>
+-Check wind</div>
+</div>
+<span style="font-weight: bold;"></span><br>
+<img src="fig13.jpg" style="width: 204px; height: 124px;" alt=""><br>
+<span style="font-style: italic;">Figure 13: Check for
+forecast discrepancy role diagram</span><br>
+<br>
+<span style="font-weight: bold;"><span class="h3"><a name="check_for_change_in_immediate_forecast"></a>Check for change in
+immediate forecast</span><br>
+<span class="backtotop"><a href="#top">back to top</a></span>
+</span>This role checks the current and recent TAF forecasts for a
+change in the immediate forecast in the areas of high wind,
+temperatures below zero, high rain or the presence of fog.<br>
+<div style="margin-left: 40px;">Goals:<br>
+<div style="margin-left: 40px;">-Check for high wind change<br>
+-Check for temp below zero change<br>
+-Check for high rain change<br>
+-Check for fog change</div>
+</div>
+<br>
+<img src="fig14.jpg" style="width: 479px; height: 132px;" alt=""><br>
+<span style="font-style: italic;">Figure 14: Check for
+change in immediate forecast role diagram</span><br>
+<br>
+<span style="font-weight: bold;"><span class="h3"><a name="create_warning"></a>Create warning</span><br>
+<span class="backtotop"><a href="#top">back to top</a></span>
+</span>This role is used to create a relevant warning message, and pass
+it on to the appropriate users by checking the user subscriptions.<br>
+<div style="margin-left: 40px;">Goals:<br>
+<div style="margin-left: 40px;">-Create Warning<br>
+-Check users</div>
+</div>
+<br>
+<img src="fig15.jpg" style="width: 333px; height: 63px;" alt=""><br>
+<span style="font-style: italic;">Figure 15: Create
+warning role diagram<br>
+<span style="font-style: italic;"><br></span></span>As with the Obtain
+TAF Data roles, the subscription process can logically be broken into
+two roles. One role to accept incoming subscriptions from a user,
+process them and pass to the appropriate airport. A separate role could
+be created to handle the subscriptions for a specific airport and store
+in a relevant datastore.<br><span style="font-weight: bold;"><span class="h3"><a name="add_subscription" id="add_subscription"></a>Add
+Subscription</span><br>
+<span class="backtotop"><a href="#top">back to top</a></span>
+</span>This role deals only with storing the subscriptions for a particular airport into an appropriate data store.<br>
+<div style="margin-left: 40px;">Goals:<br>
+<div style="margin-left: 40px;">&nbsp;-Update
+Subscriptions beliefs</div>
+</div>
+<br>
+<span style="font-style: italic;"><span style="font-style: italic;"></span></span><span style="font-weight: bold;"><span style="font-weight: bold;"><img src="fig16.jpg" style="width: 190px; height: 107px;" alt=""></span></span><br>
+<span style="font-style: italic;">Figure 16: Add
+subscription role diagram</span><span style="font-weight: bold;"><span style="font-weight: bold;"><br>
+</span></span><span class="h3"><br>
+<span class="backtotop"><a href="#top">back to top</a></span>
+<span style="font-weight: bold;"><a name="subscribe_to_airport"></a>Subscribe to airport</span></span><span style="font-weight: bold;"><br>
+</span>This role must handle the user subscription from the user and pass it to the appropriate airport. and passing it to the
+appropriate airport agent.<span style="font-weight: bold;"><br>
+</span>
+<div style="margin-left: 40px;">Goals:<br>
+<div style="margin-left: 40px;">-Make subscription <br>
+</div>
+Percept:<br>
+<div style="margin-left: 40px;">-User subscription</div>
+</div>
+<span style="font-weight: bold;"><br>
+<img src="fig17.jpg" style="width: 205px; height: 146px;" alt=""></span><br>
+<span style="font-style: italic;">Figure 17: Subscribe to
+airport diagram<br>
+</span><br>
+<span class="h3" style="font-weight: bold;"><a name="display_warning"></a>Display Warning</span><span style="font-style: italic;"><br>
+</span>
+<span class="backtotop"><a href="#top">back to top</a></span>This role covers displaying the warning on the screen so
+that it can be viewed by the user.<br>
+<div style="margin-left: 40px;">Goals:<br>
+<div style="margin-left: 40px;">-Display warning</div>
+Actions:<br>
+<div style="margin-left: 40px;">-Show warning</div>
+</div>
+<br>
+<img src="fig18.jpg" style="width: 141px; height: 141px;" alt=""><br>
+<span style="font-style: italic;">Figure 18: Display
+Warning role diagram</span><br>
+<br>
+Together, this creates the following System Roles diagram:<br>
+<img src="fig19.jpg" style="width: 753px; height: 378px;" alt=""><br>
+<span style="font-style: italic;">Figure 19: Complete
+System Roles Diagram</span><span style="font-style: italic;"><span style="font-style: italic;"><br>
+<br><span style="font-style: italic;"></span></span></span>For each of
+the roles identified above it is necessary to fill in the relevant
+fields in the descriptor of the role. <br><br>An example is given below:<br><img src="fig42.jpg" style="width: 900px; height: 460px;" alt="Fig42"><span style="font-style: italic;"><span style="font-style: italic;"></span><br>Fig 42: Example Role descriptor<br><br><br></span><span style="font-weight: bold;"></span><span style="font-weight: bold;"></span><span style="font-weight: bold;"></span></div><br><h2>Scenario Specification</h2>At
+this point in the design process it is necessary to return to the key
+scenarios we identified earlier and add in the information we have on
+roles. This will also help us to determine the data stores which will
+be required by the system. We will now look at this process for the
+Obtain TAF data scenario.<br><br>By double clicking on the Obtain TAF
+Data scenario in the Scenario Diagram we can see the following steps
+already place in the Scenario Dialog:<br><br><img src="fig46.jpg" style="width: 588px; height: 539px;" alt="Fig46"><br>Figure 46: Scenario Dialog for Obtain TAF data before role descriptors are added.<br><br>For
+each of the steps we will identify the role that the step is associated
+with. In the System roles section above we have identified two roles
+which are related to the TAF data acquisition process, so it is logical
+that each step probably belongs to one of these roles. In order to
+assign a role to a step, select that step in the list and then click
+the "Edit" button. This will bring up a Edit Step dialog as shown below.<br><br><img src="fig47.JPG" style="width: 762px; height: 396px;" alt="Fig47"><br>Figure 47: Editing a step.<br><br>From
+this dialog it is possible to edit the step description, as well as
+identify the data and roles it is associated with by clicking the
+appropriate edit button. By examining our role descriptions in the
+previous sections we can determine which steps logically belong to each
+role and assign them:<br><br><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td><span style="font-weight: bold;">Type</span></td><td style="font-weight: bold;">Step</td><td style="font-weight: bold;">Role</td></tr><tr><td>Action</td><td>SubscribeTAFSourceAgent</td><td>Create Forecast</td></tr><tr><td>Percept</td><td>TAF data Percept</td><td>Create Forecast</td></tr><tr><td>Goal</td><td>Send to Airports</td><td>Create Forecast</td></tr><tr><td>Goal</td><td>Receive TAF data</td><td>Obtain TAF data</td></tr><tr><td>Goal</td><td>Update TAF beliefs</td><td>Obtain TAF data</td></tr></tbody></table><br>Another important detail to add to the Scenario descriptors is any data
+which will be read or written by the step. This helps to identify which
+types and instances of data stores will be required.&nbsp;Note that there is
+a difference between data <span style="font-style: italic;">types</span> and data <span style="font-style: italic;">instances</span>.
+A data type defines the fields and queries that will be used to store
+and access the data. However there may be many data instances for any
+given data type. For example an AWS data type could be defined with the
+necessary fields and queries to store AWS readings in a suitable
+format. Many agents could then create their own instance of this data
+type and store their own beliefs inside. Identifying the data types
+which will be used helps to determine how the roles will
+be grouped into agent types.<br>
+<br>From the Obtain TAF data example given above each step must be
+considered in regards to what data it would require access to. In this
+example, only the final step of the scenario requires any data access
+as it will be required to write to a forecast data store of some
+description. In much the same way as assigning a role to a step before,
+we can assign a datastore to a step. By clicking Edit with the step
+selected we are able to edit the data which is written to by the step.
+However as we are yet to define any datastores, we will enter an
+appropriate name to create a new datastore. This datastore will then be
+propogated down to lower level of the design.<br><br><img src="fig48.jpg" style="width: 267px; height: 184px;" alt="CreateDataStore"><br><span style="font-style: italic;">Figure 48: Creating a data store.</span><br><br><span style="font-style: italic;"><span style="font-weight: bold;">Exercise: Add in the roles and data stores for each of the other Scenarios you have identified in the Scenario Diagram.</span></span><br><br><h2 class="h1"><a name="architectural_design"></a>Architectural Design</h2>The purpose of the Architectural Design phase is to do the following:<br>&nbsp;&nbsp;&nbsp; - group roles int o agents (using the Agent Role Grouping diagram)<br>&nbsp;&nbsp;&nbsp; - introduce and develop agent interactions (using the protocol diagram and system overview diagram)<br>&nbsp;&nbsp;&nbsp; - specify the details of the data stores in data descriptors<span style="font-weight: bold;"><br><br></span><h3><a name="agentrole_grouping"></a>Determining the agent types
+<span class="backtotop"><a href="#top">back to top</a></span></h3>
+
+<span style="font-weight: bold;"></span>It
+is now necessary to consider the different agent types which will be
+utilised by the system and assign roles to them. There are several things to consider before
+deciding on agent types and role grouping:<span style="font-weight: bold;"><br>
+</span>
+<div style="margin-left: 40px;"><span style="font-weight: bold;"></span><br>
+<span style="font-weight: bold;">Data coupling</span><br>
+<div style="margin-left: 40px;">While it is certainly
+possible to share data between agent types it can make the system more
+complex than necessary. Wherever possible, roles which use the same
+data stores should be allocated to the same agent type.</div>
+<br>
+<span style="font-weight: bold;">Coherence</span><br>
+<div style="margin-left: 40px;">It is a design decision how many agent
+types should be created. However the roles within an agent type should
+be related to each other, such that you can give a simple name to the
+agent that includes all the roles. The system is usually simpler if you
+do combine roles where it is possible, rather than having each role be
+an agent. (Agents can later be split into modules, called Capabilities,
+many of which may map back to roles).</div><br><span style="font-weight: bold;">Cardinality</span><br>
+<div style="margin-left: 40px;">Sometimes there will be many instances
+of a role needed, and sometimes only one. E.g. there would be only one
+instance of the role "Create Forecast" but there may be multiple
+instances of the role "Obtain AWS data" or "Obtain TAF data" as each
+instance, one per airport, will receive its own set of data.Roles
+requiring different cardinality should be put into different agents.</div>
+<span style="font-weight: bold;"></span><span style="font-weight: bold;"></span><br>
+<span style="font-weight: bold;"></span></div>
+<span style="font-weight: bold;"><br>
+</span>With these considerations in mind, the following agent
+types were decided upon:<span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"><br>
+</span></span></span>
+<div style="margin-left: 40px;"><span style="font-weight: bold;"><a name="airport_agent"></a><span class="h3">Airport agent</span><br>
+<span class="backtotop"><a href="#top">back to top</a></span>
+</span>There will be one Airport Agent per airport. It will
+handle the updating of beliefs and all logic relating to the detection
+of alerts<span style="font-weight: bold;"><br>
+</span>Roles:<br>
+</div>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;">-Obtain AWS Data<br>
+-Obtain TAF Data<br>
+-Add Subscription<br>
+-Check for High wind situation<br>
+-Check for Change in Immediate Forecast<br>
+-Check for Forecast Discrepancy<br>
+-Create Warning<br>
+</div>
+<br>
+<span class="h3" style="font-weight: bold;"><a name="gui_agent"></a>GUI agent</span>
+<span class="backtotop"><a href="#top">back to top</a></span><br>
+There will be one GUI Agent per user. It will handle all interactions
+with the user including the handling of user subscriptions and
+displaying of warnings.<br>
+Roles:<br>
+<div style="margin-left: 40px;">-Subscribe to Airport<br>
+-Display warnings</div>
+<br>
+<span class="h3" style="font-weight: bold;"><a name="forecaster_agent"></a>Forecaster agent</span>
+<span class="backtotop"><a href="#top">back to top</a></span><br>
+There will be one Forecaster agent in the system. It will handle the
+incoming forecasts, split them and send them to the appropriate Airport
+Agents.</div>
+<div style="margin-left: 40px;"><span style="font-weight: bold;"><span style="font-weight: bold;"></span><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span></span>Roles:<br>
+<div style="margin-left: 40px;">-Create Forecast</div>
+</div>
+<span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"><br></span></span></span></span>Each
+of the roles defined in the System Roles diagram will already have
+propagated down to the the Agent-Role Grouping diagram. To create a new
+Agent type, click on the Agent tool and then click in the Agent-Role
+Grouping diagram. Using the edge tool connect each new agent type with
+the appropriate roles as determined above to produce the following
+diagram.<span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"><br>
+<img src="fig23.jpg" style="width: 365px; height: 395px;" alt=""><br>
+</span></span></span></span><span style="font-style: italic;">Figure 23: Agent-role grouping
+diagram</span><br><br>For
+each of the agents it is appropriate to fill in all of the relevant
+fields in the agent descriptor. An example of this is shown below:<br><br><img src="fig43.JPG" style="width: 800px; height: 1200px;" alt="Agent Descriptor"><br>Figure 43: Agent descriptor diagram.<br>
+<br><p>
+Neither the Agent Acquaintance diagram or the Data Coupling diagram are
+essential to the design process. They can help with considering
+different combinations of agents and roles and can allow you to see how
+the system will interact and consider the coherence and flexibility of
+the system. The Agent Acquaintance diagram is not editable and only
+reflects relationships described elsewhere. While the Data Coupling
+diagram allows you to link roles to data stores, this is better done
+when describing the scenarios.<br>
+</p>
+<p class="h2"><a name="system_overview"></a>Agent Interaction</p>
+<span class="backtotop"><a href="#top">back to top</a></span>The interaction between agents and between agents and the environment is described using the <br>&nbsp;With the
+agent types defined, we must now consider how they will interact with
+each other and with the environment. PDT will automatically link the
+agents with their interactions with the environment so the actions and
+percepts should already be accurate. It is therefore only necessary to
+define the interactions between the agents and this can be done using
+either individual messages or through protocols. Protocols group
+messages in a single conversation together and show the legal sequence
+of message exchanges. When there are several messages relating to the
+same conversation, it is better to use a protocol and when there is
+only a single message which is sent from one agent to another this can
+simply be put on the diagram on its own.<br>
+  <br>
+  Protocols can be created by clicking on the protocol icon and adding it
+  into the diagram. Doubling clicking on the protocol will open an
+  editing window in which the protocol can be described using AUML2. AUML2 is described in this paper:  Michael Winikoff.
+<i>Defining syntax and providing tool support for Agent UML using a textual 
+notation</i>,
+International Journal Agent-Oriented Software Engineering, Vol. 1, No.
+2, pp.123-144, 2007. To specify a protocol, enter text into the text
+area and then click "Save". Clicking on the Diagram tab will then show
+the protocol in a graphical format. The MDP panel is obsolete and can
+be ignored.<br>
+  <br>
+  There are three interactions which need to take place between agents.
+  For each of them, it is necessary to identify the actors and agents
+  involved and each of the messages which will need to be sent. This
+  information can then be used to create the protocol diagram.<br>
+  <br>
+  <span class="h3" style="font-weight: bold;"><a name="data_retrival"></a>Data Retrieval</span><br>
+  Both the airport agent and the forecaster agent need to subscribe to
+  the appropriate data sources.<br>
+  When the forecast data arrives at the forecaster agent, it then needs
+  to be sent to the individual agents.<br>
+  There is the optional ability to send a request for AWS data at any
+  time.<br>
+  Agents:<br>
+&nbsp;&nbsp;&nbsp; -Airport agent<br>
+&nbsp;&nbsp;&nbsp; -Forecaster agent<br>
+  Actors:<br>
+&nbsp;&nbsp;&nbsp; -Airport sensors<br>
+&nbsp;&nbsp;&nbsp; -Forecaster actor<br>
+  Actions:<br>
+&nbsp;&nbsp;&nbsp; -AWS subscription - sent from Airport
+  Agent to Airport sensor<br>
+&nbsp;&nbsp;&nbsp; -TAF subscription - sent from Forecaster
+  agent to Forecaster<br>
+&nbsp;&nbsp;&nbsp; -AWS data request - sent from Airport
+  Agent to Airport sensor<br>
+  Percepts:<br>
+&nbsp;&nbsp;&nbsp; -AWS data - sent from Airport sensor to
+  Airport agent<br>
+&nbsp;&nbsp;&nbsp; -TAF data - sent from Forecaster to
+  Forecaster agent<br>
+  Messages:<br>
+&nbsp;&nbsp;&nbsp; -Forecast - sent from Forecaster agent
+  to Airport agent<br>
+  <br>
+  From these elements we can produce the following AUML2:<br>
+
+<div style="font-style: italic;">
+<div style="margin-left: 80px;">start Data retrieval<br>
+actor A Airport Sensor<br>
+agent B AirportAgent<br>
+actor C Forecaster<br>
+agent D ForecasterAgent<br>
+action B A subscribeAWSSourceAgent<br>
+action D C subscribeTAFSourceAgent<br>
+box loop<br>
+box opt<br>
+action B A AWSRequest<br>
+end opt<br>
+percept A B AWS DataE<br>
+percept C D TAF dataE<br>
+message D B ForecastE<br>
+end loop<br>
+finish<br>
+<br>
+</div>
+<br>
+Which will result in the following protocol diagram:<br>
+<br>
+<img src="fig24.jpg" style="width: 562px; height: 318px;" alt=""><br>
+Figure 24: Data retrieval protocol diagram<br>
+<br>
+</div>
+<span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-style: italic;"><span style="font-style: italic; font-weight: bold;"></span></span></span></span></span></span><span style="font-style: italic;"></span><br style="font-weight: bold;">
+<span style="font-weight: bold;"><span class="h3"><a name="subscriptions_protocol"></a>Subscriptions protocol</span><br>
+<span class="backtotop"><a href="#top">back to top</a></span>
+</span>The user actor will click on the GUI to subscribe to an
+airport<br>
+This subscription will get passed on to the appropriate airport agent<br>
+<br>
+Actors:<br>
+&nbsp;&nbsp;&nbsp; -User actor<br>
+Agents:<br>
+&nbsp;&nbsp;&nbsp; -Airport agent<br>
+&nbsp;&nbsp;&nbsp; -GUI agent<br>
+Percepts:<br>
+&nbsp;&nbsp;&nbsp; -Subscription - sent from User actor to
+GUI agent<br>
+Messages:<br>
+&nbsp;&nbsp;&nbsp; -Subscription - sent from GUI agent to
+airport agent<br>
+<br>
+From these elements we can produce the following AUML2:<br>
+<div style="margin-left: 80px;">start SubscriptionsProtocol<br>
+actor A User<br>
+agent B GUIAgent<br>
+agent C AirportAgent<br>
+percept A B Subscription from User<br>
+message B C SubscriptionE</div>
+<br>
+Which will produce the following protocol diagram:<br>
+<img src="fig25.jpg" style="width: 345px; height: 103px;" alt=""><br>
+<span style="font-style: italic;">Figure 25: Subscription
+protocol</span><br>
+<br>
+<span style="font-weight: bold;"><span class="h3"><a name="warnings_protocol"></a>Warnings Protocol</span><br>
+<span class="backtotop"><a href="#top">back to top</a></span>
+</span>A warning will be created by an Airport Agent and sent to
+the GUI agent<br>
+The warning will then be displayed on the screen to the user.<br>
+<br>
+Actors:<br>
+&nbsp;&nbsp;&nbsp; -User<br>
+Agents:<br>
+&nbsp;&nbsp;&nbsp; -GUI agent<br>
+&nbsp;&nbsp;&nbsp; -Airport agent<br>
+Actions:<br>
+&nbsp;&nbsp;&nbsp; -Warning<br>
+Messages:<br>
+&nbsp;&nbsp;&nbsp; -Warning<br>
+<br>
+From these elements we can produce the following AUML2:<br>
+<div style="margin-left: 80px;">start Warnings<br>
+actor A User<br>
+agent D GUIAgent<br>
+agent E AirportAgent<br>
+message E D WarningE<br>
+action D A Show Warning<br>
+</div>
+<br>
+Which will produce the following protocol diagram:<br>
+<img src="fig26.jpg" style="width: 345px; height: 103px;" alt=""><br>
+<span style="font-style: italic;">Figure 26: Warnings
+protocol.</span><br>
+<br><h3>Message Descriptors</h3>For each of the messages we have
+created, it is important to fill in the descriptors with as much detail
+as possible. This allows each agent to be implemented separately, using
+the protocol and message specifications to ensure they will work
+together correctly. This means it is important to describe the messages
+right down to the fields which they contain.<br><br><img style="width: 766px; height: 388px;" alt="Message Descriptor" src="fig50.JPG"><br>Figure 50: Message descriptor for ForecastE.<br><br><span style="font-style: italic;">Note the above figure does not show the all the information contained under "Carried Information". The complete text is:<br>rmit.cs.aopd.datastructures.WeatherDataRecord[]<br>where WeatherDataRecord contains:<br>&nbsp;&nbsp;&nbsp; float windStrength;<br>&nbsp;&nbsp;&nbsp; float temperature;<br>&nbsp;&nbsp;&nbsp; float rainfall;<br>&nbsp;&nbsp;&nbsp; boolean fog;<br>&nbsp;&nbsp;&nbsp; Date dateAndTime;</span><br><h3>Shared Data</h3>At
+this point it is also necessary to describe in more detail any of the
+data types which will be shared amongst agents. Like with the message
+descriptors, this provides a common specification so that the agents
+using the data type can be implemented separately. More detailed
+descriptions of non-shared data types can be completed at the Detailed
+Design stage.
+<h3 class="h1"><a name="detailed_design"></a>Detailed Design</h3>In
+detailed design we take one agent at a time and specify the internals
+of the agent in a manner that is consistent with the roles the agent
+has been assigned, and the interface that has been specified with both
+the environment and other agents.<br>Sometimes, as the detailed design
+is developed, it becomes necessary to modify aspects of the
+architectural design. This should be done as needed, in order to
+maintain consistency of the overall system design.<br><br>The tasks in detailed design for each agent are:<br>1) create the agent overview<br>2) create the overview of any capabilities<br>3) develop the plan descriptors<br>4) develop the event descriptors<br>5) develop the details of any data<br><br>There is substantial iteration between all of these steps within a single agent.<br><br>The
+agent overview diagram is the top level view of the agent internals,
+and inherits the interface items (data, percepts, actions and messages)
+based on the architectural design. Capabilities and plans are then
+added into the diagram in a manner similar to the other diagrams. All
+inherited entities must be connected to some capability or plan. New
+messages may be created as connections between capabilities or plans.
+New data that is internal to the agent, but shared amongst multiple
+capabilities/plans can also be added in this diagram.<br><br>Each diagram should be kept relatively simple and easy to understand, using hierarchical layers to develop details.<br><br>We will look now at the details for each agent.<br><br style="font-weight: bold;"><span style="font-weight: bold;">Airport Agent<br><br></span><div style="margin-left: 40px;"><br>The roles associated with the Airport agent are shown below:<br>
+
+
+-Obtain AWS Data<br>
+-Obtain TAF Data<br>
+-Add Subscription<br>
+-Check for High wind situation<br>
+-Check for Change in Immediate Forecast<br>
+-Check for Forecast Discrepancy<br>
+-Create Warning<br><br>From
+the System Roles diagram we can identify the goals, actions and
+percepts associated with each of the roles which the agent is assigned.
+It is envisaged that there
+should be some correlation between goals and plans, percepts and
+incoming messages, and actions and outgoing messages. This is
+not&nbsp;strictly enforced, and plans can achieve more than one goal
+and vise versa, more than one plan can be used to achieve the one goal.
+The percepts, incoming
+messages and actions are automatically added to the diagram as shown
+below:<br><br><img src="fig49.JPG" style="width: 537px; height: 200px;" alt="Empty Airport Agent"><br>Fig 49: Automatically propogated entities into the airport agent.<br><br>Each
+of these entities should then be connected to either a plan, or a
+modular collection of plans - a capability. In our example, rather than
+performing the subscribeAWSSourceAgent action from within a plan, we
+will perform it directly at the agent initialisation. Thus in this
+specific instance that action will remain unconnected however that
+should be considered uncommon.<br>For each role associated with the
+agent, a good guide is to consider whether the goals associated with it
+can be achieved using a single plan. If this is the case, then the
+single plan can be inserted into the top level overview diagram. If
+not, the plans should probably be combined into a capability which is
+inserted at the top level diagram and contains all the plans and events
+necessary to achieve the role's goals. <br><br>You can get a rough
+idea of this by looking at the goals associated with the role and how
+complicated it needs to be. Of course this may change as you start to
+create the plans but is a good starting point.<br><br><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td style="font-weight: bold;">Role</td><td style="font-weight: bold;">Goals</td><td style="font-weight: bold;">Plan/Capability?</td></tr><tr><td>Obtain AWS Data</td><td>Update AWS beliefs, Receive AWS data, Request AWS data</td><td>Capability</td></tr><tr><td>Obtain TAF Data</td><td>Update TAF beliefs, Receive TAF data</td><td>Plan</td></tr><tr><td>Add Subscription</td><td>Update Subscriptions Beliefs</td><td>Plan</td></tr><tr><td>Create Warning</td><td>Check Subscribers</td><td>Plan</td></tr><tr><td>Check for High wind Situation</td><td>Check high wind, Check really unexpected, increasing wind, Check high, unexpected, increasing wind</td><td>Capability</td></tr><tr><td>Check for Forecast Discrepancy</td><td>Check wind, Check fog</td><td>Capability</td></tr><tr><td>Check for change in immediate forecast</td><td>Check high wind change, Check high rain, Check temp below 0, Check fog change</td><td>Capability</td></tr></tbody></table><br><br><span style="font-weight: bold;">Obtain AWS Data<br></span><div style="margin-left: 40px;">For each of the plans we should consider the events which will trigger
+the plans execution and any events or messages it will post or send.
+The data stores which will be read from or written to should also be
+identified.</div><div style="margin-left: 40px;"><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td><span style="font-weight: bold;">Goals</span></td><td><span style="font-weight: bold;">Plans</span></td><td><span style="font-weight: bold;">Actions</span></td><td><span style="font-weight: bold;">Percepts</span></td><td style="font-weight: bold;">Internal Events</td><td><span style="font-weight: bold;">Data</span></td></tr><tr><td>Update&nbsp;AWS beliefs, Receive AWS data</td><td>UpdateAWSP</td><td></td><td>AWS Data</td><td></td><td>AWSReadings</td></tr><tr><td>Request AWS data</td><td>RequestAWSP</td><td>Request Data Action</td><td></td><td>AWS Data Needed</td><td></td></tr></tbody></table><br>A
+decision has been made to combine the Update AWS beliefs and Receive
+AWS data as it can logically be achieved by the same plan. <br>From this we can produce the following detailed design:<br><br><img src="fig28.JPG" style="width: 253px; height: 249px;" alt="Figure 28"><br>Figure 28: Obtain AWS data detailed design<br></div><span style="font-weight: bold;"><br>Obtain TAF data<br><br></span><div style="margin-left: 40px;">As above we can produce the following table based on information provided in the architectural design:<br><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td><span style="font-weight: bold;">Goals</span></td><td><span style="font-weight: bold;">Plans</span></td><td><span style="font-weight: bold;">Actions</span></td><td><span style="font-weight: bold;">Percepts</span></td><td style="font-weight: bold;">Internal Events</td><td><span style="font-weight: bold;">Data</span></td></tr><tr><td>Update TAF Beliefs, Receive TAF data</td><td>UpdateTAFP</td><td>N/A</td><td>N/A</td><td>ForecastE</td><td>forecasts</td></tr></tbody></table><br>As
+was done with the AWS data, we can combine the receiving and updating
+goals into one plan. This produces the following detailed design:<br><img src="fig29.JPG" style="width: 104px; height: 175px;" alt="Figure 29"><br>Figure 29: Obtain TAF data detailed design</div><br style="font-weight: bold;"><span style="font-weight: bold;">Add Subscription<br><br></span><div style="margin-left: 40px;">This
+role relates to subscribing a user to this airport agent so that any
+warnings created at the airport are sent to the user. A message will be
+sent from the GUI agent associated with the user, so the airport agent
+must simply write this to a datastore. Thus we can identify the
+following information:<br><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td><span style="font-weight: bold;">Goals</span></td><td><span style="font-weight: bold;">Plans</span></td><td><span style="font-weight: bold;">Actions</span></td><td><span style="font-weight: bold;">Percepts</span></td><td style="font-weight: bold;">Internal Events</td><td><span style="font-weight: bold;">Data</span></td></tr><tr><td>Update Subscriptions Beliefs</td><td>AddSubscriptionP</td><td>N/A</td><td>N/A</td><td>SubscriptionE</td><td>subscriptions</td></tr></tbody></table><br>and the following detailed design:<br><br><img src="fig30.JPG" style="width: 121px; height: 175px;" alt="Figure 30"><br>Figure 30: Add Subscription detailed design</div><br style="font-weight: bold;"><span style="font-weight: bold;">Create warning</span><br>At
+this point it is also necessary to consider the Create Warning role as
+it has a close relationship with each of the "checking" roles. There is
+the potential to combine the Create Warning role with each of these
+roles and we must consider the advantages to doing so.<br><br>The
+Create Warning role consists of two reasonably seperate tasks. First, a
+warning must be created with the relevant information included. Second,
+the subscriptions datastore must be checked and the warning sent to the
+relevant agents. Notice that there is a strong link between the first
+task and each of the "checking roles", wherein an alertable situation
+must be identified, and then a warning based on that information must
+be created. From here there are two possible design options:<br><br>a) Keep create warning as a distinct role seperate from each of the checking roles:<br><img src="fig31.jpg" style="width: 141px; height: 277px;" alt="Figure 31"><br>Figure 31: Design a.<br><br>b) Combine the "Checking" roles with the Create Warning role:<br><img src="fig32.jpg" style="width: 161px; height: 175px;" alt="Figure 32"><br>Figure 32: Design b<br><br>In
+design b, we have combined the checking for high rain with the creating
+of a relevant warning into one plan. This makes the design less complex
+and logically makes sense so we will go with this design,<br><br>The Create Warning Role now only consists of the following:<br><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td><span style="font-weight: bold;">Goals</span></td><td><span style="font-weight: bold;">Plans</span></td><td><span style="font-weight: bold;">Actions</span></td><td><span style="font-weight: bold;">Percepts</span></td><td style="font-weight: bold;">Internal Events</td><td><span style="font-weight: bold;">Data</span></td></tr><tr><td>Check Subscribers</td><td>PostWarningP</td><td>N/A</td><td>N/A</td><td>NewWarningE, WarningE</td><td>subscriptions</td></tr></tbody></table><br>And the design is simply:<br><img src="fig33.jpg" style="width: 210px; height: 127px;" alt="Figure 33"><br>Figure 33: Create Role detailed design</div><span style="font-weight: bold;"><br>Check for high wind situation<br><br></span><div style="margin-left: 40px;">As
+described in the Create Warning Role detailed design above, we are
+integrating the creation of warnings into the same plan as the one
+which will do the checking.<br><br><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td><span style="font-weight: bold;">Goals</span></td><td><span style="font-weight: bold;">Plans</span></td><td><span style="font-weight: bold;">Actions</span></td><td><span style="font-weight: bold;">Percepts</span></td><td style="font-weight: bold;">Internal Events</td><td><span style="font-weight: bold;">Data</span></td></tr><tr><td>Check high wind, Create warning</td><td>ReportReallyHighWindP</td><td>N/A</td><td>N/A</td><td>NewDataE, NewWarningE</td><td>AWS_readings, forecasts</td></tr><tr><td>Check really unexpected, increasing wind, Create warning</td><td>ReportReallyUnexpectedIncreasingWindP</td><td>N/A</td><td>N/A</td><td>NewDataE, NewWarningE</td><td>AWS_readings, forecasts</td></tr><tr><td>Check high, unexpected, increasing wind, Create warning</td><td>ReportHighUnexpectedIncreasingWindP</td><td>N/A</td><td>N/A</td><td>NewDataE, NewWarningE</td><td>AWS_readings, forecasts</td></tr></tbody></table><br>From this we can create the following detailed design:<br><img src="fig34.jpg" style="width: 620px; height: 358px;" alt="Figure34"><br>Figure 34: Check High wind situation detailed design.</div>
+<br><br><span style="font-weight: bold;">Check for Change in Immediate Forecast</span><br style="font-weight: bold;"><br><div style="margin-left: 40px;">Similar to checking for high wind, the Check For Change in Immediate Forecast role can be broken down as follows:<br><br><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td><span style="font-weight: bold;">Goals</span></td><td><span style="font-weight: bold;">Plans</span></td><td><span style="font-weight: bold;">Actions</span></td><td><span style="font-weight: bold;">Percepts</span></td><td style="font-weight: bold;">Internal Events</td><td><span style="font-weight: bold;">Data</span></td></tr><tr><td>Check high wind change, Create warning</td><td>ReportHighWindChangeP</td><td>N/A</td><td>N/A</td><td>NewDataE, NewWarningE</td><td>forecasts</td></tr><tr><td>Check fog change, Create warning</td><td>ReportFogChangeP</td><td>N/A</td><td>N/A</td><td>NewDataE, NewWarningE</td><td>forecasts</td></tr><tr><td>Check temp below zero change, Create warning</td><td>ReportTempBelowZeroChangeP</td><td>N/A</td><td>N/A</td><td>NewDataE, NewWarningE</td><td>forecasts</td></tr><tr><td>Check high rain change, Create warning</td><td>ReportHighRainChangeP</td><td>N/A</td><td>N/A</td><td>NewDataE, NewWarningE</td><td>forecasts</td></tr></tbody></table><br>Which can be used to create the following detailed design:<br><img src="fig35.jpg" style="width: 634px; height: 350px;" alt="Figure 35"><br>Figure 35: Check for change in Immediate Forecast detailed design<br></div><br style="font-weight: bold;"><span style="font-weight: bold;">Check for Forecast Discrepancy</span><br><br><div style="margin-left: 40px;">As with the other Checking roles, Check for Forecast Discrepancy can be broken down as follows:<br><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td><span style="font-weight: bold;">Goals</span></td><td><span style="font-weight: bold;">Plans</span></td><td><span style="font-weight: bold;">Actions</span></td><td><span style="font-weight: bold;">Percepts</span></td><td style="font-weight: bold;">Internal Events</td><td><span style="font-weight: bold;">Data</span></td></tr><tr><td>Check Wind, Create warning</td><td>ReportWindDiscrepancyP</td><td>N/A</td><td>N/A</td><td>NewDataE, NewWarningE</td><td>forecasts, AWS_readings</td></tr><tr><td>Check Fog, Create warning</td><td>ReportFogDiscrepancyP</td><td>N/A</td><td>N/A</td><td>NewDataE, NewWarningE</td><td>forecasts, AWS_readings</td></tr><tr><td>Check Trends, Create warning</td><td>ReportTempBelowZeroChangeP</td><td>N/A</td><td>N/A</td><td>NewDataE, NewWarningE</td><td>forecasts, AWS_readings</td></tr></tbody></table><br><span style="font-style: italic;"><span style="font-weight: bold;">Exercise: Based on the information provided in the table above, create the detailed design for Check for forecast discrepancy.</span></span></div><br><span style="font-weight: bold;"><big>Capabilities</big><br><br></span></div><div style="margin-left: 80px;">Capabilities
+are a set of related plans which achieve a common goal or common set of
+goals. Their use helps to reduce the complexity of the design and
+logically seperate processes into individual components. There are many
+different ways to combine plans into capabilities and there is not
+necessarily a right or wrong way. However a good guide to considering
+whether a set of plans should be combined into a capability or not is
+to ask the following questions:<br><div style="margin-left: 40px;">- Are the plans related and do they together achieve a higher level goal as identified in the Goal Overview diagram?<br>- Will putting the plans into a capability make the design simpler?<br></div><br>By asking these questions for the design so far, we can come up with the following capabilities for the airport agent design:<br><br><div style="margin-left: 40px;">-ObtainAWSdataCap<br>&nbsp;&nbsp;&nbsp; - This will include everything shown in the detailed design for Obtain AWS data<br>-RecogniseHighWindCap<br>&nbsp;&nbsp;&nbsp; - This will include everything shown in the detailed design for Check High Wind<br>-RecogniseImmediateChangeCap<br>&nbsp;&nbsp;&nbsp; - This will include everything shown in the detailed design for Check for Change in Immediate Forecast<br>-RecogniseForecastDiscrepancyCap<br>&nbsp;&nbsp;&nbsp; - This will include everything shown in the detailed design for Check for Forecast Discrepancy</div><br>Note
+that we will not create a capability for Obtain TAF data, Add
+Subscription or Create Warning as although these are satisfy the first
+requirement of being a related set of plans that achieve a higher level
+goal, they do not satisfy the second component. i.e. Putting them
+together into a capability would not make the design any simpler.<br><br><span style="font-style: italic;"><span style="font-weight: bold;">Exercise:
+Create each of the capabilities described above, placing the relevant
+plans and events inside. You should be able to produce the following
+complete detailed design for the Airport Agent:</span></span><br><br><img src="fig36.jpg" style="width: 656px; height: 407px;" alt="Figure36"><br>Figure 36: Complete detailed design for the Airport agent, with capabilities included.<br><br></div><div style="margin-left: 40px;"><br><span style="font-weight: bold;">GUI agent</span><br><br>We
+will now create the detailed design for the GUI agent. From the
+Agent-Role grouping diagram, we can identify two roles that the GUI
+agent is expected to achieve:<br><br><div style="margin-left: 40px;">- Subscribe to Airport<br>- Display warning</div><br><span style="font-weight: bold;">Subscribe to airport</span><br><div style="margin-left: 40px;">This
+role requires the GUI agent to accept an incoming subscription from the
+user, create a subscription in an appropriate format, and send it to
+the relevant airport. Thus we have the following table:<br><br></div><table style="text-align: left; width: 100%; margin-left: 40px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td><span style="font-weight: bold;">Goals</span></td><td><span style="font-weight: bold;">Plans</span></td><td><span style="font-weight: bold;">Actions</span></td><td><span style="font-weight: bold;">Percepts</span></td><td style="font-weight: bold;">Internal Events</td><td><span style="font-weight: bold;">Data</span></td></tr><tr><td>Make Subscription<br></td><td>MakeSubscriptionP</td><td>N/A</td><td>Subscription From User</td><td>SubscriptionE<br></td><td>N/A<br></td></tr></tbody></table><div style="margin-left: 40px;"><br>From this we can create the following detailed design:<br><br><img src="fig37.jpg" style="width: 199px; height: 206px;" alt="Figure37"><br>Figure 37: Subscribe to Airport detailed design.<br></div><br><span style="font-weight: bold;">Display Warning</span><br><div style="margin-left: 40px;">This role requires the GUI agent to receive a warning from an airport agent and display it to the user. <br><br></div><table style="text-align: left; height: 60px; margin-left: 80px; width: 1083px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td><span style="font-weight: bold;">Goals</span></td><td><span style="font-weight: bold;">Plans</span></td><td style="width: 140px;"><span style="font-weight: bold;">Actions</span></td><td style="width: 143px;"><span style="font-weight: bold;">Percepts</span></td><td style="font-weight: bold; width: 137px;">Internal Events</td><td style="width: 103px;"><span style="font-weight: bold;">Data</span></td></tr><tr><td>Display Warning<br></td><td>AlertUserP</td><td style="width: 140px;">Show Warning</td><td style="width: 143px;">N/A</td><td style="width: 137px;">WarningE<br></td><td style="width: 103px;">N/A<br></td></tr></tbody></table><div style="margin-left: 40px;"><br>From this we can create the following detailed design:<br><img src="fig38.jpg" style="width: 121px; height: 196px;" alt="Figure38"><br>Figure 38: Display Warning detailed design.<br></div><br><span style="font-weight: bold;">Capabilities<br></span><div style="margin-left: 40px;"><span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span></span>The
+detailed design of the GUI agent is already very simple and the use of
+capabilities would provide no extra value. Therefore we have chosen not
+to use any capabilities and instead keep the detailed design as below:<br><br><span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span><img src="Fig39.jpg" style="width: 323px; height: 213px;" alt="Fig39"></span><br><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span>Figure 39: Complete detailed design for the GUI agent<span style="font-weight: bold;"><span style="font-weight: bold;"></span></span><br><span style="font-weight: bold;"></span></div><br><br style="font-weight: bold;"><span style="font-weight: bold;">Forecaster Agent</span><br><div style="margin-left: 40px;">From
+the Agent-Role groupings diagram, we can see that the only role
+associated with the Forecaster Agent is Create Forecast. This role
+entails receiving a set of forecasts from a Forecaster, splitting them
+into individual airports and sending them.<br><br><table style="text-align: left; height: 60px; margin-left: 0px; width: 1042px;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td style="width: 212px;"><span style="font-weight: bold;">Goals</span></td><td style="width: 186px;"><span style="font-weight: bold;">Plans</span></td><td style="width: 161px;"><span style="font-weight: bold;">Actions</span></td><td style="width: 135px;"><span style="font-weight: bold;">Percepts</span></td><td style="font-weight: bold; width: 151px;">Internal Events</td><td style="width: 147px;"><span style="font-weight: bold;">Data</span></td></tr><tr><td style="width: 212px;">Send to Airports<br></td><td style="width: 186px;">SendForecastsP</td><td style="width: 161px;">N/A</td><td style="width: 135px;">TAF data</td><td style="width: 151px;">ForecastE<br></td><td style="width: 147px;">N/A<br></td></tr></tbody></table><br>Clearly,
+this detailed design is simple enough and using capabilities would not
+achieve anything. The complete detailed design is as follows:<br><img src="fig40.jpg" style="width: 117px; height: 181px;" alt="Fig40"><br>Figure 40: Complete detailed design for Forecaster agent.<br><br></div><br>For
+each plan we must fill in the relevant fields in the plan descriptor.
+This should be as detailed as possible so that an implementor has all
+the necessary information to implement the plan. A detailed example is
+given below:<br><img src="fig44.jpg" style="width: 715px; height: 970px;" alt="fig44"><br><br>This concludes the complete design for the system.<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>dafsdfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div></body></html>
