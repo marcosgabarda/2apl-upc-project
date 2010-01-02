@@ -34,11 +34,49 @@ Universitat Polit\`ecnica de Catalunya}
 
 Bla.Bla.Bla.
 
-\section{Analysis}\label{sec:analysis} 
-
-Game description.
+Game description. Problem specification: the problem calls for a multi-agent system to provide ...
 
 Why is suitable for MAS?
+
+
+\section{System Specification}\label{sec:sysspec} 
+
+The analysis overview diagram is designed to show the interactions between the system and the environment. At this abstract level it is necessary to identify the actors, scenarios, percepts and actions involved in the system. This consists of a two step process. Firstly, we identify the actors and the scenarios they participate in with the system. Secondly, we identify and define the actions and percepts between the actors and the system.
+
+The actors are all the people or external systems associated with the system. The scenarios are the processes which the system uses to handle the percepts and produce the actions. The percepts are all the types information which come into the system from the environment. The actions are everything that is sent from the system to the environment.
+
+\subsection{Analysis overview}
+
+Actors:
+\begin{itemize}
+  \item Player: the agent/user who play the game
+  %\item Croupier: the agent/user who shuffles and gives the card plus counts the points at the end|
+\end{itemize}
+
+Scenarios:
+\begin{itemize}
+  \item Waiting for players scenario: the process which waits for 5 players in the system
+  \item Begin game scenario: The process which shuffles and start giving the cards
+  \item Partner selection scenario: The process which handles the partern selection phase
+  \item Game scenario: The process which handles the whole game phase
+\end{itemize}
+
+Percepts:
+\begin{itemize}
+  \item Join the game: Request sent from the user to join the game
+  \item Playing cards: The player has thrown a card
+  \item Talking players:  Players are talking
+\end{itemize}
+
+Actions:
+\begin{itemize}
+  \item Begin the game: the system informs the players that the game has begun
+  \item Score declaration: request to make score declaration for each player
+  \item Turn selection: the system informs the player that is its turn to throw a card
+  \item Point distribution: the system informs the player of its actual score at the end of the game
+\end{itemize}
+
+% Analysis overview diagram here
 
 \section{Design}\label{sec:design} 
 
