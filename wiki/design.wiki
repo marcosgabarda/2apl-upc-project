@@ -10,3 +10,35 @@ be part of your documentation. You should also explain in the report your design
 Marcos: I propose to use the Prometheus metodology to to de MAS desing. We can find the PDT software here http://www.cs.rmit.edu.au/agents/pdt/pdt.shtml and it is a `*`.jar file.
 
 Fabrizio: I agree
+
+== System Specification ==
+
+=== High-level description ===
+
+_Description of Briscola Chimiata..._
+
+=== Identify Actor ==
+
+The main (and unique) actor is the Player. The control actions are given by the environment (I mean, the Board). 
+
+=== Scenarios ===
+
+In a high-level description, there are one scenario for each game phase. 
+
+  * Welcome players: Scenario where we must to wait until 5 players join the game.
+
+  * Begin game: Shuffle the deck, and dealing cards. Moreover, the system needs to chose a dealer.
+
+  * Bidding: Players must bid, until all them pass. The goals is to do the best bid (acording to the cards in the hand) and optionaly, try to win the bid (cheating if is needed). 
+
+  * Partnet selection: The player who won the bid, must declare the Briscola card, and the other players have to update their beliefs, setting if they belongs to the 2-players team or 3-player-team.
+
+  * Win the Game: Scenario in where the agents have to play and try to win the game, doing  the highest score.
+
+*Inputs/outpus (actions/percepts)*
+
+=== Goals ===
+
+=== Functionalities of the system: Roles and activities ===
+
+== Architectural Design ==
