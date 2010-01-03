@@ -35,9 +35,9 @@ In a high-level description, there are one scenario for each game phase.
 
   * Win the Game: Scenario in where the agents have to play and try to win the game, doing  the highest score.
 
-*Inputs/outpus (actions/percepts)*
+=== Inputs/outpus (actions/percepts) ===
 
-=== Goals ===
+=== System Goals ===
 
 === Functionalities of the system: Roles and activities ===
 
