@@ -15,7 +15,7 @@ Fabrizio: I agree
 
 === High-level description ===
 
-_Description of Briscola Chimiata..._
+_Description of Briscola Chimiata A_ProblemDescription  _
 
 === Identify Actor ==
 
