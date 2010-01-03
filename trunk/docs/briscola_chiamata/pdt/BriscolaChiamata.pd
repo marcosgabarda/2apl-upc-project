@@ -24,7 +24,7 @@
 		    <field name="entity">
 			<object type="Goal" id="5">
 			    <base type="Entity">
-				<field name="name">Delivering</field>
+				<field name="name">Dealing</field>
 				<field name="description"></field>
 				<field name="uniqueId">38</field>
 			    </base>
