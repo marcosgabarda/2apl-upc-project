@@ -44,13 +44,11 @@ In this phase, actors (human or software) expected to interact with the system, 
 
 ==== Scenarios ====
 
-In a high-level description, there are one scenario for each game phase. 
-
-  # Start the game scenario: Scenario where we must to wait until 5 players join the game and are registered in the system.
-  # Dealing scenario: Shuffle the deck, and dealing cards. Moreover, the system needs to chose a dealer.
-  # Bidding scenario: Players must bid in order increasing the bid, until all them pass except one. The goals is to do the best bid (according to the cards in the hand) and optionaly, try to win the bid. If all the players pass, the deck has to be shuffled again. The player who won the bid, must declare the Briscola card.
-  # Play the Game scenario: Scenario in where the players have to play and try to win the game, doing  the highest score. The teams are unknown to the players until the Briscola card is played. The players have to update their beliefs continuing during each hand, setting if they belongs to the 2-players team or 3-player-team. Of course, cheating is part of the game. Communication (signs) among players is allowed to exchange information about players (e.g. reputation/beliefs) and cards.
-  # End the game scenario: winner team is declared, score is updated and players are invited to leave the board (table/system) if they want.
+  # *Start the game scenario*: join requests are received. Two options are possible: the request is accepted or queued. A message is then sent back acknowledging the request.
+  # *Dealing scenario*: if there are 5 players subscribed in the system, then a card dealer is chosen that shuffle the deck and deal the cards to all the players. 
+  # *Bidding scenario*: once the dealing is over, players can start bidding in turn. The player who wins the bid, must declare the Briscola card. If nobody bids, then the game has to be restarted.
+  # *Play the Game scenario*: once the Briscola card has been declared, the players start playing. The teams setting is unknown to all the players until the Briscola card is played. The players have to update their beliefs about teams setting each time a card is played. Of course, cheating is part of the game. Communication (sign exchange) among players is allowed to exchange information about players and cards. After each hand, points are counted.
+  # End the game scenario: once the winner team is declared, scoring is updated and players are released from the system.
 
 === Scenarios Diagram ===
 
