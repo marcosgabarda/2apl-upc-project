@@ -7,15 +7,13 @@ be part of your documentation. You should also explain in the report your design
 
 = Introduction =
 
-Marcos: I propose to use the Prometheus metodology to to de MAS desing. We can find the PDT software here http://www.cs.rmit.edu.au/agents/pdt/pdt.shtml and it is a `*`.jar file.
-
-Fabrizio: I agree
+I propose to use the Prometheus metodology to to de MAS desing. We can find the PDT software here http://www.cs.rmit.edu.au/agents/pdt/pdt.shtml and it is a `*`.jar file.
 
 == System Specification ==
 
 === High-level description ===
 
-Description of Briscola Chimiata [A_ProblemDescription here].
+Description of Briscola Chiamata [A_ProblemDescription here].
 
 === Identify Actor ==
 
@@ -25,17 +23,27 @@ The main (and unique) actor is the Player. The control actions are given by the 
 
 In a high-level description, there are one scenario for each game phase. 
 
-  * Welcome players: Scenario where we must to wait until 5 players join the game.
+  * Welcome players: Scenario where we must to wait until 5 players join the game and are registered in the system.
 
   * Begin game: Shuffle the deck, and dealing cards. Moreover, the system needs to chose a dealer.
 
-  * Bidding: Players must bid, until all them pass. The goals is to do the best bid (acording to the cards in the hand) and optionaly, try to win the bid (cheating if is needed). 
+  * Bidding: Players must bid in order increasing the bid, until all them pass except one. The goals is to do the best bid (according to the cards in the hand) and optionaly, try to win the bid. If all the players pass, the deck has to be shuffled again. The player who won the bid, must declare the Briscola card.
 
-  * Partnet selection: The player who won the bid, must declare the Briscola card, and the other players have to update their beliefs, setting if they belongs to the 2-players team or 3-player-team.
+  * Win the Game: Scenario in where the players have to play and try to win the game, doing  the highest score. The teams are unknown to the players until the Briscola card is played. The players have to update their beliefs continuing during each hand, setting if they belongs to the 2-players team or 3-player-team. Of course, cheating is part of the game. Communication (signs) among players is allowed to exchange information about players (e.g. reputation/beliefs) and cards.
 
-  * Win the Game: Scenario in where the agents have to play and try to win the game, doing  the highest score.
+  * End of the game: winner team is declared, score is updated and players are invited to leave the board (table/system) if they want.
 
 === Inputs/outpus (actions/percepts) ===
+
+  * Join the game and wait until it is perceived that there are 5 players at the board
+  * If it is perceived to be the card dealer, then start shuffling and dealing cards to the players.
+  * When it is perceived that the card dealer has done (by a message?) and it is perceived the turn, then agents start bidding in order.
+  * Once it is perceived that the bidding is over (all the players passed except one) and it has been received the message declaring the Briscola card, others have to update their beliefs regarding the Briscola card.
+  * Each agent perceives the card thrown on the table from other players and play his card when it believes it is its turn.
+  * If it perceives the Briscola card on the table, then it has to update its beliefs regarding the team settings (permanently).
+  * If a message from other players is received, then internal beliefs can be updated.
+  * If it is perceived the hand is over, then internal beliefs about points have to be updated.
+  * If it is perceived the game is over, then it has to be waiting for winner declaration and score updating. Also, the agent can leave the system.
 
 === System Goals ===
 
