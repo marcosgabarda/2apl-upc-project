@@ -32,7 +32,7 @@ In this phase, actors (human or software) expected to interact with the system, 
 ==== Inputs/outputs (percepts/actions) ====
 
 || *Input/Percept* || *Output/Action* ||
-|| Join request || Send a message informing the request has been accepted or queued (Request status) || 
+|| Join request || Subscribe user and manage request (the request has been accepted or queued) || 
 || 5 players in the system || Choose the card dealer and start shuffling and dealing cards to the players ||
 || Dealing is over || Start bidding in turn ||
 || Bidding is over || Declare the Briscola card ||
@@ -83,7 +83,7 @@ The goal overview diagram is a directed acyclic graph of all goals in the system
 [http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/system_specification/goal_overview.png]
 
   * Start the game
-    * Register join request
+    * Manage join request
     * Wait for 5 players in the system
   * Play the game
     * Dealing
@@ -91,13 +91,12 @@ The goal overview diagram is a directed acyclic graph of all goals in the system
       * Shuffling cards
       * Dealing cards to players
     * Bidding
-      * Bid when its the turn
-        * Identify the maximum bid given the current cards in hand
+      * Identify the highest bid
       * Declare the Briscola card
-    * Identify teams
+    * Identifying teams
       * Obtain reputation
       * Calculate trust
-    * Play cards
+    * Playing cards
       * Cheat Opponents
   * End the Game
     * Declare the winner
@@ -109,6 +108,8 @@ The goal overview diagram is a directed acyclic graph of all goals in the system
 In a system roles diagram, we group different goals, percepts and actions under roles.
 This helps in further modularizing the system. The input is represented as a percept
 and the output as an action.
+
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/system_specification/system_roles.png]
 
 
 == High-level (Architectural) Design ==
