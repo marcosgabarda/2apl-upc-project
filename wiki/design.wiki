@@ -25,13 +25,13 @@ In this phase, actors (human or software) expected to interact with the system, 
 ==== Actors ====
 
   * Player
-  * Card Dealer
+  * (Card Dealer) not really needed as an actor
 
 ==== Inputs/outputs (percepts/actions) ====
 
 || *Input/Percept* || *Output/Action* ||
 || Join request || Send a message informing the request has been accepted or queued (Request status) || 
-|| There are 5 players in the system || Choose a dealer, start shuffling and dealing cards to the players ||
+|| 5 players in the system || Choose the card dealer and start shuffling and dealing cards to the players ||
 || Dealing is over || Start bidding in turn ||
 || Bidding is over || Declare the Briscola card ||
 || Briscola declared || Start playing in turn ||
