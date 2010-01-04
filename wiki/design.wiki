@@ -7,7 +7,7 @@ be part of your documentation. You should also explain in the report your design
 
 = Introduction =
 
-The Prometheus Design Tool is a graphical editor which supports the design tasks specified within the Prometheus methodology for designing agent systems. The Prometheus methodology involves 3 phases: System Specification, High-level (Architectural) Design and Detailed Design.
+The Prometheus Design Tool is a graphical editor which supports the design tasks specified within the Prometheus methodology for designing agent systems. The Prometheus methodology involves 3 phases: System Specification, High-level (Architectural) Design and Detailed Design.invited to leave the board (table/system) if they want
 
 The PDT software can be downloaded from [http://www.cs.rmit.edu.au/agents/pdt/pdt.shtml here]. To launch it: java -jar PDT_3_3.jar
 
@@ -48,7 +48,7 @@ In this phase, actors (human or software) expected to interact with the system, 
   # *Dealing scenario*: if there are 5 players subscribed in the system, then a card dealer is chosen that shuffle the deck and deal the cards to all the players. 
   # *Bidding scenario*: once the dealing is over, players can start bidding in turn. The player who wins the bid, must declare the Briscola card. If nobody bids, then the game has to be restarted.
   # *Play the Game scenario*: once the Briscola card has been declared, the players start playing. The teams setting is unknown to all the players until the Briscola card is played. The players have to update their beliefs about teams setting each time a card is played. Of course, cheating is part of the game. Communication (sign exchange) among players is allowed to exchange information about players and cards. After each hand, points are counted.
-  # End the game scenario: once the winner team is declared, scoring is updated and players are released from the system.
+  # *End the game scenario*: once the winner team is declared, scoring is updated and players are released from the system.
 
 === Scenarios Diagram ===
 
