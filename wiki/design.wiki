@@ -21,7 +21,8 @@ In this phase, actors (human or software) expected to interact with the system, 
 
 ==== Actors ====
 
-The main (and unique) actor is the Player. The control actions are given by the environment (I mean, the Board).
+  * Player
+  * Card Dealer
 
 ==== Inputs/outpus (actions/percepts) ====
 
