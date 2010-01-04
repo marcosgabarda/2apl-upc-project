@@ -51,17 +51,16 @@ The main goals of the system are to let 5 agents playing Briscola Chiamata and k
     * Wait for 5 players in the system
       * Register join request
       * Inform the players when there are 5 players in the system (further requests will be ignored)
-    * Play the game
-      * Dealing
-        * Decide the dealer
-        * Shuffling cards
-        * Dealing cards to players
-      * Bidding
-        * Identify the maximum bid given the current cards
-        * Bid when its the turn
-      * Identify teams
-      * Cheat Opponents
-      * Play cards
+    * Dealing
+      * Decide the dealer
+      * Shuffling cards
+      * Dealing cards to players
+    * Bidding
+      * Identify the maximum bid given the current cards
+      * Bid when its the turn
+    * Identify teams
+    * Cheat Opponents
+    * Play cards
   * End Game
     * Update the scores table
     * Inform players of their score
