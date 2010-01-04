@@ -7,13 +7,15 @@ be part of your documentation. You should also explain in the report your design
 
 = Introduction =
 
-I propose to use the Prometheus metodology to to de MAS desing. We can find the PDT software here http://www.cs.rmit.edu.au/agents/pdt/pdt.shtml and it is a PDT_3_3.jar file. To launch it: java -jar PDT_3_3.jar
+The Prometheus Design Tool is a graphical editor which supports the design tasks specified within the Prometheus methodology for designing agent systems. The Prometheus methodology involves 3 phases: System Specification, High-level (Architectural) Design and Detailed Design.
+
+The PDT software can be downloaded from [http://www.cs.rmit.edu.au/agents/pdt/pdt.shtml here]. To launch it: java -jar PDT_3_3.jar
+
+Description of problem can be found [A_ProblemDescription here].
 
 == System Specification ==
 
-=== High-level description ===
-
-Description of Briscola Chiamata [A_ProblemDescription here].
+In this phase, actors (human or software) expected to interact with the system, are identified, along with the interface to the system in terms of actions and percepts; system goals are elaborated, and scenarios described in terms of sequences of steps are developed. Roles encompassing small chunks of functionality (identified by goals, percepts and actions) are described and captured.
 
 === Analisys Overview diagram ===
 
@@ -91,4 +93,10 @@ The main goals of the system are to let 5 agents playing Briscola Chiamata and k
 
 Functionalities of the system: Roles and activities
 
-== Architectural Design ==
+== High-level (Architectural) Design ==
+
+In this phase, the agent types that will exist in the system are defined by combining roles, the overall structure of the system is described using a system overview diagram, and interaction protocols are used to capture the dynamics of the system in terms of legal message sequences.
+
+== Detailed design ==
+
+In this phase, the internals of each agent are developed in terms of capabilities, events, plans and data.
