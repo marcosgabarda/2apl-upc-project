@@ -7,7 +7,7 @@ be part of your documentation. You should also explain in the report your design
 
 = Introduction =
 
-I propose to use the Prometheus metodology to to de MAS desing. We can find the PDT software here http://www.cs.rmit.edu.au/agents/pdt/pdt.shtml and it is a `*`.jar file.
+I propose to use the Prometheus metodology to to de MAS desing. We can find the PDT software here http://www.cs.rmit.edu.au/agents/pdt/pdt.shtml and it is a PDT_3_3.jar file. To launch it: java -jar PDT_3_3.jar
 
 == System Specification ==
 
@@ -15,11 +15,25 @@ I propose to use the Prometheus metodology to to de MAS desing. We can find the 
 
 Description of Briscola Chiamata [A_ProblemDescription here].
 
-=== Identify Actor ==
+=== Analisys Overview diagram ===
 
-The main (and unique) actor is the Player. The control actions are given by the environment (I mean, the Board). 
+==== Actors ====
 
-=== Scenarios ===
+The main (and unique) actor is the Player. The control actions are given by the environment (I mean, the Board).
+
+==== Inputs/outpus (actions/percepts) ====
+
+  * Join the game and wait until it is perceived that there are 5 players at the board
+  * If it is perceived to be the card dealer, then start shuffling and dealing cards to the players.
+  * When it is perceived that the card dealer has done (by a message?) and it is perceived the turn, then agents start bidding in order.
+  * Once it is perceived that the bidding is over (all the players passed except one) and it has been received the message declaring the Briscola card, others have to update their beliefs regarding the Briscola card.
+  * Each agent perceives the card thrown on the table from other players and play his card when it believes it is its turn.
+  * If it perceives the Briscola card on the table, then it has to update its beliefs regarding the team settings (permanently).
+  * If a message from other players is received, then internal beliefs can be updated.
+  * If it is perceived the hand is over, then internal beliefs about points have to be updated.
+  * If it is perceived the game is over, then it has to be waiting for winner declaration and score updating. Also, the agent can leave the system.
+
+==== Scenarios ====
 
 In a high-level description, there are one scenario for each game phase. 
 
@@ -33,19 +47,9 @@ In a high-level description, there are one scenario for each game phase.
 
   * End of the game: winner team is declared, score is updated and players are invited to leave the board (table/system) if they want.
 
-=== Inputs/outpus (actions/percepts) ===
+=== Scenarios Diagram ===
 
-  * Join the game and wait until it is perceived that there are 5 players at the board
-  * If it is perceived to be the card dealer, then start shuffling and dealing cards to the players.
-  * When it is perceived that the card dealer has done (by a message?) and it is perceived the turn, then agents start bidding in order.
-  * Once it is perceived that the bidding is over (all the players passed except one) and it has been received the message declaring the Briscola card, others have to update their beliefs regarding the Briscola card.
-  * Each agent perceives the card thrown on the table from other players and play his card when it believes it is its turn.
-  * If it perceives the Briscola card on the table, then it has to update its beliefs regarding the team settings (permanently).
-  * If a message from other players is received, then internal beliefs can be updated.
-  * If it is perceived the hand is over, then internal beliefs about points have to be updated.
-  * If it is perceived the game is over, then it has to be waiting for winner declaration and score updating. Also, the agent can leave the system.
-
-=== System Goals ===
+=== Goals Overview Diagram ===
 The main goals of the system are to let 5 agents playing Briscola Chiamata and keep track of final scores of every registered agent in the system.
   * Begin Game
     * Wait for 5 players in the system
@@ -66,6 +70,8 @@ The main goals of the system are to let 5 agents playing Briscola Chiamata and k
     * Inform players of their score
     * Let players leave the system
 
-=== Functionalities of the system: Roles and activities ===
+=== System Roles Diagram ===
+
+Functionalities of the system: Roles and activities
 
 == Architectural Design ==
