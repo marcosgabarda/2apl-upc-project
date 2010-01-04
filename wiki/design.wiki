@@ -131,3 +131,11 @@ interface and interactions. This diagram is the central diagram of the entire sy
 == Detailed design ==
 
 In this phase, the internals of each agent are developed in terms of capabilities, events, plans and data. Detailed Design is done at the level of individual agents. 
+
+=== Agent Overview Diagram ===
+
+The agent overview diagram shows the internals of an agent. There is one agent overview diagram for every agent in the system. In the detailed design, much finer details of the system are established. The messages used to communicate between the agents are decided upon. If the roles within an agent grow very large, they are grouped into capabilities. As in the system overview diagram entities can be inserted or removed and edges can be reated or deleted.
+
+=== Capability Overview Diagram ===
+
+In the capability overview diagram you can see the direct internal of a capability. This diagram allows you to specify the internals of a capability in terms of plans, or sub-capabilities and messages between them. Data internal to the capability can also be specified. 
