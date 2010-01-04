@@ -46,6 +46,14 @@ In a high-level description, there are one scenario for each game phase.
   * If it is perceived the game is over, then it has to be waiting for winner declaration and score updating. Also, the agent can leave the system.
 
 === System Goals ===
+  * The goal of the system is to let 5 agents playing Briscola Chiamata and keep track of final scores of every registered agent in the system.
+  * To let agents play the following subgoals have to be achieved: wait for 5 players in the system, let them play, update scoretable.
+  * Wait for 5 players in the system can be decomposed into: registered join requests and inform other players when there are 5 players (other join requests will be ignored)
+  * Game playing can be decomposed into: dealing, bidding, play the game.
+  * Dealing can be decomposed into: choose the dealer, shuffling cards and deal cards.
+  * Bidding can be decomposed into: decide the maximum bid looking at the cards, bidding.
+  * Play the game can be decomposed into: identify teams, cheat opponents, play cards
+  * Update scoretable: inform players, update the points in the score table.
 
 === Functionalities of the system: Roles and activities ===
 
