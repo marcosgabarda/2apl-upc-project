@@ -19,6 +19,9 @@ In this phase, actors (human or software) expected to interact with the system, 
 
 === Analisys Overview diagram ===
 
+  * Specify key external actors that will use the system, and key scenarios they will be involved in.
+  * Link the actors to the scenarios they are involved in, using percepts and actions. Percepts are signals from actor to system. Actions are responses from the system, possibly directed towards a particular actor. This diagram can be used very freely to sketch a design of the system.
+
 ==== Actors ====
 
   * Player
