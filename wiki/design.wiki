@@ -37,24 +37,41 @@ The main (and unique) actor is the Player. The control actions are given by the 
 
 In a high-level description, there are one scenario for each game phase. 
 
-  * Welcome players: Scenario where we must to wait until 5 players join the game and are registered in the system.
-
-  * Begin game: Shuffle the deck, and dealing cards. Moreover, the system needs to chose a dealer.
-
-  * Bidding: Players must bid in order increasing the bid, until all them pass except one. The goals is to do the best bid (according to the cards in the hand) and optionaly, try to win the bid. If all the players pass, the deck has to be shuffled again. The player who won the bid, must declare the Briscola card.
-
-  * Win the Game: Scenario in where the players have to play and try to win the game, doing  the highest score. The teams are unknown to the players until the Briscola card is played. The players have to update their beliefs continuing during each hand, setting if they belongs to the 2-players team or 3-player-team. Of course, cheating is part of the game. Communication (signs) among players is allowed to exchange information about players (e.g. reputation/beliefs) and cards.
-
-  * End of the game: winner team is declared, score is updated and players are invited to leave the board (table/system) if they want.
+  # Start the game scenario: Scenario where we must to wait until 5 players join the game and are registered in the system.
+  # Dealing scenario: Shuffle the deck, and dealing cards. Moreover, the system needs to chose a dealer.
+  # Bidding scenario: Players must bid in order increasing the bid, until all them pass except one. The goals is to do the best bid (according to the cards in the hand) and optionaly, try to win the bid. If all the players pass, the deck has to be shuffled again. The player who won the bid, must declare the Briscola card.
+  # Play the Game scenario: Scenario in where the players have to play and try to win the game, doing  the highest score. The teams are unknown to the players until the Briscola card is played. The players have to update their beliefs continuing during each hand, setting if they belongs to the 2-players team or 3-player-team. Of course, cheating is part of the game. Communication (signs) among players is allowed to exchange information about players (e.g. reputation/beliefs) and cards.
+  # End the game scenario: winner team is declared, score is updated and players are invited to leave the board (table/system) if they want.
 
 === Scenarios Diagram ===
 
+  # Start the game scenario
+    # Register players up to five and inform them to wait 
+    # When the are 5 players registered, inform them and let the game begin
+    # Queue other arriving agents
+  # Dealing scenario
+    # Choose the card dealer
+    # Shuffle the deck
+    # Deal cards
+  # Bidding scenario
+    # Start bidding in turn until the highest bid is established
+    # Declare the Briscola card
+  # Play the Game scenario
+    # Play cards in turn
+    # Collect points for each hand
+  # End the Game scenario
+    # Count points
+    # Declare the winner
+    # Leave the agents go and let other agent in queue to enter
+
+
+
 === Goals Overview Diagram ===
 The main goals of the system are to let 5 agents playing Briscola Chiamata and keep track of final scores of every registered agent in the system.
-  * Begin Game
-    * Wait for 5 players in the system
-      * Register join request
+  * Start the game
+      * Register join request and wait for 5 players in the system
       * Inform the players when there are 5 players in the system (further requests will be ignored)
+  * Play the game
     * Dealing
       * Decide the dealer
       * Shuffling cards
@@ -65,7 +82,7 @@ The main goals of the system are to let 5 agents playing Briscola Chiamata and k
     * Identify teams
     * Cheat Opponents
     * Play cards
-  * End Game
+  * End the Game
     * Update the scores table
     * Inform players of their score
     * Let players leave the system
