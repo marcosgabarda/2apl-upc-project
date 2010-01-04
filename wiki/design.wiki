@@ -37,7 +37,7 @@ In this phase, actors (human or software) expected to interact with the system, 
 || Dealing is over || Start bidding in turn ||
 || Bidding is over || Declare the Briscola card ||
 || Briscola declared || Start playing in turn ||
-|| Card on the table || Update internal beliefs about teams setting ||
+|| Card played || Update internal beliefs about teams setting ||
 || Message from other players (Sign exchange) || Update internal beliefs about teams setting ||
 || The hand is over || Count points ||
 || The game is over || Declare the winner ||
@@ -87,17 +87,20 @@ The goal overview diagram is a directed acyclic graph of all goals in the system
     * Wait for 5 players in the system
   * Play the game
     * Dealing
-      * Decide the card dealer
+      * Identify the card dealer
       * Shuffling cards
       * Dealing cards to players
     * Bidding
       * Identify the highest bid
       * Declare the Briscola card
-    * Identifying teams
-      * Obtain reputation
-      * Calculate trust
-    * Playing cards
+    * Turn Selection
+    * Play cards
+      * Identify best card to play for the turn
       * Cheat Opponents
+      * Identifying teams
+        * Obtain reputation
+        * Calculate trust
+    * Count point for the hand
   * End the Game
     * Declare the winner
     * Update the scoring
