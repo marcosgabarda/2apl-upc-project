@@ -38,8 +38,9 @@ In this phase, actors (human or software) expected to interact with the system, 
 || Card on the table || Update internal beliefs about teams setting ||
 || Message from other players (Sign exchange) || Update internal beliefs about teams setting ||
 || The hand is over || Count points ||
-|| The game is over || Declare the winner and update the system scoring ||
-|| Winner declared  || Leave the system ||
+|| The game is over || Declare the winner ||
+|| Winner declared || Update the system scoring ||
+|| System scoring updated  || Release the agents from the system ||
 
 ==== Scenarios ====
 
