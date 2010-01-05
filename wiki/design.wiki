@@ -124,20 +124,30 @@ In this phase, the agent types that will exist in the system are defined by comb
 The roles that were formed in the last step of the previous phase are linked to data that
 has been identified as necessary for performing that role. In the data-coupling diagram you can see all roles and data types in the system.
 
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/architectural_design/data_coupling.png]
+
 === Agent-Role Grouping Diagram ===
 
 In this diagram we group the roles into agent types. Decisions regarding how to group
 depend on role similarity, as well as analysis of data usage. The agent-role coupling diagram shows the group of roles that come under an agent. 
+
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/architectural_design/agent-role_grouping.png]
+
 
 === Agent Acquaintance Diagram ===
 
 In the agent acquaintance diagram you can see all agents within the system and which
 agents interact
 
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/architectural_design/agent_acquaintance.png]
+
+
 === System Overview Diagram ===
 
 In the system overview diagram you can see all agents in the system, along with their
 interface and interactions. This diagram is the central diagram of the entire system design. 
+
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/architectural_design/system_overview.png]
 
 == Detailed design ==
 
@@ -147,6 +157,33 @@ In this phase, the internals of each agent are developed in terms of capabilitie
 
 The agent overview diagram shows the internals of an agent. There is one agent overview diagram for every agent in the system. In the detailed design, much finer details of the system are established. The messages used to communicate between the agents are decided upon. If the roles within an agent grow very large, they are grouped into capabilities. As in the system overview diagram entities can be inserted or removed and edges can be reated or deleted.
 
+*Dealer*
+
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/detailed_design/dealer_overview_diagram.png]
+
+*Non-Player Character*
+
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/detailed_design/non-player_character_overview_diagram.png]
+
+
 === Capability Overview Diagram ===
 
 In the capability overview diagram you can see the direct internal of a capability. This diagram allows you to specify the internals of a capability in terms of plans, or sub-capabilities and messages between them. Data internal to the capability can also be specified. 
+
+*Dealer*
+
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/detailed_design/dealing_capability_overview_diagram.png]
+
+*Non-Player Character*
+
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/detailed_design/start_the_game_capability_overview_diagram.png]
+
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/detailed_design/receive_a_hand_capability_overview_diagram.png]
+
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/detailed_design/bidding_capability_overview_diagram.png]
+
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/detailed_design/declare_briscola_capability_overview_diagram.png]
+
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/detailed_design/playing_capability_overview_diagram.png]
+
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/detailed_design/end_the_game_capability_overview_diagram.png]
