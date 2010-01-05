@@ -619,6 +619,10 @@
 														    <field name="uniqueId">177</field>
 														</base>
 
+														<field name="goals"><list>
+														    <object ref="14"/>
+														    </list>
+														</field>
 														<field name="processes"></field>
 														<field name="notes"></field>
 														<field name="actions"><list>
@@ -1258,10 +1262,50 @@ finish</field>
 																											    <field name="uniqueId">182</field>
 																											</base>
 
+																											<field name="goals"><list>
+																											    <object type="Goal" id="79">
+																												<base type="Entity">
+																												    <field name="name">End of the game</field>
+																												    <field name="uniqueId">46</field>
+																												</base>
+
+																												<field name="subGoals"><list>
+																												    <object type="Goal" id="80">
+																													<base type="Entity">
+																													    <field name="name">Declare the winner</field>
+																													    <field name="uniqueId">61</field>
+																													</base>
+
+																													<field name="scope">:optional</field>
+																												    </object>
+
+																												    <object type="Goal" id="81">
+																													<base type="Entity">
+																													    <field name="name">Update the score</field>
+																													    <field name="uniqueId">63</field>
+																													</base>
+
+																													<field name="scope">:optional</field>
+																												    </object>
+
+																												    <object type="Goal" id="82">
+																													<base type="Entity">
+																													    <field name="name">Release players</field>
+																													    <field name="uniqueId">62</field>
+																													</base>
+
+																													<field name="scope">:optional</field>
+																												    </object>
+																												    </list>
+																												</field>
+																												<field name="scope">:optional</field>
+																											    </object>
+																											    </list>
+																											</field>
 																											<field name="processes"></field>
 																											<field name="notes"></field>
 																											<field name="actions"><list>
-																											    <object type="Action" id="79">
+																											    <object type="Action" id="83">
 																												<base type="Interaction">
 																												    <base type="Entity">
 																													<field name="name">Update the scoring</field>
@@ -1282,7 +1326,7 @@ finish</field>
 																												<field name="sideEffects"></field>
 																											    </object>
 
-																											    <object type="Action" id="80">
+																											    <object type="Action" id="84">
 																												<base type="Interaction">
 																												    <base type="Entity">
 																													<field name="name">Declaring the winner</field>
@@ -1303,7 +1347,7 @@ finish</field>
 																												<field name="sideEffects"></field>
 																											    </object>
 
-																											    <object type="Action" id="81">
+																											    <object type="Action" id="85">
 																												<base type="Interaction">
 																												    <base type="Entity">
 																													<field name="name">Release the players</field>
@@ -1326,66 +1370,30 @@ finish</field>
 																											    </list>
 																											</field>
 																											<field name="percepts"><list>
-																											    <object type="Percept" id="82">
+																											    <object type="Percept" id="86">
 																												<base type="Interaction">
 																												    <base type="Entity">
 																													<field name="name">Game is over</field>
 																													<field name="description"></field>
 																													<field name="uniqueId">55</field>
 																													<field name="connectTo"><list>
-																													    <object type="Scenario" id="83">
+																													    <object type="Scenario" id="87">
 																														<base type="Entity">
 																														    <field name="name">End of the game scenario</field>
 																														    <field name="uniqueId">47</field>
 																														    <field name="connectTo"><list>
-																															<object ref="79"/>
+																															<object ref="83"/>
 
-																															<object ref="81"/>
+																															<object ref="85"/>
 
-																															<object ref="80"/>
+																															<object ref="84"/>
 																															</list>
 																														    </field>
 																														</base>
 
 																														<field name="scope">:optional</field>
 																														<field name="linkedGoals"><list>
-																														    <object type="Goal" id="84">
-																															<base type="Entity">
-																															    <field name="name">End of the game</field>
-																															    <field name="uniqueId">46</field>
-																															</base>
-
-																															<field name="subGoals"><list>
-																															    <object type="Goal" id="85">
-																																<base type="Entity">
-																																    <field name="name">Declare the winner</field>
-																																    <field name="uniqueId">61</field>
-																																</base>
-
-																																<field name="scope">:optional</field>
-																															    </object>
-
-																															    <object type="Goal" id="86">
-																																<base type="Entity">
-																																    <field name="name">Update the score</field>
-																																    <field name="uniqueId">63</field>
-																																</base>
-
-																																<field name="scope">:optional</field>
-																															    </object>
-
-																															    <object type="Goal" id="87">
-																																<base type="Entity">
-																																    <field name="name">Release players</field>
-																																    <field name="uniqueId">62</field>
-																																</base>
-
-																																<field name="scope">:optional</field>
-																															    </object>
-																															    </list>
-																															</field>
-																															<field name="scope">:optional</field>
-																														    </object>
+																														    <object ref="79"/>
 																														    </list>
 																														</field>
 																													    </object>
@@ -1414,15 +1422,15 @@ finish</field>
 																													</base>
 
 																													<field name="triggers"><list>
-																													    <object ref="82"/>
+																													    <object ref="86"/>
 																													    </list>
 																													</field>
 																													<field name="actions"><list>
-																													    <object ref="81"/>
+																													    <object ref="85"/>
 
-																													    <object ref="80"/>
+																													    <object ref="84"/>
 
-																													    <object ref="79"/>
+																													    <object ref="83"/>
 																													    </list>
 																													</field>
 																													<field name="percepts"><list>
@@ -1433,7 +1441,7 @@ finish</field>
 																															<field name="description"></field>
 																															<field name="uniqueId">57</field>
 																															<field name="connectTo"><list>
-																															    <object ref="83"/>
+																															    <object ref="87"/>
 																															    </list>
 																															</field>
 																														    </base>
@@ -1459,7 +1467,7 @@ finish</field>
 																															<field name="description"></field>
 																															<field name="uniqueId">58</field>
 																															<field name="connectTo"><list>
-																															    <object ref="83"/>
+																															    <object ref="87"/>
 																															    </list>
 																															</field>
 																														    </base>
@@ -1648,7 +1656,7 @@ finish</field>
 																										    </list>
 																										</field>
 																										<field name="goals"><list>
-																										    <object ref="86"/>
+																										    <object ref="81"/>
 																										    </list>
 																										</field>
 																										<field name="actions"><list>
@@ -1778,6 +1786,8 @@ finish</field>
 																																	    <object ref="25"/>
 
 																																	    <object ref="24"/>
+
+																																	    <object ref="21"/>
 																																	    </list>
 																																	</field>
 																																	<field name="processes"></field>
@@ -2766,6 +2776,10 @@ finish</field>
 																																																	    <object ref="141"/>
 																																																	</field>
 																																																    </object>
+																																																    </list>
+																																																</field>
+																																																<field name="goals"><list>
+																																																    <object ref="26"/>
 																																																    </list>
 																																																</field>
 																																																<field name="outgoingMessages"><list>
@@ -3940,7 +3954,7 @@ finish</field>
 								    </list>
 								</field>
 								<field name="goals"><list>
-								    <object ref="85"/>
+								    <object ref="80"/>
 
 								    <object ref="28"/>
 
@@ -3954,9 +3968,9 @@ finish</field>
 
 								    <object ref="16"/>
 
-								    <object ref="87"/>
+								    <object ref="82"/>
 
-								    <object ref="86"/>
+								    <object ref="81"/>
 
 								    <object ref="22"/>
 
@@ -3968,7 +3982,7 @@ finish</field>
 								    </list>
 								</field>
 								<field name="percepts"><list>
-								    <object ref="82"/>
+								    <object ref="86"/>
 
 								    <object ref="129"/>
 
@@ -3992,7 +4006,7 @@ finish</field>
 								    </list>
 								</field>
 								<field name="actions"><list>
-								    <object ref="80"/>
+								    <object ref="84"/>
 
 								    <object ref="128"/>
 
@@ -4006,9 +4020,9 @@ finish</field>
 
 								    <object ref="13"/>
 
-								    <object ref="81"/>
+								    <object ref="85"/>
 
-								    <object ref="79"/>
+								    <object ref="83"/>
 
 								    <object ref="43"/>
 
@@ -4179,11 +4193,11 @@ finish</field>
 									</base>
 
 									<field name="goals"><list>
-									    <object ref="87"/>
+									    <object ref="82"/>
 									    </list>
 									</field>
 									<field name="actions"><list>
-									    <object ref="81"/>
+									    <object ref="85"/>
 									    </list>
 									</field>
 									<field name="percepts"><list>
@@ -4200,11 +4214,11 @@ finish</field>
 									</base>
 
 									<field name="goals"><list>
-									    <object ref="86"/>
+									    <object ref="81"/>
 									    </list>
 									</field>
 									<field name="actions"><list>
-									    <object ref="79"/>
+									    <object ref="83"/>
 									    </list>
 									</field>
 									<field name="percepts"><list>
@@ -4252,15 +4266,15 @@ finish</field>
 									</base>
 
 									<field name="goals"><list>
-									    <object ref="85"/>
-									    </list>
-									</field>
-									<field name="actions"><list>
 									    <object ref="80"/>
 									    </list>
 									</field>
+									<field name="actions"><list>
+									    <object ref="84"/>
+									    </list>
+									</field>
 									<field name="percepts"><list>
-									    <object ref="82"/>
+									    <object ref="86"/>
 									    </list>
 									</field>
 									<field name="dataRead"><list>
@@ -4380,7 +4394,7 @@ finish</field>
 
 						    <object ref="95"/>
 
-						    <object ref="82"/>
+						    <object ref="86"/>
 
 						    <object ref="89"/>
 
@@ -4421,8 +4435,8 @@ finish</field>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="196">
-			    <field name="x">584</field>
-			    <field name="y">101</field>
+			    <field name="x">579</field>
+			    <field name="y">95</field>
 			</object>
 		    </field>
 		</object>
@@ -4608,7 +4622,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="227">
 		    <field name="entity">
-			<object ref="80"/>
+			<object ref="84"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="228">
@@ -4684,8 +4698,8 @@ finish</field>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="240">
-			    <field name="x">324</field>
-			    <field name="y">305</field>
+			    <field name="x">313</field>
+			    <field name="y">308</field>
 			</object>
 		    </field>
 		</object>
@@ -4720,8 +4734,8 @@ finish</field>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="246">
-			    <field name="x">323</field>
-			    <field name="y">257</field>
+			    <field name="x">342</field>
+			    <field name="y">254</field>
 			</object>
 		    </field>
 		</object>
@@ -4764,7 +4778,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="253">
 		    <field name="entity">
-			<object ref="79"/>
+			<object ref="83"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="254">
@@ -4776,7 +4790,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="255">
 		    <field name="entity">
-			<object ref="82"/>
+			<object ref="86"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="256">
@@ -4884,7 +4898,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="273">
 		    <field name="entity">
-			<object ref="81"/>
+			<object ref="85"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="274">
@@ -5158,7 +5172,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="319">
 		    <field name="entity">
-			<object ref="80"/>
+			<object ref="84"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="320">
@@ -5308,7 +5322,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="344">
 		    <field name="entity">
-			<object ref="79"/>
+			<object ref="83"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="345">
@@ -5332,7 +5346,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="348">
 		    <field name="entity">
-			<object ref="82"/>
+			<object ref="86"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="349">
@@ -5404,7 +5418,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="360">
 		    <field name="entity">
-			<object ref="81"/>
+			<object ref="85"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="361">
@@ -5546,7 +5560,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="384">
 		    <field name="entity">
-			<object ref="84"/>
+			<object ref="79"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="385">
@@ -5702,7 +5716,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="410">
 		    <field name="entity">
-			<object ref="86"/>
+			<object ref="81"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="411">
@@ -5714,7 +5728,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="412">
 		    <field name="entity">
-			<object ref="87"/>
+			<object ref="82"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="413">
@@ -5726,7 +5740,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="414">
 		    <field name="entity">
-			<object ref="85"/>
+			<object ref="80"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="415">
@@ -5964,7 +5978,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="454">
 		    <field name="entity">
-			<object ref="79"/>
+			<object ref="83"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="455">
@@ -5976,7 +5990,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="456">
 		    <field name="entity">
-			<object ref="82"/>
+			<object ref="86"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="457">
@@ -6060,7 +6074,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="470">
 		    <field name="entity">
-			<object ref="81"/>
+			<object ref="85"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="471">
@@ -6072,7 +6086,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="472">
 		    <field name="entity">
-			<object ref="86"/>
+			<object ref="81"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="473">
@@ -6083,7 +6097,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="474">
 		    <field name="entity">
-			<object ref="87"/>
+			<object ref="82"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="475">
@@ -6095,7 +6109,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="476">
 		    <field name="entity">
-			<object ref="85"/>
+			<object ref="80"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="477">
@@ -6370,7 +6384,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="522">
 		    <field name="entity">
-			<object ref="80"/>
+			<object ref="84"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="523">
@@ -6700,7 +6714,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="578">
 		    <field name="entity">
-			<object ref="80"/>
+			<object ref="84"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="579">
@@ -6760,7 +6774,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="588">
 		    <field name="entity">
-			<object ref="83"/>
+			<object ref="87"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="589">
@@ -6796,7 +6810,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="594">
 		    <field name="entity">
-			<object ref="79"/>
+			<object ref="83"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="595">
@@ -6808,7 +6822,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="596">
 		    <field name="entity">
-			<object ref="82"/>
+			<object ref="86"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="597">
@@ -6880,7 +6894,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="608">
 		    <field name="entity">
-			<object ref="81"/>
+			<object ref="85"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="609">
@@ -7446,7 +7460,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="704">
 		    <field name="entity">
-			<object ref="79"/>
+			<object ref="83"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="705">
@@ -7458,7 +7472,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="706">
 		    <field name="entity">
-			<object ref="82"/>
+			<object ref="86"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="707">
@@ -7470,7 +7484,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="708">
 		    <field name="entity">
-			<object ref="80"/>
+			<object ref="84"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="709">
@@ -7506,7 +7520,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="714">
 		    <field name="entity">
-			<object ref="81"/>
+			<object ref="85"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="715">
@@ -7766,7 +7780,7 @@ finish</field>
 
 		<object type="DiagramEntitySetting" id="758">
 		    <field name="entity">
-			<object ref="83"/>
+			<object ref="87"/>
 		    </field>
 		    <field name="location">
 			<object type="Coordinate" id="759">
@@ -8204,13 +8218,13 @@ finish</field>
 
 		<object ref="43"/>
 
-		<object ref="79"/>
+		<object ref="83"/>
 
 		<object ref="10"/>
 
 		<object ref="11"/>
 
-		<object ref="81"/>
+		<object ref="85"/>
 
 		<object ref="36"/>
 
@@ -8226,7 +8240,7 @@ finish</field>
 
 		<object ref="13"/>
 
-		<object ref="80"/>
+		<object ref="84"/>
 		</list>
 	    </field>
 	    <field name="agents"><list>
@@ -8308,15 +8322,15 @@ finish</field>
 
 		<object ref="22"/>
 
-		<object ref="84"/>
+		<object ref="79"/>
 
 		<object ref="25"/>
 
-		<object ref="85"/>
+		<object ref="80"/>
 
-		<object ref="87"/>
+		<object ref="82"/>
 
-		<object ref="86"/>
+		<object ref="81"/>
 
 		<object ref="16"/>
 
@@ -8354,7 +8368,7 @@ finish</field>
 
 		<object ref="95"/>
 
-		<object ref="82"/>
+		<object ref="86"/>
 
 		<object ref="89"/>
 
@@ -8508,7 +8522,7 @@ finish</field>
 
 		<object ref="130"/>
 
-		<object ref="83"/>
+		<object ref="87"/>
 		</list>
 	    </field>
 	    <field name="actors"><list>
@@ -8604,7 +8618,7 @@ finish</field>
 
 			<object ref="105"/>
 
-			<object ref="82"/>
+			<object ref="86"/>
 
 			<object ref="89"/>
 
@@ -8636,11 +8650,11 @@ finish</field>
 
 			<object ref="13"/>
 
-			<object ref="80"/>
+			<object ref="84"/>
 
-			<object ref="81"/>
+			<object ref="85"/>
 
-			<object ref="79"/>
+			<object ref="83"/>
 			</list>
 		    </field>
 		    <field name="protocolsDistributionPairs"><list>
@@ -8696,11 +8710,11 @@ finish</field>
 
 			<object ref="30"/>
 
-			<object ref="85"/>
+			<object ref="80"/>
 
-			<object ref="87"/>
+			<object ref="82"/>
 
-			<object ref="86"/>
+			<object ref="81"/>
 
 			<object ref="20"/>
 			</list>
@@ -8730,11 +8744,11 @@ finish</field>
 
 			<object ref="13"/>
 
-			<object ref="80"/>
+			<object ref="84"/>
 
-			<object ref="81"/>
+			<object ref="85"/>
 
-			<object ref="79"/>
+			<object ref="83"/>
 			</list>
 		    </field>
 		    <field name="percepts"><list>
@@ -8756,7 +8770,7 @@ finish</field>
 
 			<object ref="105"/>
 
-			<object ref="82"/>
+			<object ref="86"/>
 
 			<object ref="89"/>
 
@@ -8792,9 +8806,9 @@ finish</field>
 
 			<object ref="129"/>
 
-			<object ref="83"/>
+			<object ref="87"/>
 
-			<object ref="79"/>
+			<object ref="83"/>
 
 			<object ref="177"/>
 
@@ -8806,9 +8820,9 @@ finish</field>
 
 			<object ref="11"/>
 
-			<object ref="82"/>
+			<object ref="86"/>
 
-			<object ref="81"/>
+			<object ref="85"/>
 
 			<object ref="89"/>
 
@@ -8830,7 +8844,7 @@ finish</field>
 
 			<object ref="71"/>
 
-			<object ref="80"/>
+			<object ref="84"/>
 
 			<object ref="105"/>
 			</list>
