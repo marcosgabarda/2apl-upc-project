@@ -1,0 +1,27 @@
+
+BeliefUpdates:
+  { true }	sit(X)		{ player(X) }
+
+Beliefs:
+  notary(n).
+
+
+Plans:
+  @card_table(enterAsGatekeeper())
+
+Goals:
+
+PG-rules:
+
+PC-rules:
+  message(X, request, _, _, join) <- true |
+  {
+    @card_table(sit(X));
+    send(X, inform, _, _, ack);
+  }
+
+PR-rules:
+  @sit(X); REST <- true |
+  {
+    send(X, inform, _, _, refuse)
+  }
