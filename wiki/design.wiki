@@ -131,7 +131,7 @@ has been identified as necessary for performing that role. In the data-coupling 
 In this diagram we group the roles into agent types. Decisions regarding how to group
 depend on role similarity, as well as analysis of data usage. The agent-role coupling diagram shows the group of roles that come under an agent. 
 
-[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/architectural_design/agent-role_grouping.png]
+[http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/architectural_design/aget-role_grouping.png]
 
 
 === Agent Acquaintance Diagram ===
