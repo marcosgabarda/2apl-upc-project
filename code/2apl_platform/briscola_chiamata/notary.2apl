@@ -1,0 +1,16 @@
+
+BeliefUpdates:
+
+Beliefs:
+  gatekeeper(gk).
+
+Plans:
+  @card_table(enterAsNotary())
+
+Goals:
+
+PG-rules:
+
+PC-rules:
+
+PR-rules:
