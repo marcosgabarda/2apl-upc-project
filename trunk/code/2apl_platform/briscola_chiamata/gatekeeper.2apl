@@ -1,18 +1,24 @@
+BeliefUpdates:
+  { true }  SetAssigned(POS, A)     { assigned(POS, A) }
+  { true }  RemoveAssigned(POS, A)  { not assigned(POS, A) }
+
 Beliefs:
   notary(n).
+  player(X) :- assigned(POS, X).
 
 Plans:
   @cardtable(enterAsGatekeeper())
 
 PC-rules:
-  message(X, request, _, _, join) <- true |
+  message(A, request, register(X)) <- not assigned(_, A) |
   {
-    @cardtable(sit(X));
-    send(X, inform, _, _, ack)
+    @cardtable(sit(A), POS);
+    SetAssigned(POS, A);
+    send(A, inform, registered(X))
   }
 
 PR-rules:
   @cardtable(sit(X)); REST <- true |
   {
-    send(X, inform, _, _, refuse)
+    send(X, inform, refused(X))
   }

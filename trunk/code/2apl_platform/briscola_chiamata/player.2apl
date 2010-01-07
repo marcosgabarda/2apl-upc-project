@@ -3,11 +3,14 @@ Beliefs:
   gatekeeper(gk).
 
 Plans:
-  B(gatekeeper(X)) ;
-  send(X, request, join)
+  [ B(gatekeeper(X)) ; send(X, request, register(me)) ]
 
 PC-rules:
-  message(X, inform, _, _, ack) <- true |
+  message(X, inform, registered(Y)) <- true |
   {
-    print(ack)
+    print("OK")
+  }
+  message(X, inform, refused(Y)) <- true |
+  {
+    print("ANGRY")
   }
