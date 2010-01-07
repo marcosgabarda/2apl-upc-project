@@ -1,6 +1,3 @@
-
-BeliefUpdates:
-
 Beliefs:
   notary(n).
   gatekeeper(gk).
@@ -9,14 +6,8 @@ Plans:
   B(gatekeeper(X)) ;
   send(X, request, join)
 
-Goals:
-
-PG-rules:
-
 PC-rules:
   message(X, inform, _, _, ack) <- true |
   {
-    
+    print(ack)
   }
-
-PR-rules:
