@@ -25,9 +25,6 @@ import java.io.OutputStream;
 
 public class TableEnv extends Environment
 {
-	// To hold our reference to the window
-	final protected Window m_window;
-	
 	private HashMap<String,Agent> agentmap = new HashMap<String,Agent>();
 
 	private int numberOfPlayers, numberOfNotaries, numberOfGatekeepers;
@@ -37,7 +34,7 @@ public class TableEnv extends Environment
 	{
 		super();
 		// Create the window
-		m_window = new Window( this );
+		//m_window = new Window( this );
 		
 		numberOfPlayers=0;
 		numberOfNotaries=0;
@@ -101,8 +98,8 @@ public class TableEnv extends Environment
 		increaseNumberOfPlayers();
 		
 		// Redraw so we can see the agent
-		validatewindow();
-		m_window.repaint();
+		//validatewindow();
+		//m_window.repaint();
 		
 		// We came so far, this means success!
 		//agent.signalMoveSucces.emit();
@@ -148,7 +145,7 @@ public class TableEnv extends Environment
             writeToLog("linking " + sAgent + "");
         } else{
             final Agent agent = new Agent(sAgentMain);
-            _agents.add(agent);
+            //_agents.add(agent);
             agentmap.put(sAgent, agent);
             writeToLog("agent " + agent + " added");
         }                
@@ -166,8 +163,8 @@ public class TableEnv extends Environment
 			
 			// there can be several agent
 			if (!agentmap.containsValue(a)) {
-			    _agents.remove(a);		
-			    a.reset();
+			    //_agents.remove(a);		
+			    //a.reset();
 			} 
 			
 			writeToLog("Agent removed: " + sAgent);
@@ -209,23 +206,23 @@ public class TableEnv extends Environment
 	
 	
 	// Redrawing the window is a nightmare, this does some redraw stuff
-	private void validatewindow()
-	{
-		Runnable repaint = new Runnable()
-		{
-			public void run()
-			{
-				//try {Thread.sleep(500);} catch(Exception e) {}
-				m_window.doLayout();
-				
-				/*if (!m_window.isVisible())
-				{
-					m_window.setVisible( true );
-				}*/
-			}
-		};
-		SwingUtilities.invokeLater(repaint);
-	}
+// 	private void validatewindow()
+// 	{
+// 		Runnable repaint = new Runnable()
+// 		{
+// 			public void run()
+// 			{
+// 				//try {Thread.sleep(500);} catch(Exception e) {}
+// 				m_window.doLayout();
+// 				
+// 				/*if (!m_window.isVisible())
+// 				{
+// 					m_window.setVisible( true );
+// 				}*/
+// 			}
+// 		};
+// 		SwingUtilities.invokeLater(repaint);
+// 	}
 
 	
 	// Print a message to the console

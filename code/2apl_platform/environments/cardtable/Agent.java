@@ -7,7 +7,7 @@ public class Agent
 	// 0 player
 	// 1 gatekeeper
 	// 2 notary
-	protected int type;
+	protected int _type;
 
 	// _position null means agent is not sit at the table 
 	protected Integer _position = null;
@@ -18,6 +18,10 @@ public class Agent
 
 	public String getName() {
 		return _name;
+	}
+
+	public int getType() {
+		return _type;
 	}
 
 	public Integer getPosition() {
