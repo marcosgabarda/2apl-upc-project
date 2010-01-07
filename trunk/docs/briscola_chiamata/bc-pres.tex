@@ -2,7 +2,7 @@
 
 \usetheme{JuanLesPins}
 
-\title{`Briscola Chiamata'' Card Game using Multi-Agent Systems} %% propose another title
+\title{A Multi-Agent System for playing Briscola Chiamata} 
 
 \author[B. Borja Fiz, F. De Santis, M. Gabarda]{Beltran Borja Fiz, Fabrizio De Santis, Marcos Gabarda}
 \institute[Universitat Polit\`ecnica de Catalunya]{
@@ -26,8 +26,9 @@
 \frame[allowframebreaks]{
   \frametitle{Introduction}
 \begin{itemize}
+  \item Briscola Chiamata
   \item Prometheus methodology (PDT Tool)
-  \item ...
+  \item 2APL
   \item ...
 \end{itemize}
 }
@@ -35,15 +36,44 @@
 \section{Problem Specification}
 
 \frame[allowframebreaks]{
-    \frametitle{Game Description}
+    \frametitle{Briscola Chiamta}
 
-Problem specification: the problem calls for a multi-agent system to provide ...
-    
+    5 players, 8 cards each, no cards undealt
+
+    \vskip 2.0ex
+
+    Phases of the game:
+    \begin{itemize}  
+      \item Card giving
+      \item Bidding
+      \item Partner selection
+      \item Playing cards
+      \item Winner/Loser declaration with point distribution
+    \end{itemize}
 }
 
 
 \frame[allowframebreaks]{
   \frametitle{Why is suitable for MAS?}
+
+  \begin{itemize}
+    \item Uncertainity (nobody knows who is actually its partner)
+    \item Sociality (its needed in order to discover partners/cheat opponents)
+    \item Coordination is needed
+    \begin{itemize}
+      \item Cooperation inside teams needed once partners are discovered
+      \item Competition between teams needed once partners are discovered
+    \end{itemize}
+    \item Trust/Reputation models needed 
+    \item Main agent properties are satisfied
+    \begin{itemize}
+      \item Autonomy (players are autonomous, they plan alone once there are at least 5 players)
+      \item Flexibility
+      \item Reactivity (players has to play when its their turn)
+      \item Proactivity (players can decide if they want to play even if it's not their turn, players can decide to start cheating other players by sending them messages)
+      \item Social (players have to interact with each others in order to discover their partners)
+    \end{itemize}
+  \end{itemize}
 }
 
 \section{System Specification}
@@ -51,12 +81,82 @@ Problem specification: the problem calls for a multi-agent system to provide ...
 \frame[allowframebreaks]{
   \frametitle{Analysis Overview Diagram}
 
-  .......
+  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/analysis_overview.png}
 
 }
 
 \frame[allowframebreaks]{
-  \frametitle{Conclusions}
+  \frametitle{Scenarios Diagram}
+
+  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/scenarios.png}
+
+}
+
+\frame[allowframebreaks]{
+  \frametitle{Goals Overview Diagram}
+
+  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/goal_overview.png}
+
+}
+
+\frame[allowframebreaks]{
+  \frametitle{System Roles Diagram}
+
+  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/system_roles.png}
+
+}
+
+\section{High-level (Architectural) Design}
+
+\frame[allowframebreaks]{
+  \frametitle{Data Coupling Diagram}
+
+  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/data_coupling.png}
+
+}
+
+\frame[allowframebreaks]{
+  \frametitle{Agent-Role Grouping Diagram}
+
+  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/aget-role_grouping.png}
+
+}
+
+\frame[allowframebreaks]{
+  \frametitle{Agent Acquaintance Diagram}
+
+  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/agent_acquaintance.png}
+
+}
+
+\frame[allowframebreaks]{
+  \frametitle{System Overview Diagram}
+
+  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/system_overview.png}
+
+}
+
+\section{Detailed Design}
+
+\frame[allowframebreaks]{
+  \frametitle{Agent Overview Diagram}
+
+  
+}
+
+\frame[allowframebreaks]{
+  \frametitle{Capability Overview Diagram}
+
+  
+}
+
+
+\frame[allowframebreaks]{
+  \frametitle{Conclusion}
+
+  What's wrong with 2APL?
+
+  No security mechanisms
 }
 
 
