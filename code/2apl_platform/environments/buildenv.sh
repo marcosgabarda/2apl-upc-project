@@ -1,3 +1,3 @@
 #!/bin/bash
 
-javac -classpath "../apapl.jar:." cardtable/*java && jar cvfm cardtable.jar cardtable/Manifest.txt -C cardtable/ .
+javac -classpath "../apapl.jar:." cardtable/*java && jar cvf cardtable.jar cardtable/*.class
