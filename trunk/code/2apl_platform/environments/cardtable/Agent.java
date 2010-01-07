@@ -1,4 +1,4 @@
-package cardTable;
+package cardtable;
 
 public class Agent 
 {
