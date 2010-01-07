@@ -1,5 +1,5 @@
-n		: notary.2apl		1	@card_table
-gk		: gatekeeper.2apl 	1	@card_table
-marcos		: marcos.2apl		2	@card_table
-fabrizio	: fabrizio.2apl		2	@card_table
-borja		: borja.2apl		1	@card_table
+n		: notary.2apl		1	@cardtable
+gk		: gatekeeper.2apl 	1	@cardtable
+marcos		: marcos.2apl		2	@cardtable
+fabrizio	: fabrizio.2apl		2	@cardtable
+borja		: borja.2apl		1	@cardtable
