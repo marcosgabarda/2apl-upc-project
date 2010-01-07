@@ -63,7 +63,7 @@ As a player, the Main goal is to win the game (ie: accumulate the amount of poin
 === Environment properties ===
   * The environment is basically the table 
     * fully accessible (all the players can watch to all the cards on the table)
-    * deterministic (playing cards cannot fail, simplicistic view but can work)
+    * indeterministic (playing cards cannot fail, simplicistic view but can work, but other actions may fail)
     * episodic (if i play a card, then i don't have that card anymore)
     * dynamic (players can play their cards even if it is not its turn)
     * discrete (it's a matter of philosophy ;-)
