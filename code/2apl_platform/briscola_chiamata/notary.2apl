@@ -1,5 +1,15 @@
+BeliefUpdates:
+  { true }  SetAssigned(POS, X)     { assigned(POS, X) }
+  { true }  RemoveAssigned(POS, X)  { not assigned(POS, X) }
+
 Beliefs:
   gatekeeper(gk).
 
 Plans:
   @cardtable(enterAsNotary())
+
+PC-rules:
+  message(X, inform, _, _, registered(POS, Y)) <- true |
+  {
+    SetAssigned(POS, Y)
+  }
