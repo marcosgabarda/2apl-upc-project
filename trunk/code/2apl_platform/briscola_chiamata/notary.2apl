@@ -1,6 +1,7 @@
 BeliefUpdates:
-  { true }  SetAssigned(POS, X)     { assigned(POS, X) }
-  { true }  RemoveAssigned(POS, X)  { not assigned(POS, X) }
+  { true }  SetAssigned(POS, X)    	{ assigned(POS, X) }
+  { true }  RemoveAssigned(POS, X) 	{ not assigned(POS, X) }
+  { true }  SetDealer(X)	  	{ dealer(X) }
 
 Beliefs:
   gatekeeper(gk).		/* we know who the gatekeeper is, for semplicity */
@@ -15,6 +16,7 @@ PC-rules:
     if B( POS = 4 ) then	/* if we believe we already assigned all the sits, then choose the dealer */
     { 
       @cardtable(chooseDealer(), D);
+      SetDealer(D);
       send(D, inform, dealer(D))
     }
   }
