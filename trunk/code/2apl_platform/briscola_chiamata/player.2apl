@@ -1,7 +1,7 @@
 BeliefUpdates:
   { true }  SetAssigned(POS, X)     { assigned(POS, X) }
   { true }  RemoveAssigned(POS, X)  { not assigned(POS, X) }
-
+  { true }  AddBidHistorical(Cantity, Who)  { bidhistorical(Cantity, Who) }
 Beliefs:
   notary(n).
   gatekeeper(gk).
@@ -24,4 +24,37 @@ PC-rules:
     /* here start shuffling and dealing cards */ 
   }
 
+  message (X, inform, _, _,  firstbid()) <- scenario(bidding) | /* message from dealer, telling that this agent is the firts to bid */
+  {
+    /* for fist, the agent bids */
+    /* TODO the agent must know who is the next bidding, or ask to dealer*/
+    send (Next, inform, bid());
+
+  }
+
+  message (X, inform, _, _,  firstbid()) <- scenario(bidding) | /* message from dealer, telling that this agent is the firts to bid */
+  {
+    /* for fist, the agent bids */
+    /* TODO the agent must know who is the next bidding, or ask to dealer*/
+    send (Next, inform, bid(1))
+  }
+
+  message (X, inform, _, _,  bid(Cuantity)) <- scenario(bidding) | /* message from dealer, telling that this agent is the firts to bid */
+  {
+    /* for fist, the agent bids only once. NOTE i suppose "me" is a self reference */
+    if B( bidhistorical(_, me) )
+    {
+      send (Next, inform, pass())
+    }
+    else
+    {
+      send (Next, inform, bid(1))
+    }
+    
+  }
+
+  turnselected (X) <- assigned(X, _) and scenario(playing) |  /* when percepts turnselected, and its his turn*/
+  {
+    /*TODO*/
+  }
   
