@@ -23,8 +23,20 @@ PC-rules:
       send(D, inform, dealer(D))
     }
   }
-  
-  message () <-  |
-  {
 
+  turnended () <- currentturn(X) | /**/
+  {
+    if B( X = 4 ) then
+    {
+      RemoveTrun(X);
+      UpdateTrun(0);
+      @cardtale(selectTrun(0))
+    }
+    else
+    {
+      RemoveTrun(X);
+      UpdateTrun(X + 1);
+      @cardtale(selectTrun(X + 1))
+    }
   }
+
