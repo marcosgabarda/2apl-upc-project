@@ -1,10 +1,13 @@
 BeliefUpdates:
-  { true }  SetAssigned(POS, X)    	{ assigned(POS, X) }
+  { true }  SetAssigned(POS, X)  { assigned(POS, X) }
   { true }  RemoveAssigned(POS, X) 	{ not assigned(POS, X) }
-  { true }  SetDealer(X)	  	{ dealer(X) }
+  { true }  SetDealer(X)  { dealer(X) }
+  { not currentturn(_) }  UpdateTrun(X)  { currentturn(X) }
+  { currentturn(X) }  RemoveTrun(X)  { not currentturn(X) }
 
 Beliefs:
-  gatekeeper(gk).		/* we know who the gatekeeper is, for semplicity */
+  gatekeeper(gk).		/* we know who the gatekeeper is, for simplicity */
+  currentturn(1).   /* the first turn is for the agent in postion 1 */
 
 Plans:
   @cardtable(enterAsNotary())	/* join the game as notary */
@@ -19,4 +22,9 @@ PC-rules:
       SetDealer(D);
       send(D, inform, dealer(D))
     }
+  }
+  
+  message () <-  |
+  {
+
   }
