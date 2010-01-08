@@ -16,5 +16,9 @@ PC-rules:
   }
   message(X, inform, _, _, refused(Y)) <- true |
   {
-    print("is ANGRY!")
+    print("I'm out!")
+  }
+  message(X, inform, _, _, dealer(Y)) <- true |
+  {
+    print("I'm the dealer!")
   }

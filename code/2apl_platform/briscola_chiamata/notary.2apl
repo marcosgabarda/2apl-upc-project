@@ -3,13 +3,18 @@ BeliefUpdates:
   { true }  RemoveAssigned(POS, X)  { not assigned(POS, X) }
 
 Beliefs:
-  gatekeeper(gk).
+  gatekeeper(gk).		/* we know who the gatekeeper is, for semplicity */
 
 Plans:
-  @cardtable(enterAsNotary())
+  @cardtable(enterAsNotary())	/* join the game as notary */
 
 PC-rules:
   message(X, inform, _, _, registered(POS, Y)) <- true |
   {
-    SetAssigned(POS, Y)
+    SetAssigned(POS, Y);	/* update belief about assigned sit */
+    if B( POS = 4 ) then	/* if we believe we already assigned all the sits, then choose the dealer */
+    { 
+      @cardtable(chooseDealer(), D);
+      send(D, inform, dealer(D))
+    }
   }
