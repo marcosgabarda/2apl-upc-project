@@ -1,20 +1,21 @@
 BeliefUpdates:
-  { true }  SetAssigned(POS, A)     { assigned(POS, A) }
-  { true }  RemoveAssigned(POS, A)  { not assigned(POS, A) }
+  { true }  SetAssigned(POS, X)     { assigned(POS, X) }
+  { true }  RemoveAssigned(POS, X)  { not assigned(POS, X) }
 
 Beliefs:
   notary(n).
-  player(X) :- assigned(POS, X).
+  assigned(POS, X) :- player(X).
 
 Plans:
   @cardtable(enterAsGatekeeper())
 
 PC-rules:
-  message(A, request, register(X)) <- not assigned(_, A) |
+  message(X, request, _, _, register(me)) <- not assigned(_, X) |
   {
-    @cardtable(sit(A), POS);
-    SetAssigned(POS, A);
-    send(A, inform, registered(X))
+    @cardtable(sit(X), POS);
+    SetAssigned(POS, X);
+    send(X, inform, registered(POS, X));
+    send(n, inform, registered(POS, X))
   }
 
 PR-rules:
