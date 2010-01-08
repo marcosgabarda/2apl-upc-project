@@ -56,5 +56,6 @@ PC-rules:
   turnselected (X) <- assigned(X, _) and scenario(playing) |  /* when percepts turnselected, and its his turn*/
   {
     /*TODO*/
+
   }
   
