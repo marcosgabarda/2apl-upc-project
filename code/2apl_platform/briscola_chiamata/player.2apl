@@ -21,4 +21,5 @@ PC-rules:
   message(X, inform, _, _, dealer(Y)) <- true |
   {
     print("I'm the dealer!")
+    /* here start shuffling and dealing cards */ 
   }
