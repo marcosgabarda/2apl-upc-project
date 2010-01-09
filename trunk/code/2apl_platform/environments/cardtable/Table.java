@@ -1,3 +1,5 @@
+package cardtable;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,8 +19,8 @@ public class Table extends JFrame{
 ImageIcon CardBack = new ImageIcon("cards/b.gif");
 
 
-	public Table( final Env env ){
-		super( "Blockworld" );
+	public Table( ){
+		super( "Briscola Chiamata" );
     //----------GUI STUFF----------------------------
 
 
@@ -605,7 +607,8 @@ ImageIcon CardBack = new ImageIcon("cards/b.gif");
 	pane.add(button, c);
  * */
 
-    }
+	}    
+}
 
 
 
