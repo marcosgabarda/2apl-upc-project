@@ -34,15 +34,14 @@ Universitat Polit\`ecnica de Catalunya}
 
 \section{Introduction}\label{sec:intro}
 
-\emph{Briscola Chiamata} is the five-player version of \emph{Briscola}. Every player is dealt eight cards, so that no cards remain undealt. Then, each player, starting from the dealer's right\footnote{If the dealer is not a player, then starting from the declearer's right} and proceeding counter-clockwise, bids in an auction to declare how many points they will score. A player may pass, and hence cannot bid again in that game. The bid represents the number of points that player believes he is capable of accumulating. Bidding continues until all but one player have passed in a round. This remaining player has then "won the bid" and therefore gets to declare the Briscola. The declarer also declares a specific Briscola card (example, the ``Ace of Cups'' if Cups was the declared Briscola) and the holder of this card is then determined to be the declarer's partner. Logically, the declarer would declare the highest Briscola card he does not already hold in the hopes of creating the strongest combined hand between him and his partner.
-The remaining three players are partnered with each other, without their knowledge. Each player, other than the declarer's partner, acts independently, until it is clear which players are partners. Infrequently, the declarer may declare a Briscola card he already holds (if he feels he has a very strong hand), in which case the other four players are partenered against him.
-Game strategy is often devised to determine which player is partnered with the declarer, whereas the declarer's partner may devise ruses and decoy strategies to fool the other players, such as not taking a trick, or playing points on a trick that will be won by an opponent.
+2-APL stands for Abstract Agent Programming Language developed at the University of Utrecht as an academic tool for developing intelligent multi-agent systems.
 
-\paragraph{Scoring}
+Give it a short a introduction to the paper.
+....
 
-Each player collects tricks as per the regular version of the game, and counts points collected similarly. Partners, which are known by the end of the game, then combine their points. Game points are assigned as follows: if the declarer and partner accumulate card points greater than or equal to the points that were declared after the bidding process, then the declarer earns two game points, the partner earns one game point and the other players each lose one game point. If the declarer and partner accumulate fewer card points than declared, then  the declarer loses two game points, the partner loses one game point and the other players each earn one game point. These points are accumulated after every game. The grand winner is the player with the most points at the end of the last match. Note that if the declarer calls a Briscola he holds, then the declarer will win or lose four points, and every other player will win or lose one point.
+Why is suitable for a Multi-Agent System?
 
-\paragraph{Why is suitable for a Multi-Agent System?}
+Put the following points in a discorsive form.
 
 \begin{itemize}
   \item Uncertainity (nobody knows who is actually its partner)
@@ -63,7 +62,20 @@ Each player collects tricks as per the regular version of the game, and counts p
   \end{itemize}
 \end{itemize}
 
-The Prometheus methodology involves 3 phases: System Specification, High-level (Architectural) Design and Detailed Design
+Describe the methodoly used:
+ The Prometheus methodology involves 3 phases: System Specification, High-level (Architectural) Design and Detailed Design
+
+The rest of the report is organized as follows...
+
+\section{Game Description}
+
+\emph{Briscola Chiamata} is the five-player version of \emph{Briscola}. Every player is dealt eight cards, so that no cards remain undealt. Then, each player, starting from the dealer's right\footnote{If the dealer is not a player, then starting from the declearer's right} and proceeding counter-clockwise, bids in an auction to declare how many points they will score. A player may pass, and hence cannot bid again in that game. The bid represents the number of points that player believes he is capable of accumulating. Bidding continues until all but one player have passed in a round. This remaining player has then "won the bid" and therefore gets to declare the Briscola. The declarer also declares a specific Briscola card (example, the ``Ace of Cups'' if Cups was the declared Briscola) and the holder of this card is then determined to be the declarer's partner. Logically, the declarer would declare the highest Briscola card he does not already hold in the hopes of creating the strongest combined hand between him and his partner.
+The remaining three players are partnered with each other, without their knowledge. Each player, other than the declarer's partner, acts independently, until it is clear which players are partners. Infrequently, the declarer may declare a Briscola card he already holds (if he feels he has a very strong hand), in which case the other four players are partenered against him.
+Game strategy is often devised to determine which player is partnered with the declarer, whereas the declarer's partner may devise ruses and decoy strategies to fool the other players, such as not taking a trick, or playing points on a trick that will be won by an opponent.
+
+\paragraph{Scoring}
+
+Each player collects tricks as per the regular version of the game, and counts points collected similarly. Partners, which are known by the end of the game, then combine their points. Game points are assigned as follows: if the declarer and partner accumulate card points greater than or equal to the points that were declared after the bidding process, then the declarer earns two game points, the partner earns one game point and the other players each lose one game point. If the declarer and partner accumulate fewer card points than declared, then  the declarer loses two game points, the partner loses one game point and the other players each earn one game point. These points are accumulated after every game. The grand winner is the player with the most points at the end of the last match. Note that if the declarer calls a Briscola he holds, then the declarer will win or lose four points, and every other player will win or lose one point.
 
 \section{System Specification}\label{sec:sysspec} 
 
@@ -215,7 +227,11 @@ Description. Excerpt from the code.
 
 What's wrong with 2APL?
 
-No security mechanisms, weird numbers
+No security mechanisms, No documentation like a manual or of examples (only short example provided with the platform). Not all the constructs available are documented (e.g. random() or print())
+
+If an agent requires an action not related with changing its mental state, it has to be done through the environment. It would be nice to have agents in which part of its executing plan will consist of running some classification algorithm or some numerical method which is only owned by the agent and so it could be encapsulated in its program.
+
+The platform is well done, but it's still a tool for research
 
 \section{Bibliography}
 \nocite{*}
