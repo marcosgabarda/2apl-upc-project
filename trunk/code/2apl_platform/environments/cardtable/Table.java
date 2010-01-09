@@ -86,14 +86,17 @@ public class Table extends JFrame{
 	public void addPlayer(String name, int position, int score, int bid) {
 	  Integer scoreInt = new Integer(score);
 	  Integer bidInt = new Integer(bid);
-	  ImageIcon cardBack = new ImageIcon("cards/b.gif");
+
+	  java.net.URL imgURL = getClass().getResource("cards/b.gif");
+	  ImageIcon cardBack = new ImageIcon(imgURL);
+	  
 
 	  playersPane[position].add(new JLabel("Player: "+name));
 	  playersPane[position].add(new JLabel("Bid: "+bidInt.toString()));
 	  playersPane[position].add(new JLabel(new String("Points: points here")));
 	  playersPane[position].add(new JLabel("Score: "+scoreInt.toString()));
 	
-	  cardsPane[position].add(new JLabel(cardBack));
+	  cardsPane[position].add(new JButton(cardBack));
 	  cardsPane[position].add(new JButton(cardBack));
 	  cardsPane[position].add(new JButton(cardBack));
 	  cardsPane[position].add(new JButton(cardBack));
@@ -102,6 +105,7 @@ public class Table extends JFrame{
 	  cardsPane[position].add(new JButton(cardBack));
 	  cardsPane[position].add(new JButton(cardBack));
 	  setVisible(true);
+	  repaint();
     }
       
       public void updateScore(String name, int position, int score) {
