@@ -8,9 +8,6 @@ public class Card {
    private Rank rankValue;
    private ImageIcon cardImage;
 
-
-
-
    public Card( Suit suit, Rank rank, ImageIcon cardFace ) {
       cardImage = cardFace;
       suitValue = suit;

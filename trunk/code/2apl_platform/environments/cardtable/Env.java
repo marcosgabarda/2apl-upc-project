@@ -161,13 +161,16 @@ public class Env extends Environment
 		return wrapBoolean(true);
 	}
 
-	public Term playCard(String sAgent, APLIdent suit, APLIdent rank) {
-	      notifyEvent("cardPlayed", suit, rank);
+	public Term playCard(String sAgent, APLIdent suit, APLIdent rank) throws ExternalActionFailedException {
+	      Agent agent = getAgent(sAgent); 
+	      notifyEvent("cardPlayed", suit, rank, agent);
 	      return wrapBoolean(true);
 	}
 
-	public Term updateScore(String sAgent, APLIdent player_name, APLNum score) {
+	public Term updateScore(String sAgent, APLIdent player_name, APLNum score) throws ExternalActionFailedException {
+	      Agent agent = getAgent(sAgent);
 	      sb.updateScore(player_name.toString(), score.toInt());
+	      table.updateScore(agent.getName(), agent._position, score.toInt());
 	      notifyEvent("scoreUpdated", player_name, score);
 	      return wrapBoolean(true);
 	}
@@ -207,18 +210,18 @@ public class Env extends Environment
 		}
 	}
 
-	private void notifyEvent(String parm1, APLIdent suit, APLIdent rank) {
+	private void notifyEvent(String parm1, APLIdent suit, APLIdent rank, Agent player) {
 		ArrayList<String> targetAgents = new ArrayList<String>();
 		for (Agent a : agentmap.values())
 		{
 			if ((a.isSit() && a.getType()==0) || (a.isSit() && a.getType()==2)) // player or notary
 				targetAgents.add(a.getName());
 		}
-
+		APLIdent player_name = new APLIdent(player.getName());
 		if (!targetAgents.isEmpty())
 		{
-			notifyAgents(new APLFunction(parm1,suit,rank),targetAgents.toArray(new String[0]));
-			writeToLog("EVENT: "+parm1+"("+suit.toString()+","+rank.toString()+")"+" to "+targetAgents);
+			notifyAgents(new APLFunction(parm1,suit,rank,player_name),targetAgents.toArray(new String[0]));
+			writeToLog("EVENT: "+parm1+"("+suit.toString()+","+rank.toString()+","+player.getName()+")"+" to "+targetAgents);
 		}
 	}
 
@@ -339,29 +342,7 @@ public class Env extends Environment
 		else
 			return sAgent.substring(0, dotPos);
 	}
-	
-	
-	// Redrawing the window is a nightmare, this does some redraw stuff
-// 	private void validatewindow()
-// 	{
-// 		Runnable repaint = new Runnable()
-// 		{
-// 			public void run()
-// 			{
-// 				//try {Thread.sleep(500);} catch(Exception e) {}
-// 				m_window.doLayout();
-// 				
-// 				/*if (!m_window.isVisible())
-// 				{
-// 					m_window.setVisible( true );
-// 				}*/
-// 			}
-// 		};
-// 		SwingUtilities.invokeLater(repaint);
-// 	}
 
-	
-	// Print a message to the console
     public void writeToLog(String message) {
       System.out.println("cardtable: " + message);
       table.writeLog(message);
@@ -399,6 +380,7 @@ public class Env extends Environment
 			{
 				//try {Thread.sleep(500);} catch(Exception e) {}
 				table.doLayout();
+				table.repaint();
 				
 				/*if (!m_window.isVisible())
 				{
