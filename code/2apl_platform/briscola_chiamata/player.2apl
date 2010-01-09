@@ -4,6 +4,9 @@ BeliefUpdates:
   { true }  AddBidHistorical(Cantity, Who)  { bidhistorical(Cantity, Who) }
   { true }  SetAsDealer(X)  { dealer(X) }
   { true }  SetHand(X)  { hand(X) }
+  { not lastbid(X) } AddLastBid(X) { lastbid(X) }
+  { lastbid(X) } RemoveLastBid(X) { not lastbid(X) }
+  
 Beliefs:
   notary(n).
   gatekeeper(gk).
@@ -14,6 +17,10 @@ Plans:
   [ B(gatekeeper(X)) ; send(X, request, register(me)) ]
 
 PC-rules:
+
+ /**
+  *  --- JOIN THE GAME SCENARIO ---
+  */
   message(X, inform, _, _, registered(POS, Y)) <- true |
   {
     SetAssigned(POS, Y)
@@ -22,41 +29,124 @@ PC-rules:
   {
     print("I'm out!")
   }
- 
-  message(X, inform, _, _,  firstbid(_)) <- scenario(bidding) | /* message from dealer, telling that this agent is the firts to bid */
-  {
-    /* for fist, the agent bids */
-    /* TODO the agent must know who is the next bidding, or ask to dealer*/
-    send (Next, inform, bid(_))
 
-  }
-
-  message(X, inform, _, _,  firstbid(_)) <- scenario(bidding) | /* message from dealer, telling that this agent is the firts to bid */
-  {
-    /* for fist, the agent bids */
-    /* TODO the agent must know who is the next bidding, or ask to dealer*/
-    send (Next, inform, bid(1))
-  }
-
-  message(X, inform, _, _,  bid(Cuantity, Pos)) <- scenario(bidding) | /* message from dealer, telling that this agent is the firts to bid */
-  {
-    if B( bidhistorical(_, me) ) then
-    {
-      send (Next, inform, pass(_))
-    }
-    else
-    {
-      send (Next, inform, bid(1))
-    }
-    
-  }
-
-  message(X, inform, _, _, givecards(Hand)) <- true |
+ /**
+  *  --- DEAL SCENARIO ---
+  */
+ message(X, inform, _, _, givecards(Hand)) <- true |
   {
     print ("I've cards!");
     SetHand(Hand)
   }
+  
+ /**
+  * --- BIDDING SCENARIO ---
+  */
+  message(X, inform, _, _,  firstbid(Y)) <- true | /* message from dealer, telling that this agent is the firts to bid */
+  {
+    print("I'm the first bidding!");
+    if B( assigned(Pos, _) and Pos < 4) then
+    {
+      send(n, inform, askfor(Pos + 1))
+    }
+    else
+    {
+      send(n, inform, askfor(0))
+    }
+    
+  }
+  
+  message(X, inform, _, _,  bid(Cuantity, PosSender)) <- not bidhistorical(_, _)  | 
+  {
+    AddBidHistorical(Cuantity, X);
+    AddLastBid(Cuantity);
+    if B( assigned(Pos, _) and Pos < 4) then
+    {
+      send(n, inform, askfor(Pos + 1))
+    }
+    else
+    {
+      send(n, inform, askfor(0))
+    }
+  }
+  message(X, inform, _, _,  pass(Cuantity)) <- not bidhistorical(_, _)  | 
+  {
+    AddBidHistorical(Cuantity, X);
+    AddLastBid(Cuantity);
+    if B( assigned(Pos, _) and Pos < 4) then
+    {
+      send(n, inform, askfor(Pos + 1))
+    }
+    else
+    {
+      send(n, inform, askfor(0))
+    }
+  }
+  
+    message(X, inform, _, _,  bid(Cuantity, PosSender)) <- bidhistorical(_, _) | 
+  {
+    AddBidHistorical(Cuantity, X);
+    B( lastbid(LB) );
+    RemoveLastBid(LB);
+    AddLastBid(Cuantity);
+    if B( assigned(Pos, _) and Pos < 4) then
+    {
+      send(n, inform, askfor(Pos + 1))
+    }
+    else
+    {
+      send(n, inform, askfor(0))
+    }
+  }
+  message(X, inform, _, _,  pass(Cuantity)) <- bidhistorical(_, _) | 
+  {
+    AddBidHistorical(Cuantity, X);
+    B( lastbid(LB) );
+    RemoveLastBid(LB);
+    AddLastBid(Cuantity);
+    if B( assigned(Pos, _) and Pos < 4) then
+    {
+      send(n, inform, askfor(Pos + 1))
+    }
+    else
+    {
+      send(n, inform, askfor(0))
+    }
+  }
+  
+  message(X, inform, _, _, is(Next)) <- not bidhistorical(_, _) | 
+  {
+    B( assigned(Pos, Me) );
+    print("I bid!");
+    AddBidHistorical(61, Me);
+    send(Next, inform, bid(61, Pos))
+  }
+  
+  message(X, inform, _, _, is(Next)) <- bidhistorical(_, _) | 
+  {
+    B( assigned(Pos, Me) );
+    B( lastbid(LB) );
+    if B( bidhistorical(_, Me) ) then
+    {
+      print("I pass...");
+      send(Next, inform, pass(LB))
+    }
+    else
+    {
+      print("I bid!");
+      AddBidHistorical(LB + 1, Me);
+      send(Next, inform, bid(LB + 1, Pos));
+      RemoveLastBid(LB);
+      AddLastBid(LB + 1)
+    }
+    
+  }
+  
 
+  
+ /**
+  * --- PLAY SCENARIO ---
+  */
   turnselected(X) <- assigned(X, _) and scenario(playing) |  /* when percepts turnselected, and its his turn*/
   {
     /*TODO*/

@@ -25,6 +25,12 @@ PC-rules:
       send(d, inform, dealer(d))
     }
   }
+  
+  message(X, inform, _, _, askfor(Pos)) <- true |
+  {
+    B(assigned(Pos, Y));
+    send(X, inform, is(Y))
+  }
 
   turnended () <- currentturn(X) | /**/
   {

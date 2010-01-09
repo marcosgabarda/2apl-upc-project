@@ -28,6 +28,17 @@ PG-rules:
     {
       adopta(deal(To + 1))
     }
+    else
+    {
+      adopta(sendfirstbid(0))
+    }
+  }
+  
+  sendfirstbid(0) <- true | 
+  {
+    B( assigned(0, Next) ); 
+    send(Next, inform, firstbid(0)); 
+    dropgoal(sendfirstbid(0))
   }
 
 PC-rules:
