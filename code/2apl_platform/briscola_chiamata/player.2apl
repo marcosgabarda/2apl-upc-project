@@ -17,8 +17,8 @@ Beliefs:
   
   getcard([], 0, []).
   getcard([X], 0, []).
-  getcard([ Card1, Card2 | Rest ], 0, [Card1, Card2]).
-  getcard([ Card1, Card2 | Rest ], Index, X) :- Y is Index - 1, getcard(Rest, Y, X).
+  getcard([ S, R | REST ], 0, [S, R]).
+  getcard([ S, R | REST ], I, X) :- Y is I - 1, getcard(REST, Y, X).
   
   iscard([], []).
   iscard([Card1, Card2 | REST ], [Card1, Card2]).
@@ -188,8 +188,8 @@ PC-rules:
   message(n, inform, _, _, yourturn(Y)) <- true |   
   {
     print("My turn!");
-    B( getcard(H, 3, [S, R]) );
-    @cardtable(playCard(S, R))
+    //B( getcard(H, 3, X ) )
+    @cardtable(playCard(clubs, ace))
   }
   
   
