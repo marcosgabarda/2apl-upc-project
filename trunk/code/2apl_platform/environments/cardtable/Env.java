@@ -161,25 +161,28 @@ public class Env extends Environment
 	{
 		Agent d = getDealer();
 
-
 		LinkedList returnList = new LinkedList();
-		// Send an external event to all agents within the senserange.
 		List deckList = deck.getDeck();
+
+		String deckStr = new String("[ ");
 
 		for (Iterator<Card> i = deckList.iterator( ); i.hasNext( ); ) {
 		  Card card = i.next();
 		  Suit suit = card.getSuit();
 		  APLIdent id = new APLIdent(suit.getName());		  
+		  deckStr += "<" + suit.getName() + ", ";
 		  returnList.add(id);
 		  Rank rank = card.getRank();
 		  id = new APLIdent(rank.getName());
+		  deckStr += rank.getName() + ">, ";
 		  returnList.add(id);
 		}
+		deckStr += " ]";
  
 		if (d!=null)
 		{
 			notifyAgents(new APLFunction(parm1,new APLList(returnList)), d.getName());
-			writeToLog("EVENT: "+parm1+"("+returnList.toString()+")"+" to "+d.getName());
+			writeToLog("EVENT: "+parm1+" "+deckStr+" "+" to "+d.getName());
 		}
 	}
 	
