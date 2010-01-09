@@ -1,13 +1,34 @@
 BeliefUpdates:
   { not assigned(POS, X) }  SetAssigned(POS, X)     { assigned(POS, X) }
-
+  { true }  AddDeck(X) { deck(X) }
+  { deck(X) }  RemoveDeck(X) { not deck(X) }
 Beliefs:
   notary(n).
   gatekeeper(gk).
   player(X) :- assigned(POS, X).
+  gethand([C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16 | NewDeck], [C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16], NewDeck).
+  
+Goals:
+  deal(0)
   
 Plans:
  @cardtable(enterAsDealer())
+ 
+PG-rules:
+  deal(To) <- deck(X) | 
+  {
+    /* send cards */ 
+    B( gethand(X, H, T) );
+    B( assigned(To, P0) );
+    send(P0, inform, givecards(H));
+    dropgoal(deal(To));
+    RemoveDeck(X);
+    AddDeck(T);
+    if B( To < 4) then
+    {
+      adopta(deal(To + 1))
+    }
+  }
 
 PC-rules:
   message(X, inform, _, _, registered(POS, Y)) <- true |
@@ -19,26 +40,12 @@ PC-rules:
   {
     /* here start shuffling and dealing cards */ 
     @cardtable(shuffleDeck())
-   
   }  
   
-  deckShuffled(X) <- true | 
+  event(deckShuffled(X), cardtable) <- true | 
   {
-    /* send cards */ 
-    B( X = [ [C1, C2, C3, C4, C5, C6, C7, C8] | T1] );
-    B( assigned(0, P0) );
-    send (P0, inform, givecards([C1, C2, C3, C4, C6, C7, C8]));
-    B( T1 = [C1, C2, C3, C4, C5, C6, C7, C8 | T2] );
-    B( assigned(1, P1) );
-    send (P1, inform, givecards([C1, C2, C3, C4, C6, C7, C8]));
-    B( T2 = [C1, C2, C3, C4, C5, C6, C7, C8 | T3] );
-    B( assigned(2, P2) );
-    send (P2, inform, givecards([C1, C2, C3, C4, C6, C7, C8]));
-    B( T3 = [C1, C2, C3, C4, C5, C6, C7, C8 | T4] );
-    B( assigned(3, P3) );
-    send (P3, inform, givecards([C1, C2, C3, C4, C6, C7, C8]));
-    B( T4 = [C1, C2, C3, C4, C5, C6, C7, C8 | _ ] );
-    B( assigned(4, P4) );
-    send (P4, inform, givecards([C1, C2, C3, C4, C6, C7, C8]))
+    AddDeck(X)
   }
+  
+  
   

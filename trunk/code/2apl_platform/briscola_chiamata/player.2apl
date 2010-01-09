@@ -51,10 +51,10 @@ PC-rules:
     
   }
 
-  message(d, inform, _, _, givecards(X)) <- true |
+  message(X, inform, _, _, givecards(Hand)) <- true |
   {
     print ("I've cards!");
-    SetHand(X)
+    SetHand(Hand)
   }
 
   turnselected(X) <- assigned(X, _) and scenario(playing) |  /* when percepts turnselected, and its his turn*/
