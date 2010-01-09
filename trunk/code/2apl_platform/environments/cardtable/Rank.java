@@ -54,7 +54,7 @@ public class Rank {
    final static java.util.List VALUES =
       Collections.unmodifiableList(
          Arrays.asList( new Rank[] { TWO, THREE, FOUR, FIVE, SIX, SEVEN,
-                                     EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE } ) );
+                                     JACK, QUEEN, KING, ACE } ) );
 
 
    private Rank( String nameValue, String symbolValue ) {
