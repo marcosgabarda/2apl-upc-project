@@ -7,15 +7,9 @@ import apapl.data.*;
 
 // Standard java imports
 import java.awt.Point;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-import java.util.LinkedList;
+import java.util.*;
 import javax.swing.SwingUtilities;
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,13 +17,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-import java.util.Random;
-
 public class Env extends Environment
 {
 	private HashMap<String,Agent> agentmap = new HashMap<String,Agent>();
 
 	private int numberOfPlayers, numberOfNotaries, numberOfGatekeepers, numberOfDealers;
+
+	private Deck deck;
 	
 	// The default constructor
 	public Env()
@@ -41,6 +35,8 @@ public class Env extends Environment
 		numberOfPlayers=0;
 		numberOfNotaries=0;
 		numberOfGatekeepers=0;
+
+		deck = new Deck();
 	}
 	
 	public Term enterAsNotary(String sAgent) throws ExternalActionFailedException {
@@ -139,34 +135,52 @@ public class Env extends Environment
 
 		return new APLIdent(a.getName());
 	}
-	
+
+	public Term shuffleDeck(String sAgent) throws ExternalActionFailedException {
+		Agent agent = getAgent(sAgent);
+
+		if (agent.getType()!=3) 
+		{
+			throw new ExternalActionFailedException("Only the dealer can shuffle the deck.");
+		}
+
+		deck.shuffle();
+
+		notifyEvent("deckShuffled", deck);
+
+		return wrapBoolean(true);
+	}
+
 	/* Standard functions --------------------------------------*/
 	
 	private void notifyAgents(APLFunction event, String... receivers) {
-//		 throwEvent(event, receivers);
+		 throwEvent(event, receivers);
 	}
 	
-	private void notifyEvent(String parm1, Point ptPosition)
+	private void notifyEvent(String parm1, Deck deck) throws ExternalActionFailedException
 	{
-// 		APLNum	nX	= new APLNum((double)(ptPosition.getX()));
-// 		APLNum	nY	= new APLNum((double)(ptPosition.getY()));
-// 
-// 		// Send an external event to all agents within the senserange.
-// 		ArrayList<String> targetAgents = new ArrayList<String>();
-// 		for (Agent a : agentmap.values())
-// 		{
-// 			// Changed SA: I got no idea why there is always 1 agent which does not exists, 
-// 			// but this fixes the exceptions
-// 			if ((a.getPosition() != null) && (ptPosition.distance(a.getPosition()) <= getSenseRange()))
-// 				targetAgents.add(a.getName());
-// 		}
-// 
-// 		writeToLog("EVENT: "+parm1+"("+nX+","+nY+")"+" to "+targetAgents);
-// 
-// 		if (!targetAgents.isEmpty())
-// 		{
-// 			notifyAgents(new APLFunction(parm1,nX,nY),targetAgents.toArray(new String[0]));
-// 		}
+		Agent d = getDealer();
+
+
+		LinkedList returnList = new LinkedList();
+		// Send an external event to all agents within the senserange.
+		List deckList = deck.getDeck();
+
+		for (Iterator<Card> i = deckList.iterator( ); i.hasNext( ); ) {
+		  Card card = i.next();
+		  Suit suit = card.getSuit();
+		  APLIdent id = new APLIdent(suit.getName());		  
+		  returnList.add(id);
+		  Rank rank = card.getRank();
+		  id = new APLIdent(rank.getName());
+		  returnList.add(id);
+		}
+ 
+		if (d!=null)
+		{
+			notifyAgents(new APLFunction(parm1,new APLList(returnList)), d.getName());
+			writeToLog("EVENT: "+parm1+"("+returnList.toString()+")"+" to "+d.getName());
+		}
 	}
 	
 	// Add an agent to the environment
@@ -245,6 +259,23 @@ public class Env extends Environment
 		  }
 		}
 		if (a==null) throw new ExternalActionFailedException("No such agent at position: "+position);
+
+		return a;
+	}
+
+	private synchronized Agent getDealer() throws ExternalActionFailedException {
+		Agent a = null;
+		Iterator it = agentmap.keySet().iterator();
+		while(it.hasNext()) {	
+		  Object name = it.next();
+		  a = agentmap.get(name);
+		  if(a!=null) {
+		      if(a.getType()==3) {
+			return a;
+		    }
+		  }
+		}
+		if (a==null) throw new ExternalActionFailedException("There is no dealer at the moment.");
 
 		return a;
 	}
