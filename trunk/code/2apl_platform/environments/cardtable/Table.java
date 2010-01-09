@@ -16,7 +16,7 @@ public class Table extends JFrame{
     private JSplitPane HorizontalSplitPlane;
     private JTextArea Info;
 
-ImageIcon CardBack = new ImageIcon("cards/b.gif");
+    private ImageIcon CardBack = new ImageIcon("cards/b.gif");
 
 
 	public Table( ){
@@ -49,6 +49,8 @@ ImageIcon CardBack = new ImageIcon("cards/b.gif");
             origin.y += offset;
         }
 
+	// where cards are displayed
+	CardDisplayPane.setLayout(new GridBagLayout());
 
         Info = new JTextArea(5,00);
         Info.setEditable(false);
@@ -61,11 +63,7 @@ ImageIcon CardBack = new ImageIcon("cards/b.gif");
 	VerticalSplitPane.setOneTouchExpandable(false);
 	VerticalSplitPane.setDividerLocation(400);
 
-        //AddPlayersGUI();
-        addComponentsToPane(CardDisplayPane);
-
-
-
+       
         HorizontalSplitPlane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                                     CardDisplayPane,VerticalSplitPane );
 
@@ -104,484 +102,100 @@ ImageIcon CardBack = new ImageIcon("cards/b.gif");
         return HorizontalSplitPlane;
     }
 
-
-    public static void addComponentsToPane(Container pane) {
+    public void addPlayer(String name, int position, int score, int bid) {
         JButton button;
-	pane.setLayout(new GridBagLayout());
 	GridBagConstraints c = new GridBagConstraints();
 	GridBagConstraints c1 = new GridBagConstraints();
-	GridBagConstraints c2 = new GridBagConstraints();
-        GridBagConstraints c3 = new GridBagConstraints();
-        GridBagConstraints c4 = new GridBagConstraints();
-	GridBagConstraints c5 = new GridBagConstraints();
-	GridBagConstraints c6 = new GridBagConstraints();
-        GridBagConstraints c7 = new GridBagConstraints();
-        GridBagConstraints c8 = new GridBagConstraints();
-        GridBagConstraints c9 = new GridBagConstraints();
+	Integer scoreInt = new Integer(score);
+	Integer bidInt = new Integer(bid);
 
-
-        ImageIcon Image = new ImageIcon("cards/3s.gif");
-        ImageIcon Image2 = new ImageIcon("cards/2c.gif");
-        ImageIcon Image3 = new ImageIcon("cards/7d.gif");
-        ImageIcon Image4 = new ImageIcon("cards/5s.gif");
-
-//Fill in 1st Player
-
-        //Player Name
-        JButton P1NameTag = new JButton("Player1");
+        JButton P1NameTag = new JButton(name);
 	c.fill = GridBagConstraints.HORIZONTAL;
 	c.gridx = 0;
 	c.gridy = 0;
         c.gridwidth = 4;
-        pane.add(P1NameTag, c);
+        CardDisplayPane.add(P1NameTag, c);
 
         //Player Score
-        JButton P1Score = new JButton("Score : X");
+        JButton P1Score = new JButton("Score : "+ scoreInt.toString());
 	c.fill = GridBagConstraints.HORIZONTAL;
 	c.gridx = 4;
 	c.gridy = 0;
         c.gridwidth = 2;
-        pane.add(P1Score, c);
+        CardDisplayPane.add(P1Score, c);
 
         //Player Bid
-        JButton P1Bid = new JButton("Bid : X");
+        JButton P1Bid = new JButton("Bid : "+ bidInt.toString());
 	c.fill = GridBagConstraints.HORIZONTAL;
 	c.gridx = 6;
 	c.gridy = 0;
         c.gridwidth = 2;
-        pane.add(P1Bid, c);
+        CardDisplayPane.add(P1Bid, c);
 
         //1st Card
-        JButton P1C1 = new JButton(Image);
+        JButton P1C1 = new JButton(CardBack);
         P1C1.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 0;
 	c1.gridy = 1;
-        pane.add(P1C1, c1);
+        CardDisplayPane.add(P1C1, c1);
 
         //2nd Card
-        JButton P1C2 = new JButton(Image);
+        JButton P1C2 = new JButton(CardBack);
         P1C2.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 1;
 	c1.gridy = 1;
-        pane.add(P1C2, c1);
+        CardDisplayPane.add(P1C2, c1);
 
         //3rd Card
-        JButton P1C3 = new JButton(Image);
+        JButton P1C3 = new JButton(CardBack);
         P1C3.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 2;
 	c1.gridy = 1;
-        pane.add(P1C3, c1);
+        CardDisplayPane.add(P1C3, c1);
 
         //4th Card
-        JButton P1C4 = new JButton(Image);
+        JButton P1C4 = new JButton(CardBack);
         P1C4.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 3;
 	c1.gridy = 1;
-        pane.add(P1C4, c1);
+        CardDisplayPane.add(P1C4, c1);
 
         //5th Card
-        JButton P1C5 = new JButton(Image);
+        JButton P1C5 = new JButton(CardBack);
         P1C5.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 4;
 	c1.gridy = 1;
-        pane.add(P1C5, c1);
+        CardDisplayPane.add(P1C5, c1);
 
         //6th Card
-        JButton P1C6 = new JButton(Image);
+        JButton P1C6 = new JButton(CardBack);
         P1C6.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 5;
 	c1.gridy = 1;
-        pane.add(P1C6, c1);
+        CardDisplayPane.add(P1C6, c1);
 
         //7th Card
-        JButton P1C7 = new JButton(Image);
+        JButton P1C7 = new JButton(CardBack);
         P1C7.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 6;
 	c1.gridy = 1;
-        pane.add(P1C7, c1);
+        CardDisplayPane.add(P1C7, c1);
 
         //8th Card
-        JButton P1C8 = new JButton(Image);
+        JButton P1C8 = new JButton(CardBack);
         P1C8.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 7;
 	c1.gridy = 1;
-        pane.add(P1C8, c1);
-
-
- //Fill in 2nd Player
-
-        //Player Name
-        JButton P2NameTag = new JButton("Player2");
-	c2.fill = GridBagConstraints.HORIZONTAL;
-	c2.gridx = 0;
-	c2.gridy = 2;
-        c2.gridwidth = 4;
-        pane.add(P2NameTag, c2);
-
-        //Player Score
-        JButton P2Score = new JButton("Score : X");
-	c2.fill = GridBagConstraints.HORIZONTAL;
-	c2.gridx = 4;
-	c2.gridy = 2;
-        c2.gridwidth = 2;
-        pane.add(P2Score, c2);
-
-        //Player Bid
-        JButton P2Bid = new JButton("Bid : X");
-	c2.fill = GridBagConstraints.HORIZONTAL;
-	c2.gridx = 6;
-	c2.gridy = 2;
-        c2.gridwidth = 2;
-        pane.add(P2Bid, c2);
-
-
-        //1st Card
-        JButton P2C1 = new JButton(Image);
-        P2C1.setPreferredSize(new Dimension(55,80));
-	c3.fill = GridBagConstraints.HORIZONTAL;
-	c3.gridx = 0;
-	c3.gridy = 3;
-        pane.add(P2C1, c3);
-
-        //2nd Card
-        JButton P2C2 = new JButton(Image);
-        P2C2.setPreferredSize(new Dimension(55,80));
-	c3.fill = GridBagConstraints.HORIZONTAL;
-	c3.gridx = 1;
-	c3.gridy = 3;
-        pane.add(P2C2, c3);
-
-        //3rd Card
-        JButton P2C3 = new JButton(Image);
-        P2C3.setPreferredSize(new Dimension(55,80));
-	c3.fill = GridBagConstraints.HORIZONTAL;
-	c3.gridx = 2;
-	c3.gridy = 3;
-        pane.add(P2C3, c3);
-
-        //4th Card
-        JButton P2C4 = new JButton(Image);
-        P2C4.setPreferredSize(new Dimension(55,80));
-	c3.fill = GridBagConstraints.HORIZONTAL;
-	c3.gridx = 3;
-	c3.gridy = 3;
-        pane.add(P2C4, c3);
-
-        //5th Card
-        JButton P2C5 = new JButton(Image);
-        P2C5.setPreferredSize(new Dimension(55,80));
-	c3.fill = GridBagConstraints.HORIZONTAL;
-	c3.gridx = 4;
-	c3.gridy = 3;
-        pane.add(P2C5, c3);
-
-        //6th Card
-        JButton P2C6 = new JButton(Image);
-        P2C6.setPreferredSize(new Dimension(55,80));
-	c3.fill = GridBagConstraints.HORIZONTAL;
-	c3.gridx = 5;
-	c3.gridy = 3;
-        pane.add(P2C6, c3);
-
-        //7th Card
-        JButton P2C7 = new JButton(Image);
-        P2C7.setPreferredSize(new Dimension(55,80));
-	c3.fill = GridBagConstraints.HORIZONTAL;
-	c3.gridx = 6;
-	c3.gridy = 3;
-        pane.add(P2C7, c3);
-
-        //8th Card
-        JButton P2C8 = new JButton(Image);
-        P2C8.setPreferredSize(new Dimension(55,80));
-	c3.fill = GridBagConstraints.HORIZONTAL;
-	c3.gridx = 7;
-	c3.gridy = 3;
-        pane.add(P2C8, c3);
-
-
- //Fill in 3rd Player
-
-        //Player Name
-        JButton P3NameTag = new JButton("Player3");
-	c4.fill = GridBagConstraints.HORIZONTAL;
-	c4.gridx = 0;
-	c4.gridy = 4;
-        c4.gridwidth = 4;
-        pane.add(P3NameTag, c4);
-
-        //Player Score
-        JButton P3Score = new JButton("Score : X");
-	c4.fill = GridBagConstraints.HORIZONTAL;
-	c4.gridx = 4;
-	c4.gridy = 4;
-        c4.gridwidth = 2;
-        pane.add(P3Score, c4);
-
-        //Player Bid
-        JButton P3Bid = new JButton("Bid : X");
-	c4.fill = GridBagConstraints.HORIZONTAL;
-	c4.gridx = 6;
-	c4.gridy = 4;
-        c4.gridwidth = 2;
-        pane.add(P3Bid, c4);
-
-
-        //1st Card
-        JButton P3C1 = new JButton(Image);
-        P3C1.setPreferredSize(new Dimension(55,80));
-	c5.fill = GridBagConstraints.HORIZONTAL;
-	c5.gridx = 0;
-	c5.gridy = 5;
-        pane.add(P3C1, c5);
-
-        //2nd Card
-        JButton P3C2 = new JButton(Image);
-        P3C2.setPreferredSize(new Dimension(55,80));
-	c5.fill = GridBagConstraints.HORIZONTAL;
-	c5.gridx = 1;
-	c5.gridy = 5;
-        pane.add(P3C2, c5);
-
-        //3rd Card
-        JButton P3C3 = new JButton(Image);
-        P3C3.setPreferredSize(new Dimension(55,80));
-	c5.fill = GridBagConstraints.HORIZONTAL;
-	c5.gridx = 2;
-	c5.gridy = 5;
-        pane.add(P3C3, c5);
-
-        //4th Card
-        JButton P3C4 = new JButton(Image);
-        P3C4.setPreferredSize(new Dimension(55,80));
-	c5.fill = GridBagConstraints.HORIZONTAL;
-	c5.gridx = 3;
-	c5.gridy = 5;
-        pane.add(P3C4, c5);
-        //5th Card
-        JButton P3C5 = new JButton(Image);
-        P3C5.setPreferredSize(new Dimension(55,80));
-	c5.fill = GridBagConstraints.HORIZONTAL;
-	c5.gridx = 4;
-	c5.gridy = 5;
-        pane.add(P3C5, c5);
-
-        //6th Card
-        JButton P3C6 = new JButton(Image);
-        P3C6.setPreferredSize(new Dimension(55,80));
-	c5.fill = GridBagConstraints.HORIZONTAL;
-	c5.gridx = 5;
-	c5.gridy = 5;
-        pane.add(P3C6, c5);
-
-        //7th Card
-        JButton P3C7 = new JButton(Image);
-        P3C7.setPreferredSize(new Dimension(55,80));
-	c5.fill = GridBagConstraints.HORIZONTAL;
-	c5.gridx = 6;
-	c5.gridy = 5;
-        pane.add(P3C7, c5);
-
-        //8th Card
-        JButton P3C8 = new JButton(Image);
-        P3C8.setPreferredSize(new Dimension(55,80));
-	c5.fill = GridBagConstraints.HORIZONTAL;
-	c5.gridx = 7;
-	c5.gridy = 5;
-        pane.add(P3C8, c5);
-
-
-
- //Fill in 4th Player
-
-        //Player Name
-        JButton P4NameTag = new JButton("Player4");
-	c6.fill = GridBagConstraints.HORIZONTAL;
-	c6.gridx = 0;
-	c6.gridy = 6;
-        c6.gridwidth = 4;
-        pane.add(P4NameTag, c6);
-
-        //Player Score
-        JButton P4Score = new JButton("Score : X");
-	c6.fill = GridBagConstraints.HORIZONTAL;
-	c6.gridx = 4;
-	c6.gridy = 6;
-        c6.gridwidth = 2;
-        pane.add(P4Score, c6);
-
-        //Player Bid
-        JButton P4Bid = new JButton("Bid : X");
-	c6.fill = GridBagConstraints.HORIZONTAL;
-	c6.gridx = 6;
-	c6.gridy = 6;
-        c6.gridwidth = 2;
-        pane.add(P4Bid, c6);
-
-
-        //1st Card
-        JButton P4C1 = new JButton(Image);
-        P4C1.setPreferredSize(new Dimension(55,80));
-	c7.fill = GridBagConstraints.HORIZONTAL;
-	c7.gridx = 0;
-	c7.gridy = 7;
-        pane.add(P4C1, c7);
-
-        //2nd Card
-        JButton P4C2 = new JButton(Image);
-        P4C2.setPreferredSize(new Dimension(55,80));
-	c7.fill = GridBagConstraints.HORIZONTAL;
-	c7.gridx = 1;
-	c7.gridy = 7;
-        pane.add(P4C2, c7);
-
-        //3rd Card
-        JButton P4C3 = new JButton(Image);
-        P4C3.setPreferredSize(new Dimension(55,80));
-	c7.fill = GridBagConstraints.HORIZONTAL;
-	c7.gridx = 2;
-	c7.gridy = 7;
-        pane.add(P4C3, c7);
-
-        //4th Card
-        JButton P4C4 = new JButton(Image);
-        P4C4.setPreferredSize(new Dimension(55,80));
-	c7.fill = GridBagConstraints.HORIZONTAL;
-	c7.gridx = 3;
-	c7.gridy = 7;
-        pane.add(P4C4, c7);
-        //5th Card
-        JButton P4C5 = new JButton(Image);
-        P4C5.setPreferredSize(new Dimension(55,80));
-	c7.fill = GridBagConstraints.HORIZONTAL;
-	c7.gridx = 4;
-	c7.gridy = 7;
-        pane.add(P4C5, c7);
-
-        //6th Card
-        JButton P4C6 = new JButton(Image);
-        P4C6.setPreferredSize(new Dimension(55,80));
-	c7.fill = GridBagConstraints.HORIZONTAL;
-	c7.gridx = 5;
-	c7.gridy = 7;
-        pane.add(P4C6, c7);
-
-        //7th Card
-        JButton P4C7 = new JButton(Image);
-        P4C7.setPreferredSize(new Dimension(55,80));
-	c7.fill = GridBagConstraints.HORIZONTAL;
-	c7.gridx = 6;
-	c7.gridy = 7;
-        pane.add(P4C7, c7);
-
-        //8th Card
-        JButton P4C8 = new JButton(Image);
-        P4C8.setPreferredSize(new Dimension(55,80));
-	c7.fill = GridBagConstraints.HORIZONTAL;
-	c7.gridx = 7;
-	c7.gridy = 7;
-        pane.add(P4C8, c7);
-
-
-
-
- //Fill in 5th Player
-
-        //Player Name
-        JButton P5NameTag = new JButton("Player5");
-	c8.fill = GridBagConstraints.HORIZONTAL;
-	c8.gridx = 0;
-	c8.gridy = 8;
-        c8.gridwidth = 4;
-        pane.add(P5NameTag, c8);
-
-        //Player Score
-        JButton P5Score = new JButton("Score : X");
-	c8.fill = GridBagConstraints.HORIZONTAL;
-	c8.gridx = 4;
-	c8.gridy = 8;
-        c8.gridwidth = 2;
-        pane.add(P5Score, c8);
-
-        //Player Bid
-        JButton P5Bid = new JButton("Bid : X");
-	c8.fill = GridBagConstraints.HORIZONTAL;
-	c8.gridx = 6;
-	c8.gridy = 8;
-        c8.gridwidth = 2;
-        pane.add(P5Bid, c8);
-
-
-        //1st Card
-        JButton P5C1 = new JButton(Image);
-        P5C1.setPreferredSize(new Dimension(55,80));
-	c9.fill = GridBagConstraints.HORIZONTAL;
-	c9.gridx = 0;
-	c9.gridy = 9;
-        pane.add(P5C1, c9);
-
-        //2nd Card
-        JButton P5C2 = new JButton(Image);
-        P5C2.setPreferredSize(new Dimension(55,80));
-	c9.fill = GridBagConstraints.HORIZONTAL;
-	c9.gridx = 1;
-	c9.gridy = 9;
-        pane.add(P5C2, c9);
-
-        //3rd Card
-        JButton P5C3 = new JButton(Image);
-        P5C3.setPreferredSize(new Dimension(55,80));
-	c9.fill = GridBagConstraints.HORIZONTAL;
-	c9.gridx = 2;
-	c9.gridy = 9;
-        pane.add(P5C3, c9);
-
-        //4th Card
-        JButton P5C4 = new JButton(Image);
-        P5C4.setPreferredSize(new Dimension(55,80));
-	c9.fill = GridBagConstraints.HORIZONTAL;
-	c9.gridx = 3;
-	c9.gridy = 9;
-        pane.add(P5C4, c9);
-        //5th Card
-        JButton P5C5 = new JButton(Image);
-        P5C5.setPreferredSize(new Dimension(55,80));
-	c9.fill = GridBagConstraints.HORIZONTAL;
-	c9.gridx = 4;
-	c9.gridy = 9;
-        pane.add(P5C5, c9);
-
-        //6th Card
-        JButton P5C6 = new JButton(Image);
-        P5C6.setPreferredSize(new Dimension(55,80));
-	c9.fill = GridBagConstraints.HORIZONTAL;
-	c9.gridx = 5;
-	c9.gridy = 9;
-        pane.add(P5C6, c9);
-        //7th Card
-        JButton P5C7 = new JButton(Image);
-        P5C7.setPreferredSize(new Dimension(55,80));
-	c9.fill = GridBagConstraints.HORIZONTAL;
-	c9.gridx = 6;
-	c9.gridy = 9;
-        pane.add(P5C7, c9);
-
-        //8th Card
-        JButton P5C8 = new JButton(Image);
-        P5C8.setPreferredSize(new Dimension(55,80));
-	c9.fill = GridBagConstraints.HORIZONTAL;
-	c9.gridx = 7;
-	c9.gridy = 9;
-        pane.add(P5C8, c9);
-	}
+        CardDisplayPane.add(P1C8, c1);
+    }
 
 
       public void writeLog(String text) {

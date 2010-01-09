@@ -116,7 +116,13 @@ public class Env extends Environment
 		// Increase number of players
 		increaseNumberOfPlayers();
 		
+		// Add it to the scoreboard
 		sb.addPlayer(agent.getName());
+
+		// Add it to the gui
+		table.addPlayer(player_name, agent._position, 0, 0);
+		validatewindow();
+		table.repaint();
 
 		writeToLog("Player sit: " +agent.getName());
 
@@ -383,5 +389,23 @@ public class Env extends Environment
 	
 	private Integer getPosition() {
 	  return new Integer(numberOfPlayers);
+	}
+
+	private void validatewindow()
+	{
+		Runnable repaint = new Runnable()
+		{
+			public void run()
+			{
+				//try {Thread.sleep(500);} catch(Exception e) {}
+				table.doLayout();
+				
+				/*if (!m_window.isVisible())
+				{
+					m_window.setVisible( true );
+				}*/
+			}
+		};
+		SwingUtilities.invokeLater(repaint);
 	}
 }
