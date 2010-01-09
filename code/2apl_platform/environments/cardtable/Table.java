@@ -9,14 +9,14 @@ public class Table extends JFrame{
 
     public JLabel[][] PlayerCards = new JLabel[8][5];
 
-    private JPanel CardDisplayPane;
+    private static JPanel CardDisplayPane;
     private JLayeredPane TablePane;
     private JSplitPane VerticalSplitPane;
     private JScrollPane GameInfo;
     private JSplitPane HorizontalSplitPlane;
     private JTextArea Info;
 
-    private ImageIcon CardBack = new ImageIcon("cards/b.gif");
+    private static ImageIcon CardBack = new ImageIcon("cards/b.gif");
 
 
 	public Table( ){
@@ -98,10 +98,6 @@ public class Table extends JFrame{
     }
 
 
-    public JSplitPane getSplitPane() {
-        return HorizontalSplitPlane;
-    }
-
     public void addPlayer(String name, int position, int score, int bid) {
         JButton button;
 	GridBagConstraints c = new GridBagConstraints();
@@ -112,7 +108,7 @@ public class Table extends JFrame{
         JButton P1NameTag = new JButton(name);
 	c.fill = GridBagConstraints.HORIZONTAL;
 	c.gridx = 0;
-	c.gridy = 0;
+	c.gridy = 2*position;
         c.gridwidth = 4;
         CardDisplayPane.add(P1NameTag, c);
 
@@ -120,7 +116,7 @@ public class Table extends JFrame{
         JButton P1Score = new JButton("Score : "+ scoreInt.toString());
 	c.fill = GridBagConstraints.HORIZONTAL;
 	c.gridx = 4;
-	c.gridy = 0;
+	c.gridy = 2*position;
         c.gridwidth = 2;
         CardDisplayPane.add(P1Score, c);
 
@@ -128,7 +124,7 @@ public class Table extends JFrame{
         JButton P1Bid = new JButton("Bid : "+ bidInt.toString());
 	c.fill = GridBagConstraints.HORIZONTAL;
 	c.gridx = 6;
-	c.gridy = 0;
+	c.gridy = 2*position;
         c.gridwidth = 2;
         CardDisplayPane.add(P1Bid, c);
 
@@ -137,7 +133,7 @@ public class Table extends JFrame{
         P1C1.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 0;
-	c1.gridy = 1;
+	c1.gridy = 1+2*position;
         CardDisplayPane.add(P1C1, c1);
 
         //2nd Card
@@ -145,7 +141,7 @@ public class Table extends JFrame{
         P1C2.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 1;
-	c1.gridy = 1;
+	c1.gridy = 1+2*position;
         CardDisplayPane.add(P1C2, c1);
 
         //3rd Card
@@ -153,7 +149,7 @@ public class Table extends JFrame{
         P1C3.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 2;
-	c1.gridy = 1;
+	c1.gridy = 1+2*position;
         CardDisplayPane.add(P1C3, c1);
 
         //4th Card
@@ -161,7 +157,7 @@ public class Table extends JFrame{
         P1C4.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 3;
-	c1.gridy = 1;
+	c1.gridy = 1+2*position;
         CardDisplayPane.add(P1C4, c1);
 
         //5th Card
@@ -169,7 +165,7 @@ public class Table extends JFrame{
         P1C5.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 4;
-	c1.gridy = 1;
+	c1.gridy = 1+2*position;
         CardDisplayPane.add(P1C5, c1);
 
         //6th Card
@@ -177,7 +173,7 @@ public class Table extends JFrame{
         P1C6.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 5;
-	c1.gridy = 1;
+	c1.gridy = 1+2*position;
         CardDisplayPane.add(P1C6, c1);
 
         //7th Card
@@ -185,7 +181,7 @@ public class Table extends JFrame{
         P1C7.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 6;
-	c1.gridy = 1;
+	c1.gridy = 1+2*position;
         CardDisplayPane.add(P1C7, c1);
 
         //8th Card
@@ -193,8 +189,10 @@ public class Table extends JFrame{
         P1C8.setPreferredSize(new Dimension(55,80));
 	c1.fill = GridBagConstraints.HORIZONTAL;
 	c1.gridx = 7;
-	c1.gridy = 1;
+	c1.gridy = 1+2*position;
         CardDisplayPane.add(P1C8, c1);
+
+	setVisible(true);
     }
 
 
