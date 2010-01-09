@@ -38,18 +38,6 @@ public class Rank {
     */
    public final static Rank SEVEN = new Rank( "Seven", "7" );
    /**
-    * The rank eight.
-    */
-   public final static Rank EIGHT = new Rank( "Eight", "8" );
-   /**
-    * The rank nine.
-    */
-   public final static Rank NINE = new Rank( "Nine", "9" );
-   /**
-    * The rank ten.
-    */
-   public final static Rank TEN = new Rank( "Ten", "t" );
-   /**
     * The rank jack.
     */
    public final static Rank JACK = new Rank( "Jack", "j" );
