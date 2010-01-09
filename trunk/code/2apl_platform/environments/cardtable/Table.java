@@ -50,22 +50,8 @@ ImageIcon CardBack = new ImageIcon("cards/b.gif");
         }
 
 
-
-
-
-
         Info = new JTextArea(5,00);
         Info.setEditable(false);
-        Info.append("Player1 has connected \n");
-        Info.append("Player2 has connected \n");
-        Info.append("Player3 has connected \n");
-        Info.append("Player4 has connected \n");
-        Info.append("Player5 has connected \n");
-        Info.append("Game Started! \n");
-        Info.append("Bidding Started! \n");
-        Info.append("Player 1 Bids.... \n");
-        Info.append("You get the point Fab \n");
-
         GameInfo = new JScrollPane(Info);
 
         VerticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
@@ -154,10 +140,6 @@ ImageIcon CardBack = new ImageIcon("cards/b.gif");
 	c.gridy = 0;
         c.gridwidth = 2;
         pane.add(P1Bid, c);
-
-
-
-
 
         //1st Card
         JButton P1C1 = new JButton(Image);
@@ -589,25 +571,13 @@ ImageIcon CardBack = new ImageIcon("cards/b.gif");
 	c9.gridx = 7;
 	c9.gridy = 9;
         pane.add(P5C8, c9);
+	}
 
 
-
-
-
-/*
-	button = new JButton("5");
-	c.fill = GridBagConstraints.HORIZONTAL;
-	c.ipady = 0;       //reset to default
-	c.weighty = 1.0;   //request any extra vertical space
-	c.anchor = GridBagConstraints.PAGE_END; //bottom of space
-	c.insets = new Insets(10,0,0,0);  //top padding
-	c.gridx = 1;       //aligned with button 2
-	c.gridwidth = 2;   //2 columns wide
-	c.gridy = 2;       //third row
-	pane.add(button, c);
- * */
-
-	}    
+      public void writeLog(String text) {
+	Info.append(text+"\n");
+	Info.setCaretPosition(Info.getDocument().getLength());
+      }
 }
 
 

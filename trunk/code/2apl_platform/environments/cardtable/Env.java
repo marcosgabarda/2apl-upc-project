@@ -356,8 +356,9 @@ public class Env extends Environment
 
 	
 	// Print a message to the console
-    static public void writeToLog(String message) {
+    public void writeToLog(String message) {
       System.out.println("cardtable: " + message);
+      table.writeLog(message);
     }
 	
 	// helper function to wrap a boolean value inside a ListPar.
