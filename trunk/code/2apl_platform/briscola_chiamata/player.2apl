@@ -4,6 +4,7 @@ BeliefUpdates:
   { true }  AddBidHistorical(Cantity, Who)  { bidhistorical(Cantity, Who) }
   { true }  SetAsDealer(X)  { dealer(X) }
   { true }  SetHand(X)  { hand(X) }
+  { hand(X) }  RemoveHand(X)  { not hand(X) }
   { not lastbid(X) } AddLastBid(X) { lastbid(X) }
   { lastbid(X) } RemoveLastBid(X) { not lastbid(X) }
   
@@ -23,6 +24,10 @@ Beliefs:
   iscard([], []).
   iscard([Card1, Card2 | REST ], [Card1, Card2]).
   iscard([ X, Y | REST ], Q) :- iscard(REST, Q).
+  
+  deletehandcard(R, S, [R, S|T], T).
+  deletehandcard(R, S, [X, Y|T], [H|T1]):- deletehandcard(R, S, T, T1).
+
 
 Plans:
   [ B(gatekeeper(X)) ; send(X, request, register(me)) ]
@@ -185,12 +190,28 @@ PC-rules:
  /**
   * --- PLAY SCENARIO ---
   */
-  message(n, inform, _, _, yourturn(Y)) <- true |   
+  message(n, inform, _, _, yourturn(Y)) <-  hand(H) and not H = [] |   
   {
     print("My turn!");
-    //B( getcard(H, 3, X ) )
-    @cardtable(playCard(clubs, ace))
+    B( getcard(H, 0, X ) ); //TODO Get a ramdom card.
+    B( X = [S, R] );
+    @cardtable(playCard(S, R));
+    
+    // Update hand
+    B( deletehandcard(S, R, H, RES ) );
+    RemoveHand(H);
+    SetHand(RES);
+    
+    // Check if hand is ended
+    if B(RES = []) then
+    {
+      endhand()
+    }
   }
   
+  endhand() <- hand([]) | 
+  {
+    print("I don't have any cards!")
+  }
   
   
