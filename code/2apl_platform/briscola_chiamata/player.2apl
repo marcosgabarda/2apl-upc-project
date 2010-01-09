@@ -119,6 +119,7 @@ PC-rules:
     B( assigned(Pos, Me) );
     print("I bid!");
     AddBidHistorical(61, Me);
+    AddLastBid(61);
     send(Next, inform, bid(61, Pos))
   }
   
