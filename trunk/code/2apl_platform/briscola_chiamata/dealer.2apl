@@ -5,7 +5,7 @@ Beliefs:
   notary(n).
   gatekeeper(gk).
   player(X) :- assigned(POS, X).
-
+  
 Plans:
  @cardtable(enterAsDealer())
 
@@ -15,18 +15,30 @@ PC-rules:
     SetAssigned(POS, Y)
   }
 
- message(X, inform, _, _, dealer(Y)) <- true |
+  message(X, inform, _, _, dealer(Y)) <- true |
   {
     /* here start shuffling and dealing cards */ 
-    /* send cards */
-    B( assigned(0, P0) );
-    send (P0, inform, givecards([1,2,3,4,6,7,8]));
-    B( assigned(1, P1) );
-    send (P1, inform, givecards([1,2,3,4,6,7,8]));
-    B( assigned(2, P2) );
-    send (P2, inform, givecards([1,2,3,4,6,7,8]));
-    B( assigned(3, P3) );
-    send (P3, inform, givecards([1,2,3,4,6,7,8]));
-    B( assigned(4, P4) );
-    send (P4, inform, givecards([1,2,3,4,6,7,8]))
+    @cardtable(shuffleDeck())
+   
   }  
+  
+  deckShuffled(X) <- true | 
+  {
+    /* send cards */ 
+    B( X = [ [C1, C2, C3, C4, C5, C6, C7, C8] | T1] );
+    B( assigned(0, P0) );
+    send (P0, inform, givecards([C1, C2, C3, C4, C6, C7, C8]));
+    B( T1 = [C1, C2, C3, C4, C5, C6, C7, C8 | T2] );
+    B( assigned(1, P1) );
+    send (P1, inform, givecards([C1, C2, C3, C4, C6, C7, C8]));
+    B( T2 = [C1, C2, C3, C4, C5, C6, C7, C8 | T3] );
+    B( assigned(2, P2) );
+    send (P2, inform, givecards([C1, C2, C3, C4, C6, C7, C8]));
+    B( T3 = [C1, C2, C3, C4, C5, C6, C7, C8 | T4] );
+    B( assigned(3, P3) );
+    send (P3, inform, givecards([C1, C2, C3, C4, C6, C7, C8]));
+    B( T4 = [C1, C2, C3, C4, C5, C6, C7, C8 | _ ] );
+    B( assigned(4, P4) );
+    send (P4, inform, givecards([C1, C2, C3, C4, C6, C7, C8]))
+  }
+  
