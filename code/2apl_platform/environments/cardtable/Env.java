@@ -175,6 +175,12 @@ public class Env extends Environment
 	      return wrapBoolean(true);
 	}
 
+	public Term updateBid(String sAgent, APLNum bid) throws ExternalActionFailedException {
+	      Agent agent = getAgent(sAgent);
+	      table.updateScore(agent.getName(), agent._position, bid.toInt());
+	      return wrapBoolean(true);
+	}
+
 	/* Standard functions --------------------------------------*/
 	
 	private void notifyAgents(APLFunction event, String... receivers) {
