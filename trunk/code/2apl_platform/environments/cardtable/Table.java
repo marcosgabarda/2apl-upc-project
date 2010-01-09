@@ -1,18 +1,9 @@
-package mabriscola;
-
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 
 
 
-public class Table{
-    //-----------CARD GAME STUFF---------------------
-
-    private Deck cardDeck = new Deck();
-    private Hand[] HandArray = new Hand[5];
-    private Hand myHand ;
-
-    //----------GUI STUFF----------------------------
+public class Table extends JFrame{
 
     public JLabel[][] PlayerCards = new JLabel[8][5];
 
@@ -23,13 +14,20 @@ public class Table{
     private JSplitPane HorizontalSplitPlane;
     private JTextArea Info;
 
-    public Table() {
+ImageIcon CardBack = new ImageIcon("cards/b.gif");
+
+
+	public Table( final Env env ){
+		super( "Blockworld" );
+    //----------GUI STUFF----------------------------
+
+
 
         CardDisplayPane = new JPanel();
-        
+
 
         TablePane = new JLayeredPane();
-        
+
 
 
          Point origin = new Point(50, 20);
@@ -72,7 +70,7 @@ public class Table{
                                     TablePane,GameInfo);
 
         VerticalSplitPane.setPreferredSize(new Dimension(360,600));
-        
+
         //AddPlayersGUI();
         addComponentsToPane(CardDisplayPane);
 
@@ -83,8 +81,11 @@ public class Table{
 
         //Provide a preferred size for the split pane.
         HorizontalSplitPlane.setPreferredSize(new Dimension(800,600));
-    }
 
+ 		getContentPane().add(HorizontalSplitPlane);
+
+                setVisible( true );
+	}
 
         private JLabel createColoredLabel(String text,
                                       Color color,
@@ -100,6 +101,10 @@ public class Table{
         return label;
     }
 
+
+    public JSplitPane getSplitPane() {
+        return HorizontalSplitPlane;
+    }
 
 
     public static void addComponentsToPane(Container pane) {
@@ -602,57 +607,9 @@ public class Table{
 
     }
 
-    
-    /* Old add cards method
 
 
-    public void AddPlayersGUI(){
-    for (int i=0; i<8; i++){
-        for (int j=0; j<5; j++){
-            PlayerCards[i][j] = new JLabel();
-            PlayerCards[i][j].setBackground(java.awt.Color.green);
-            PlayerCards[i][j].setBounds(100 + i*56,12 + j*110,55,80);
-            
-            CardDisplayPane.add(PlayerCards[i][j]);
-             Card c = cardDeck.dealCard();
-		   PlayerCards[i][j].setIcon( c.getCardImage() );
 
 
-        }
-        
-    }
-    
-    
-}
-    */
-
-    public JSplitPane getSplitPane() {
-        return HorizontalSplitPlane;
-    }
-
-    private static void createAndShowGUI() {
-
-        //Create and set up the window.
-        JFrame frame = new JFrame("Briscola");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Table GameObject = new Table();
-        GameObject.getSplitPane().setBackground(java.awt.Color.green);
-        frame.getContentPane().add(GameObject.getSplitPane());
-        frame.getContentPane().setBackground(java.awt.Color.green);
-        
-        //Display the window.
-        frame.pack();
-        frame.setPreferredSize(new Dimension(800,600));
-        frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        createAndShowGUI();
-
-        javax.swing.SwingUtilities.invokeLater(new Runnable() { public void run() {} });
-    }
 
 
-}
