@@ -4,11 +4,13 @@ BeliefUpdates:
   { true }  SetDealer(X)  { dealer(X) }
   { not currentturn(_) }  UpdateTrun(X)  { currentturn(X) }
   { currentturn(X) }  RemoveTrun(X)  { not currentturn(X) }
+  { true } PlayerPass(X)  { playerpass(X) }
 
 Beliefs:
   gatekeeper(gk).		/* we know who the gatekeeper is, for simplicity */
   dealer(d).
   currentturn(1).   /* the first turn is for the agent in postion 1 */
+  
   
 
 Plans:
@@ -28,11 +30,26 @@ PC-rules:
   
   message(X, inform, _, _, askfor(Pos)) <- true |
   {
+    
     B(assigned(Pos, Y));
-    send(X, inform, is(Y))
+    if B( not playerpass(Y) ) then
+    {
+      send(X, inform, is(Y))
+    }
+    else
+    {
+      /*TODO: in general, here we must implement if there is some "jump" and if all them passed, 
+      send the bidwinner message to the winner, but for the prototipe, this works. */
+      send(X, inform, bidwinner(0))
+    }
   }
 
-  turnended () <- currentturn(X) | /**/
+  message(X, inform, _, _,  pass(Y)) <- true  | 
+  {
+    PlayerPass(X)
+  }
+  
+  turnended() <- currentturn(X) | /**/
   {
     if B( X = 4 ) then
     {
@@ -47,3 +64,64 @@ PC-rules:
       @cardtale(selectTrun(X + 1))
     }
   }
+  
+  message(X, inform, _, _, declarebriscola(Briscola)) <- true | 
+  {
+    B( assigned(Pos, X) );
+    if B( Pos = 0 ) then
+    {
+      B( assigned(1, P1));
+      send(P1, inform, declarebriscola(Briscola, X));
+      B( assigned(2, P2));
+      send(P2, inform, declarebriscola(Briscola, X));
+      B( assigned(3, P3));
+      send(P3, inform, declarebriscola(Briscola, X));
+      B( assigned(4, P4));
+      send(P4, inform, declarebriscola(Briscola, X))
+    };
+    if B( Pos = 1 ) then
+    {
+      B( assigned(0, P1));
+      send(P1, inform, declarebriscola(Briscola, X));
+      B( assigned(2, P2));
+      send(P2, inform, declarebriscola(Briscola, X));
+      B( assigned(3, P3));
+      send(P3, inform, declarebriscola(Briscola, X));
+      B( assigned(4, P4));
+      send(P4, inform, declarebriscola(Briscola, X))
+    };
+    if B( Pos = 2 ) then
+    {
+      B( assigned(0, P1));
+      send(P1, inform, declarebriscola(Briscola, X));
+      B( assigned(1, P2));
+      send(P2, inform, declarebriscola(Briscola, X));
+      B( assigned(3, P3));
+      send(P3, inform, declarebriscola(Briscola, X));
+      B( assigned(4, P4));
+      send(P4, inform, declarebriscola(Briscola, X))
+    };
+    if B( Pos = 3 ) then
+    {
+      B( assigned(0, P1));
+      send(P1, inform, declarebriscola(Briscola, X));
+      B( assigned(1, P2));
+      send(P2, inform, declarebriscola(Briscola, X));
+      B( assigned(2, P3));
+      send(P3, inform, declarebriscola(Briscola, X));
+      B( assigned(4, P4));
+      send(P4, inform, declarebriscola(Briscola, X))
+    };
+    if B( Pos = 4 ) then
+    {
+      B( assigned(0, P1));
+      send(P1, inform, declarebriscola(Briscola, X));
+      B( assigned(1, P2));
+      send(P2, inform, declarebriscola(Briscola, X));
+      B( assigned(2, P3));
+      send(P3, inform, declarebriscola(Briscola, X));
+      B( assigned(3, P4));
+      send(P4, inform, declarebriscola(Briscola, X))
+    }
+  }
+  
