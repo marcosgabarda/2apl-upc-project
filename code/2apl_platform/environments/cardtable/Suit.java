@@ -10,19 +10,19 @@ public final class Suit {
    /**
     * The suit clubs.
     */
-   public final static Suit CLUBS = new Suit( "Clubs", "c" );
+   public final static Suit CLUBS = new Suit( "clubs", "c" );
    /**
     * The suit diamonds.
     */
-   public final static Suit DIAMONDS = new Suit( "Diamonds", "d" );
+   public final static Suit DIAMONDS = new Suit( "diamonds", "d" );
    /**
     * The suit hearts.
     */
-   public final static Suit HEARTS = new Suit( "Hearts", "h" );
+   public final static Suit HEARTS = new Suit( "hearts", "h" );
    /**
     * The suit spades.
     */
-   public final static Suit SPADES = new Suit( "Spades", "s" );
+   public final static Suit SPADES = new Suit( "spades", "s" );
 
 
    public final static java.util.List VALUES =
