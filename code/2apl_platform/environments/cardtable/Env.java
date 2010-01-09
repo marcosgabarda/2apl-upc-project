@@ -24,6 +24,8 @@ public class Env extends Environment
 	private int numberOfPlayers, numberOfNotaries, numberOfGatekeepers, numberOfDealers;
 
 	private Deck deck;
+
+	private Scoreboard sb;
 	
 	// The default constructor
 	public Env()
@@ -37,6 +39,7 @@ public class Env extends Environment
 		numberOfGatekeepers=0;
 
 		deck = new Deck();
+		sb = new Scoreboard();
 	}
 	
 	public Term enterAsNotary(String sAgent) throws ExternalActionFailedException {
@@ -111,12 +114,7 @@ public class Env extends Environment
 		// Increase number of players
 		increaseNumberOfPlayers();
 		
-		// Redraw so we can see the agent
-		//validatewindow();
-		//m_window.repaint();
-		
-		// We came so far, this means success!
-		//agent.signalMoveSucces.emit();
+		sb.addPlayer(agent.getName());
 
 		writeToLog("Player sit: " +agent.getName());
 
@@ -160,6 +158,12 @@ public class Env extends Environment
 	      return wrapBoolean(true);
 	}
 
+	public Term updateScore(String sAgent, APLIdent player_name, APLNum score) {
+	      sb.updateScore(player_name.toString(), score.toInt());
+	      notifyEvent("scoreUpdated", player_name, score);
+	      return wrapBoolean(true);
+	}
+
 	/* Standard functions --------------------------------------*/
 	
 	private void notifyAgents(APLFunction event, String... receivers) {
@@ -199,7 +203,7 @@ public class Env extends Environment
 		ArrayList<String> targetAgents = new ArrayList<String>();
 		for (Agent a : agentmap.values())
 		{
-			if ((a.isSit() && a.getType()==0) || (a.isSit() && a.getType()==2))
+			if ((a.isSit() && a.getType()==0) || (a.isSit() && a.getType()==2)) // player or notary
 				targetAgents.add(a.getName());
 		}
 
@@ -207,6 +211,21 @@ public class Env extends Environment
 		{
 			notifyAgents(new APLFunction(parm1,suit,rank),targetAgents.toArray(new String[0]));
 			writeToLog("EVENT: "+parm1+"("+suit.toString()+","+rank.toString()+")"+" to "+targetAgents);
+		}
+	}
+
+	private void notifyEvent(String parm1, APLIdent name, APLNum score) {
+		ArrayList<String> targetAgents = new ArrayList<String>();
+		for (Agent a : agentmap.values())
+		{
+			if ((a.isSit() && a.getType()==0)) // player
+				targetAgents.add(a.getName());
+		}
+
+		if (!targetAgents.isEmpty())
+		{
+			notifyAgents(new APLFunction(parm1,name,score),targetAgents.toArray(new String[0]));
+			writeToLog("EVENT: "+parm1+"("+name.toString()+","+score.toString()+")"+" to "+targetAgents);
 		}
 	}
 	
