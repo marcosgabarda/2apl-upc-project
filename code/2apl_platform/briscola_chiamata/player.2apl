@@ -7,11 +7,22 @@ BeliefUpdates:
   { not lastbid(X) } AddLastBid(X) { lastbid(X) }
   { lastbid(X) } RemoveLastBid(X) { not lastbid(X) }
   
+  { true }  AddTeamMember(X) { team(X) }
+  
 Beliefs:
   notary(n).
   gatekeeper(gk).
   dealer(d).
   player(X) :- assigned(POS, X).
+  
+  getcard([], 0, []).
+  getcard([X], 0, []).
+  getcard([ Card1, Card2 | Rest ], 0, [Card1, Card2]).
+  getcard([ Card1, Card2 | Rest ], Index, X) :- Y is Index - 1, getcard(Rest, Y, X).
+  
+  iscard([], []).
+  iscard([Card1, Card2 | REST ], [Card1, Card2]).
+  iscard([ X, Y | REST ], Q) :- iscard(REST, Q).
 
 Plans:
   [ B(gatekeeper(X)) ; send(X, request, register(me)) ]
@@ -130,7 +141,8 @@ PC-rules:
     if B( bidhistorical(_, Me) ) then
     {
       print("I pass...");
-      send(Next, inform, pass(LB))
+      send(Next, inform, pass(LB));
+      send(n, inform, pass(LB))
     }
     else
     {
@@ -143,7 +155,32 @@ PC-rules:
     
   }
   
+  
+ /**
+  * --- DECLARE BRISCOLA SCENARIO ---
+  */
+  message(X, inform, _, _, bidwinner(Y)) <- hand(H) | 
+  {
+    print("I've the Briscola!");
+    // --- Declare Briscola
+    //B( getcard(H, 3, Briscola) ); FIXME this line do not work
+    send(n, inform, declarebriscola([clubs, ace]));
+    if B( iscard(H, [clubs, ace]) ) then
+    {
+      print("I go alone");
+      AddTeamMember(alone) // The player goes alone
+    }
+  }
 
+  message(X, inform, _, _, declarebriscola(Briscola, Y)) <- hand(H) |
+  {
+   // Update knowledge about the team
+   if B( iscard(H, Briscola) ) then
+   {
+     print("I go with "+ Y);
+     AddTeamMember(Y)
+   }
+  }
   
  /**
   * --- PLAY SCENARIO ---
