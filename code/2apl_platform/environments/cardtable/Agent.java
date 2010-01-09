@@ -7,9 +7,11 @@ public class Agent
 	// 0 player
 	// 1 gatekeeper
 	// 2 notary
+
+	/* BUG: add set/get method and remove protected */
 	protected int _type;
 
-	// _position null means agent is not sit at the table 
+	/* BUG: _position null means agent is not sit at the table, add set/get method */
 	protected Integer _position = null;
 
 	public Agent( String name ) {

@@ -49,6 +49,7 @@ public class Env extends Environment
 	      numberOfNotaries++;
 	    
 	    agent._type=2;
+	    agent._position=-1; /* notary hasn't a real position, but it needs a value in order to be sit at the table */
 	    
 	    return wrapBoolean(true);
 	}
@@ -63,6 +64,7 @@ public class Env extends Environment
 	      numberOfDealers++;
 	    
 	    agent._type=3;
+	    agent._position=-1; /* dealer hasn't a real position, but it needs a value in order to be sit at the table */
 	    
 	    return wrapBoolean(true);
 	}
@@ -77,6 +79,7 @@ public class Env extends Environment
 	      numberOfGatekeepers++;
 	      
 	    agent._type=1;
+	    agent._position=-1; /* gk hasn't a real position, but it needs a value in order to be sit at the table */
 	      
 	    return wrapBoolean(true);
 	}
@@ -146,9 +149,15 @@ public class Env extends Environment
 
 		deck.shuffle();
 
-		notifyEvent("deckShuffled", deck);
+		Agent d = getDealer();
+		notifyEvent("deckShuffled", deck, d);
 
 		return wrapBoolean(true);
+	}
+
+	public Term playCard(String sAgent, APLIdent suit, APLIdent rank) {
+	      notifyEvent("cardPlayed", suit, rank);
+	      return wrapBoolean(true);
 	}
 
 	/* Standard functions --------------------------------------*/
@@ -157,10 +166,8 @@ public class Env extends Environment
 		 throwEvent(event, receivers);
 	}
 	
-	private void notifyEvent(String parm1, Deck deck) throws ExternalActionFailedException
+	private void notifyEvent(String parm1, Deck deck, Agent d)
 	{
-		Agent d = getDealer();
-
 		LinkedList returnList = new LinkedList();
 		List deckList = deck.getDeck();
 
@@ -174,8 +181,10 @@ public class Env extends Environment
 		  returnList.add(id);
 		  Rank rank = card.getRank();
 		  id = new APLIdent(rank.getName());
-		  deckStr += rank.getName() + ">, ";
+		  deckStr += rank.getName() + ">";
 		  returnList.add(id);
+		  if(i.hasNext())
+		      deckStr += ", ";
 		}
 		deckStr += " ]";
  
@@ -183,6 +192,21 @@ public class Env extends Environment
 		{
 			notifyAgents(new APLFunction(parm1,new APLList(returnList)), d.getName());
 			writeToLog("EVENT: "+parm1+" "+deckStr+" "+" to "+d.getName());
+		}
+	}
+
+	private void notifyEvent(String parm1, APLIdent suit, APLIdent rank) {
+		ArrayList<String> targetAgents = new ArrayList<String>();
+		for (Agent a : agentmap.values())
+		{
+			if ((a.isSit() && a.getType()==0) || (a.isSit() && a.getType()==2))
+				targetAgents.add(a.getName());
+		}
+
+		if (!targetAgents.isEmpty())
+		{
+			notifyAgents(new APLFunction(parm1,suit,rank),targetAgents.toArray(new String[0]));
+			writeToLog("EVENT: "+parm1+"("+suit.toString()+","+rank.toString()+")"+" to "+targetAgents);
 		}
 	}
 	
