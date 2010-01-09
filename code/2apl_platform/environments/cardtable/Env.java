@@ -19,6 +19,8 @@ import java.io.OutputStream;
 
 public class Env extends Environment
 {
+	final protected Table table;
+    
 	private HashMap<String,Agent> agentmap = new HashMap<String,Agent>();
 
 	private int numberOfPlayers, numberOfNotaries, numberOfGatekeepers, numberOfDealers;
@@ -30,16 +32,16 @@ public class Env extends Environment
 	// The default constructor
 	public Env()
 	{
-		super();
-		// Create the window
-		//m_window = new Window( this );
-		
+		super();		
 		numberOfPlayers=0;
 		numberOfNotaries=0;
 		numberOfGatekeepers=0;
 
 		deck = new Deck();
 		sb = new Scoreboard();
+
+		//Create the window
+		table = new Table();
 	}
 	
 	public Term enterAsNotary(String sAgent) throws ExternalActionFailedException {
@@ -271,9 +273,6 @@ public class Env extends Environment
 	}
 	
 	/* END Standard functions --------------------------------------*/
-	
-	
-	
 	
  	/* Helper functions --------------------------------------*/
 
