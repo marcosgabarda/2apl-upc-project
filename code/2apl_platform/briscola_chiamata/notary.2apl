@@ -4,14 +4,19 @@ BeliefUpdates:
   { true }  SetDealer(X)  { dealer(X) }
   { not currentturn(_) }  UpdateTrun(X)  { currentturn(X) }
   { currentturn(X) }  RemoveTrun(X)  { not currentturn(X) }
-  { true } PlayerPass(X)  { playerpass(X) }
+  { true }  PlayerPass(X)  { playerpass(X) }
+  { true }  AddCardPlayed(S, R, X) { cardontable(S, R, X) } 
 
 Beliefs:
   gatekeeper(gk).		/* we know who the gatekeeper is, for simplicity */
   dealer(d).
   currentturn(0).   /* the first turn is for the agent in postion 0 */
   
-  
+  getpoints(jack, X) :- X is 2
+  getpoints(queen, X) :- X is 3
+  getpoints(king, X) :- X is 4
+  getpoints(three, X) :- X is 10
+  getpoints(ace, X) :- X is 11
 
 Plans:
   @cardtable(enterAsNotary())	/* join the game as notary */
@@ -128,9 +133,8 @@ PC-rules:
       RemoveTrun(X);
       UpdateTrun(0);
       B( assigned(0, P));
-      //send(P, inform, yourturn(0))
-      print("Hands over!")
-      //TODO count points
+      print("Hands over!");
+      countpoints()
     }
     else
     {
@@ -141,8 +145,27 @@ PC-rules:
     }
   }
   
-  event(cardPlayed(S, R), cardtable) <- true | 
+  event(cardPlayed(S, R, N), cardtable) <- true | 
   {
     //TODO add card played to can count points
+    AddCardPlayed(S, R, N);
     selectturn()
+  }
+  
+  countpoints() <- true |
+  {
+     B( assigned(0, P0));
+     B( cardontable(S0, R0, P0) and getpoints(S0, X0));
+     
+     B( assigned(1, P1));
+     B( cardontable(S1, R1, P1) and getpoints(S1, X1));
+     
+     B( assigned(2, P2));
+     B( cardontable(S2, R2, P2) and getpoints(S2, X2));
+     
+     B( assigned(3, P3));
+     B( cardontable(S3, R3, P3) and getpoints(S3, X3));
+     
+     B( assigned(4, P4));
+     B( cardontable(S4, R4, P4) and getpoints(S4, X4))
   }
