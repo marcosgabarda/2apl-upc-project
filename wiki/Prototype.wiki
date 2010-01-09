@@ -1,0 +1,15 @@
+#summary Information about the prototype.
+
+= Compiling instructions =
+
+  * cd code/2apl_platform/environments
+  * javac -classpath "../apapl.jar:." cardtable/*.java
+  * jar cvf cardtable.jar cardtable/*.class
+
+= Running instructions =
+
+  * cd code/2apl_platform
+  * java -jar apapl.jar
+  * Load from menu and select briscola_chiamata/briscola_chiamata.mas
+
+
