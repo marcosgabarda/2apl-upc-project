@@ -128,7 +128,9 @@ PC-rules:
       RemoveTrun(X);
       UpdateTrun(0);
       B( assigned(0, P));
-      send(P, inform, yourturn(0))
+      //send(P, inform, yourturn(0))
+      print("Hands over!")
+      //TODO count points
     }
     else
     {
@@ -141,5 +143,6 @@ PC-rules:
   
   event(cardPlayed(S, R), cardtable) <- true | 
   {
+    //TODO add card played to can count points
     selectturn()
   }

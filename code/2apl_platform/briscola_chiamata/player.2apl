@@ -205,11 +205,11 @@ PC-rules:
     // Check if hand is ended
     if B(RES = []) then
     {
-      endhand()
+      endround()
     }
   }
   
-  endhand() <- hand([]) | 
+  endround() <- hand([]) | 
   {
     print("I don't have any cards!")
   }
