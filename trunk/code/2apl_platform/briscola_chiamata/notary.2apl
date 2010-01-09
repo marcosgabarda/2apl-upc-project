@@ -9,7 +9,7 @@ BeliefUpdates:
 Beliefs:
   gatekeeper(gk).		/* we know who the gatekeeper is, for simplicity */
   dealer(d).
-  currentturn(1).   /* the first turn is for the agent in postion 1 */
+  currentturn(0).   /* the first turn is for the agent in postion 0 */
   
   
 
@@ -28,6 +28,9 @@ PC-rules:
     }
   }
   
+ /**
+  * --- BIDDING SCENARIO ---
+  */
   message(X, inform, _, _, askfor(Pos)) <- true |
   {
     
@@ -48,23 +51,10 @@ PC-rules:
   {
     PlayerPass(X)
   }
-  
-  turnended() <- currentturn(X) | /**/
-  {
-    if B( X = 4 ) then
-    {
-      RemoveTrun(X);
-      UpdateTrun(0);
-      @cardtale(selectTrun(0))
-    }
-    else
-    {
-      RemoveTrun(X);
-      UpdateTrun(X + 1);
-      @cardtale(selectTrun(X + 1))
-    }
-  }
-  
+
+ /**
+  * --- DECLARE BRISCOLA SCENARIO ---
+  */
   message(X, inform, _, _, declarebriscola(Briscola)) <- true | 
   {
     B( assigned(Pos, X) );
@@ -122,6 +112,34 @@ PC-rules:
       send(P3, inform, declarebriscola(Briscola, X));
       B( assigned(3, P4));
       send(P4, inform, declarebriscola(Briscola, X))
+    };
+    
+    // START THE GAME!!!
+    selectturn()
+  }
+  
+ /**
+  * --- PLAY SCENARIO ---
+  */
+  selectturn() <- currentturn(X) | 
+  {
+    if B( X = 4 ) then
+    {
+      RemoveTrun(X);
+      UpdateTrun(0);
+      B( assigned(0, P));
+      send(P, inform, yourturn(0))
+    }
+    else
+    {
+      RemoveTrun(X);
+      UpdateTrun(X + 1);
+      B( assigned(X + 1, P));
+      send(P, inform, yourturn(X + 1))
     }
   }
   
+  event(cardPlayed(S, R), cardtable) <- true | 
+  {
+    selectturn()
+  }

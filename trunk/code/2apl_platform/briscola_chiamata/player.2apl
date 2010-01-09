@@ -167,7 +167,7 @@ PC-rules:
     send(n, inform, declarebriscola([clubs, ace]));
     if B( iscard(H, [clubs, ace]) ) then
     {
-      print("I go alone");
+      print("I go alone!");
       AddTeamMember(alone) // The player goes alone
     }
   }
@@ -177,7 +177,7 @@ PC-rules:
    // Update knowledge about the team
    if B( iscard(H, Briscola) ) then
    {
-     print("I go with "+ Y);
+     print("I go with bid winner!");
      AddTeamMember(Y)
    }
   }
@@ -185,9 +185,12 @@ PC-rules:
  /**
   * --- PLAY SCENARIO ---
   */
-  turnselected(X) <- assigned(X, _) and scenario(playing) |  /* when percepts turnselected, and its his turn*/
+  message(n, inform, _, _, yourturn(Y)) <- true |   
   {
-    /*TODO*/
-    skip
+    print("My turn!");
+    B( getcard(H, 3, [S, R]) );
+    @cardtable(playCard(S, R))
   }
+  
+  
   
