@@ -57,7 +57,9 @@ ImageIcon CardBack = new ImageIcon("cards/b.gif");
         VerticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                                     TablePane,GameInfo);
 
-        VerticalSplitPane.setPreferredSize(new Dimension(360,600));
+        VerticalSplitPane.setPreferredSize(new Dimension(150,150));
+	VerticalSplitPane.setOneTouchExpandable(false);
+	VerticalSplitPane.setDividerLocation(400);
 
         //AddPlayersGUI();
         addComponentsToPane(CardDisplayPane);
@@ -68,7 +70,10 @@ ImageIcon CardBack = new ImageIcon("cards/b.gif");
                                     CardDisplayPane,VerticalSplitPane );
 
         //Provide a preferred size for the split pane.
-        HorizontalSplitPlane.setPreferredSize(new Dimension(800,600));
+        HorizontalSplitPlane.setPreferredSize(new Dimension(150,150));
+	HorizontalSplitPlane.setOneTouchExpandable(false);
+	HorizontalSplitPlane.setDividerLocation(600);
+
 
  		getContentPane().add(HorizontalSplitPlane);
 
@@ -86,6 +91,11 @@ ImageIcon CardBack = new ImageIcon("cards/b.gif");
         label.setForeground(Color.black);
         label.setBorder(BorderFactory.createLineBorder(Color.black));
         label.setBounds(origin.x, origin.y, 140, 140);
+
+	pack();
+	setSize( 1024, 768 );
+	setVisible( true );
+
         return label;
     }
 
