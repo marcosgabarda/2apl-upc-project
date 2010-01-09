@@ -2,7 +2,6 @@ package mabriscola;
 
 import java.awt.*;
 import javax.swing.*;
-import java.util.*;
 
 
 
@@ -30,7 +29,29 @@ public class Table{
         
 
         TablePane = new JLayeredPane();
-        TablePane.setBackground(Color.green);
+        
+
+
+         Point origin = new Point(50, 20);
+         Color[] layerColors = { Color.yellow, Color.magenta,
+                                    Color.cyan,   Color.red,
+                                    Color.green };
+        //This is the offset for computing the origin for the next label.
+        int offset = 35;
+
+        //Add several overlapping, colored labels to the layered pane
+        //using absolute positioning/sizing.
+        for (int i = 0; i < 5; i++) {
+            JLabel label = createColoredLabel("card",
+                                              layerColors[i], origin);
+            TablePane.add(label, new Integer(i));
+            origin.x += offset;
+            origin.y += offset;
+        }
+
+
+
+
 
 
         Info = new JTextArea(5,00);
@@ -50,7 +71,7 @@ public class Table{
         VerticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                                     TablePane,GameInfo);
 
-
+        VerticalSplitPane.setPreferredSize(new Dimension(360,600));
         
         //AddPlayersGUI();
         addComponentsToPane(CardDisplayPane);
@@ -63,6 +84,22 @@ public class Table{
         //Provide a preferred size for the split pane.
         HorizontalSplitPlane.setPreferredSize(new Dimension(800,600));
     }
+
+
+        private JLabel createColoredLabel(String text,
+                                      Color color,
+                                      Point origin) {
+        JLabel label = new JLabel(text);
+        label.setVerticalAlignment(JLabel.TOP);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setOpaque(true);
+        label.setBackground(color);
+        label.setForeground(Color.black);
+        label.setBorder(BorderFactory.createLineBorder(Color.black));
+        label.setBounds(origin.x, origin.y, 140, 140);
+        return label;
+    }
+
 
 
     public static void addComponentsToPane(Container pane) {
