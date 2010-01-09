@@ -1,0 +1,32 @@
+BeliefUpdates:
+  { not assigned(POS, X) }  SetAssigned(POS, X)     { assigned(POS, X) }
+
+Beliefs:
+  notary(n).
+  gatekeeper(gk).
+  player(X) :- assigned(POS, X).
+
+Plans:
+ @cardtable(enterAsDealer())
+
+PC-rules:
+  message(X, inform, _, _, registered(POS, Y)) <- true |
+  {
+    SetAssigned(POS, Y)
+  }
+
+ message(X, inform, _, _, dealer(Y)) <- true |
+  {
+    /* here start shuffling and dealing cards */ 
+    /* send cards */
+    B( assigned(0, P0) );
+    send (P0, inform, givecards([1,2,3,4,6,7,8]));
+    B( assigned(1, P1) );
+    send (P1, inform, givecards([1,2,3,4,6,7,8]));
+    B( assigned(2, P2) );
+    send (P2, inform, givecards([1,2,3,4,6,7,8]));
+    B( assigned(3, P3) );
+    send (P3, inform, givecards([1,2,3,4,6,7,8]));
+    B( assigned(4, P4) );
+    send (P4, inform, givecards([1,2,3,4,6,7,8]))
+  }  

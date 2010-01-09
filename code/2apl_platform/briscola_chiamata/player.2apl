@@ -2,9 +2,13 @@ BeliefUpdates:
   { true }  SetAssigned(POS, X)     { assigned(POS, X) }
   { true }  RemoveAssigned(POS, X)  { not assigned(POS, X) }
   { true }  AddBidHistorical(Cantity, Who)  { bidhistorical(Cantity, Who) }
+  { true }  SetAsDealer(X)  { dealer(X) }
+  { true }  SetHand(X)  { hand(X) }
 Beliefs:
   notary(n).
   gatekeeper(gk).
+  dealer(d).
+  player(X) :- assigned(POS, X).
 
 Plans:
   [ B(gatekeeper(X)) ; send(X, request, register(me)) ]
@@ -12,39 +16,33 @@ Plans:
 PC-rules:
   message(X, inform, _, _, registered(POS, Y)) <- true |
   {
-    SetAssigned(POS, X)
+    SetAssigned(POS, Y)
   }
   message(X, inform, _, _, refused(Y)) <- true |
   {
     print("I'm out!")
   }
-  message(X, inform, _, _, dealer(Y)) <- true |
-  {
-    print("I'm the dealer!")
-    /* here start shuffling and dealing cards */ 
-  }
-
-  message (X, inform, _, _,  firstbid()) <- scenario(bidding) | /* message from dealer, telling that this agent is the firts to bid */
+ 
+  message(X, inform, _, _,  firstbid(_)) <- scenario(bidding) | /* message from dealer, telling that this agent is the firts to bid */
   {
     /* for fist, the agent bids */
     /* TODO the agent must know who is the next bidding, or ask to dealer*/
-    send (Next, inform, bid());
+    send (Next, inform, bid(_))
 
   }
 
-  message (X, inform, _, _,  firstbid()) <- scenario(bidding) | /* message from dealer, telling that this agent is the firts to bid */
+  message(X, inform, _, _,  firstbid(_)) <- scenario(bidding) | /* message from dealer, telling that this agent is the firts to bid */
   {
     /* for fist, the agent bids */
     /* TODO the agent must know who is the next bidding, or ask to dealer*/
     send (Next, inform, bid(1))
   }
 
-  message (X, inform, _, _,  bid(Cuantity)) <- scenario(bidding) | /* message from dealer, telling that this agent is the firts to bid */
+  message(X, inform, _, _,  bid(Cuantity, Pos)) <- scenario(bidding) | /* message from dealer, telling that this agent is the firts to bid */
   {
-    /* for fist, the agent bids only once. NOTE i suppose "me" is a self reference */
-    if B( bidhistorical(_, me) )
+    if B( bidhistorical(_, me) ) then
     {
-      send (Next, inform, pass())
+      send (Next, inform, pass(_))
     }
     else
     {
@@ -53,9 +51,15 @@ PC-rules:
     
   }
 
-  turnselected (X) <- assigned(X, _) and scenario(playing) |  /* when percepts turnselected, and its his turn*/
+  message(d, inform, _, _, givecards(X)) <- true |
+  {
+    print ("I've cards!");
+    SetHand(X)
+  }
+
+  turnselected(X) <- assigned(X, _) and scenario(playing) |  /* when percepts turnselected, and its his turn*/
   {
     /*TODO*/
-
+    skip
   }
   

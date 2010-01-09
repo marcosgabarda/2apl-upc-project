@@ -7,7 +7,9 @@ BeliefUpdates:
 
 Beliefs:
   gatekeeper(gk).		/* we know who the gatekeeper is, for simplicity */
+  dealer(d).
   currentturn(1).   /* the first turn is for the agent in postion 1 */
+  
 
 Plans:
   @cardtable(enterAsNotary())	/* join the game as notary */
@@ -18,9 +20,9 @@ PC-rules:
     SetAssigned(POS, Y);	/* update belief about assigned sit */
     if B( POS = 4 ) then	/* if we believe we already assigned all the sits, then choose the dealer */
     { 
-      @cardtable(chooseDealer(), D);
-      SetDealer(D);
-      send(D, inform, dealer(D))
+      /*@cardtable(chooseDealer(), D);*/
+      /*SetDealer(D);*/
+      send(d, inform, dealer(d))
     }
   }
 
@@ -39,4 +41,3 @@ PC-rules:
       @cardtale(selectTrun(X + 1))
     }
   }
-

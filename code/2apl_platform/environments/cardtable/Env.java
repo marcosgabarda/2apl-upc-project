@@ -29,7 +29,7 @@ public class Env extends Environment
 {
 	private HashMap<String,Agent> agentmap = new HashMap<String,Agent>();
 
-	private int numberOfPlayers, numberOfNotaries, numberOfGatekeepers;
+	private int numberOfPlayers, numberOfNotaries, numberOfGatekeepers, numberOfDealers;
 	
 	// The default constructor
 	public Env()
@@ -57,6 +57,20 @@ public class Env extends Environment
 	    return wrapBoolean(true);
 	}
 	
+	public Term enterAsDealer(String sAgent) throws ExternalActionFailedException {
+	    Agent agent = getAgent(sAgent);
+	    writeToLog("Dealer sit: " +agent.getName());
+	    
+	    if(numberOfDealers>0)
+	      throw new ExternalActionFailedException("There is already a dealer at the table.");
+	    else
+	      numberOfDealers++;
+	    
+	    agent._type=3;
+	    
+	    return wrapBoolean(true);
+	}
+
 	public Term enterAsGatekeeper(String sAgent) throws ExternalActionFailedException {
 	    Agent agent = getAgent(sAgent);
 	    writeToLog("Gatekeeper in the system: " +agent.getName());

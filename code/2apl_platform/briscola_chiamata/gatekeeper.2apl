@@ -4,7 +4,8 @@ BeliefUpdates:
 
 Beliefs:
   notary(n).
-  assigned(POS, X) :- player(X).
+  dealer(d).
+  player(X) :- assigned(POS, X).
 
 Plans:
   @cardtable(enterAsGatekeeper())
@@ -15,7 +16,8 @@ PC-rules:
     @cardtable(sit(X), POS);
     SetAssigned(POS, X);
     send(X, inform, registered(POS, X));
-    send(n, inform, registered(POS, X))
+    send(n, inform, registered(POS, X));
+    send(d, inform, registered(POS, X))
   }
 
 PR-rules:
