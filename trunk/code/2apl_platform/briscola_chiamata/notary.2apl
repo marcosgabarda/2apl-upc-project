@@ -10,7 +10,7 @@ BeliefUpdates:
 Beliefs:
   gatekeeper(gk).		/* we know who the gatekeeper is, for simplicity */
   dealer(d).
-  currentturn(0).   /* the first turn is for the agent in postion 0 */
+  currentturn(-1).   /* the first turn is for the agent in postion 0 */
   
   getpoints(jack, X) :- X is 2
   getpoints(queen, X) :- X is 3
@@ -156,16 +156,17 @@ PC-rules:
   {
      B( assigned(0, P0));
      B( cardontable(S0, R0, P0) and getpoints(S0, X0));
-     
+     send(P0, inform, yourscore(X0));
      B( assigned(1, P1));
      B( cardontable(S1, R1, P1) and getpoints(S1, X1));
-     
+     send(P1, inform, yourscore(X1));
      B( assigned(2, P2));
      B( cardontable(S2, R2, P2) and getpoints(S2, X2));
-     
+     send(P2, inform, yourscore(X2));
      B( assigned(3, P3));
      B( cardontable(S3, R3, P3) and getpoints(S3, X3));
-     
+     send(P3, inform, yourscore(X3));
      B( assigned(4, P4));
-     B( cardontable(S4, R4, P4) and getpoints(S4, X4))
+     B( cardontable(S4, R4, P4) and getpoints(S4, X4));
+     send(P4, inform, yourscore(X4))
   }
