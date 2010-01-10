@@ -157,27 +157,27 @@ PC-rules:
   {
      B( assigned(0, P0));
      B( cardontable(S0, R0, P0));
-     B( getpoints(S0, X0));
+     B( getpoints(R0, X0));
      send(P0, inform, yourscore(X0));
      @cardtable(updateScore(P0, X0));
      B( assigned(1, P1));
      B( cardontable(S1, R1, P1));
-     B( getpoints(S1, X1));
+     B( getpoints(R1, X1));
      send(P1, inform, yourscore(X1));
      @cardtable(updateScore(P1, X1));
      B( assigned(2, P2));
      B( cardontable(S2, R2, P2));
-     B( getpoints(S2, X2));
+     B( getpoints(R2, X2));
      send(P2, inform, yourscore(X2));
      @cardtable(updateScore(P2, X2));
      B( assigned(3, P3));
      B( cardontable(S3, R3, P3));
-     B( getpoints(S3, X3));
+     B( getpoints(R3, X3));
      send(P3, inform, yourscore(X3));
      @cardtable(updateScore(P3, X3));
      B( assigned(4, P4));
      B( cardontable(S4, R4, P4));
-     B( getpoints(S4, X4));
+     B( getpoints(R4, X4));
      send(P4, inform, yourscore(X4));
      @cardtable(updateScore(P4, X4))
   }
