@@ -21,7 +21,7 @@ PG-rules:
     B( gethand(X, H, T) );
     B( assigned(To, P0) );
     send(P0, inform, givecards(H));
-    //@cardtable(cardDealt(H, P0));
+    @cardtable(handDealt(H, P0));
     dropgoal(deal(To));
     RemoveDeck(X);
     AddDeck(T);
