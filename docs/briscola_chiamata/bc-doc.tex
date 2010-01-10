@@ -45,7 +45,7 @@ Reactivity is an obvious requirement in any group game; when it is your turn to 
 
 The social factor comes from the fact that players have to interact with each other in order to advance the game. The bidding system each round of the game and the fact that teams are created without the agents knowing who they are partners with creates the necessity for communication between them in order to try and determine who this partner is. Having agents change status from partner to opponent between rounds makes a dynamic social multi agent system which is worth studying.
 
-The rest of the report is organized as follows. Section~\ref{sec:gamedescr} a description of the game. In the next sections we follow the Prometheus design methodology to create our system where the the System Specification phase is illustrated in Section~\ref{sec:sysspec}, the High-level (Architectural) Design in Section~\ref{sec:highdesign} and Detailed Design in Section~\ref{sec:detaildesign}. Finally, we display the built prototype in Section~\ref{sec:proto} and we conclude the paper in Section~\ref{sec:concl} with some remarks, related works and conclusions on the overall success of the prototype.
+The rest of the report is organized as follows. Section~\ref{sec:gamedescr} a description of the game. In the next sections we follow the Prometheus design methodology to create our system where the the System Specification phase is illustrated in Section~\ref{sec:sysspec}, the Architectural Design in Section~\ref{sec:highdesign} and Detailed Design in Section~\ref{sec:detaildesign}. Finally, we display the built prototype in Section~\ref{sec:proto} and we conclude the paper in Section~\ref{sec:concl} with some remarks, related works and conclusions on the overall success of the prototype.
 
 \section{Game Description}\label{sec:gamedescr}
 
@@ -136,7 +136,21 @@ The goal overview diagram is a directed acyclic graph of all goals in the system
   
 \subsection{System Roles Diagram}
 
-The next stage of the process is to group similar goals together into roles. Each role should be limited in scope, and be able to be described fully be 1-2 sentences. In a system roles diagram, we group different goals, percepts and actions under roles. This helps in further modularizing the system into functionality. The input is represented as a percept and the output as an action. Figure~\ref{fig:sysroles} shows our system roles diagram for the game. As stated, the description of each role can be given in a short sentence and they are quite obvious. The ``starting game role'' manages join requests, ``identify the dealer role'' identifies the dealer in the system, ``dealing role'' shuffle and deal cards, ``bidding role'' manage bids, ``declaring Briscola role'' is used to declare the briscola card, ``turn control role'' decides player's turn to play, ``playing role'' is used to play cards, ``team setting role'' try to infer team settings, ``counting points role'' counts points for each rounds, ``declare the winner role'' declares the winner team of the game, ``update score points'' updates the score table while ``release the player'' release the players from the system. 
+The next stage of the process is to group similar goals together into roles. Each role should be limited in scope, and be able to be described fully be 1-2 sentences. In a system roles diagram, we group different goals, percepts and actions under roles. This helps in further modularizing the system into functionality. The input is represented as a percept and the output as an action. Figure~\ref{fig:sysroles} shows our system roles diagram for the game. As stated, the description of each role can be given in a short sentence and they are quite obvious. Here follows the descriptions:
+\begin{itemize}
+  \item ``Starting game role'' manages the join requests
+  \item ``Identify the dealer role'' identifies who is the dealer in the game
+  \item ``Dealing role'' shuffle and deal cards to the players
+  \item ``Bidding role'' manage bids
+  \item ``Declaring Briscola role'' declares the Briscola card
+  \item ``Turn control role'' decides player's turn to play
+  \item ``Playing role'' play a strategy
+  \item ``Team setting role'' try to infer team settings
+  \item ``Counting points role'' counts points of each round
+  \item ``Declare the winner role'' declares the winner team of the game
+  \item ``Update score points'' updates the score board 
+  \item ``Release the player'' release the players from the game
+\end{itemize} 
 
 \begin{figure}[htp]
   \includegraphics[keepaspectratio,scale=0.4]{pdt/images/system_specification/system_roles.png}
@@ -144,13 +158,25 @@ The next stage of the process is to group similar goals together into roles. Eac
   \caption{System roles diagram}
 \end{figure}
 
-\section{High-level (Architectural) Design}\label{sec:highdesign}
+\section{Architectural Design}\label{sec:highdesign}
 
 In this phase, the agent types that will exist in the system are defined by combining roles, the overall structure of the system is described using a system overview diagram, and interaction protocols are used to capture the dynamics of the system in terms of legal message sequences.
 
 \subsection{Data Coupling Diagram}
 
-The roles that were formed in the last step of the previous phase are linked to data that has been identified as necessary for performing that role. In the data-coupling diagram you can see all roles and data types in the system. The following data types have been identified in the system: ``position'' that record the position of the player at the table that is useful to decide its turn, the ``deck'' that contains all the cards, the ``hand'' that represents the cards in hand of each player, the ``historic of bids'' that records the historic of bids, the ``historic of card played'' that analogously records the historic of card played in order to decide which card to play, the ``team information'' that is used to store beliefs about team settings, the ``points'' that is used to store the points of each round and finally the ``scoreboard'' that contains the all the times score of the games for each player. The data coupling diagram is provided in Figure~\ref{fig:datacoupl}.
+The roles that were formed in the last step of the previous phase are linked to data that has been identified as necessary for performing that role. In the data-coupling diagram you can see all roles and data types in the system. Here follows the list of the data types that have been identified in the system: 
+\begin{itemize}
+  \item ``Position'' that record the position of the player at the table that is useful to decide its turn
+  \item ``Deck'' that contains all the cards
+  \item ``Hand'' that represents the cards in hand of each player
+  \item ``Historic of bids'' that records the historic of bids
+  \item ``Historic of card played'' that analogously records the historic of card played in order to decide which card to play
+  \item ``Team information'' that is used to store beliefs about team settings
+  \item ``Points'' that is used to store the points of each round
+  \item ``Scoreboard'' that contains the all the times score of the games for each player. 
+\end{itemize}
+
+The data coupling diagram is provided in Figure~\ref{fig:datacoupl}.
 
 \begin{figure}[htp]
   \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/data_coupling.png}
@@ -160,7 +186,15 @@ The roles that were formed in the last step of the previous phase are linked to 
 
 \subsection{Agent-Role Grouping Diagram}
 
-In this diagram we group the roles into agent types. Decisions regarding how to group depend on role similarity, as well as analysis of data usage. The agent-role coupling diagram shows the group of roles that come under an agent. The ``dealer'' agent type represents the dealer that is in charge of dealing cards. The ``gatekeeper'' agent type represents the agent that let the players come in and out the system. The ``non-player charcter'' agent types represents the actual players in the system. Finally the ``notary'' agent type represents the agent in charge of controlling the game. Figure~\ref{fig:agentrole} provides the agent-role grouping diagram for our game.
+In this diagram we group the roles into agent types. Decisions regarding how to group depend on role similarity, as well as analysis of data usage. The agent-role coupling diagram shows the group of roles that come under an agent. Here follows the list of the agent types that we have indentified:
+\begin{itemize}
+  \item ``Dealer'' that is the that represents the dealer that is in charge of dealing cards
+  \item ``Gatekeeper'' that is the that represents the agent that let the players come in and out the system
+  \item ``Non-player charcter'' that is the that represents the actual players in the system
+  \item ``Notary'' that is the that agent type represents the agent in charge of controlling the game
+\end{itemize}
+
+Figure~\ref{fig:agentrole} provides the agent-role grouping diagram for our game.
 
 \begin{figure}[htp]
   \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/aget-role_grouping.png}
@@ -226,25 +260,25 @@ The capability overview diagram allows you to specify the internals of a capabil
   \caption{Capability overview diagram for capabilities of the dealer agent}
 \end{figure}
 \begin{figure}[htp]
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/turn_selection_capability_overview_diagram.png}
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/end_the_game_capability_overview_diagram.png}
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/start_dealing_capability_overview_diagram.png}
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/control_bidding_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/turn_selection_capability_overview_diagram.png}\\
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/end_the_game_capability_overview_diagram.png}\\
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/start_dealing_capability_overview_diagram.png}\\
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/control_bidding_capability_overview_diagram.png}\\
   \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/count_points_capability_overview_diagram.png}
   \label{fig:notary-cap}
   \caption{Capability overview diagram for capabilities of the notary agent}
 \end{figure}
 \begin{figure}[htp]
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/release_player_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/release_player_capability_overview_diagram.png}\\
   \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/join_players_capability_overview_diagram.png}
   \label{fig:notary-cap}
   \caption{Capability overview diagram for capabilities of the gatekeeper agent}
 \end{figure}
 \begin{figure}[htp]
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/receive_a_hand_capability_overview_diagram.png}
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/bidding_capability_overview_diagram.png}
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/declare_briscola_capability_overview_diagram.png}
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/playing_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/receive_a_hand_capability_overview_diagram.png}\\
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/bidding_capability_overview_diagram.png}\\
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/declare_briscola_capability_overview_diagram.png}\\
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/playing_capability_overview_diagram.png}\\
   \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/join_to_game_capability_overview_diagram.png}
   \label{fig:non-player-cap}
   \caption{Capability overview diagram for capabilities of the non-player character agent}
@@ -280,9 +314,9 @@ The JADE platform tools and some of 2APL tools were certainly helpful from begin
 
 The negative aspects of 2APL are few, but certainly relevant. Firstly it is clearly a tool designed primarily for research and not for industry development. The documentation for 2APL is still relatively vague and requires some updating, while the examples given are few and sadly not fully detailed. The environment and the agents we built ware done by scanning the code of some of the Java classes of an example and thus we lacked the true ability to implement a full application (this was never our intention, but knowing that implementing a fully operational high scale piece of software would be made harder due to the poor support is worth mentioning).
 
-Even though declarative programming does give us a very powerful logic system, it does lack library support.Prolog lacks computational tools to provide agents with the ability to compute things on their own (in its current state the designer is forced to have the environment calculate it for the agent, instead of allowing the agent to encapsulate the calculation method in its own code). Finally, even though it was previously mentioned, the 2APL parser was so unhelpful that it barely provided us with any useful information. Clearer instructions or error messages would be necessary if any serious development was to be made in this language.
+Even though declarative programming does give us a very powerful logic system, it does lack to provide agents with the ability to compute things on their own (in its current state the designer is forced to have the environment calculate it for the agent, instead of allowing the agent to encapsulate the calculation method in its own code). Finally, even though it was previously mentioned, the 2APL parser was so unhelpful that it barely provided us with any useful information. Clearer instructions or error messages would be necessary if any serious development was to be made in this language.
 
-So even though we praised 2APL for some things and despised it for others, as a whole we were pleased to develop with 2APL and do believe that with more work it can become the "go to" language of multiagent systems... at least from a research point of view.
+So even though we praised 2APL for some things and despised it for others, as a whole we were pleased to develop with 2APL and do believe that with more work it can become the ``go to'' language of multiagent systems, at least from a research point of view.
 
 
 \section{Bibliography}
