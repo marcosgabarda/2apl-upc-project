@@ -2,6 +2,7 @@ package cardtable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.Integer;
 
 
 
@@ -10,14 +11,19 @@ public class Table extends JFrame{
     private JPanel leftDisplayPane;
     private JPanel[] playersPane, cardsPane;
 
-    private JLayeredPane layeredTablePane;
+    private JLayeredPane layeredPane;
     private JSplitPane VerticalSplitPane;
     private JScrollPane GameInfo;
     private JSplitPane HorizontalSplitPlane;
     private JTextArea infoTextArea;
+    private int round;
+    private Hand[] hands;
 
     public Table( ){
 	super( "Briscola Chiamata" );
+	round = 0;
+	hands = new Hand[5];
+
 	leftDisplayPane = new JPanel(new GridBagLayout());
 	playersPane = new JPanel[5];
 	cardsPane = new JPanel[5];
@@ -37,12 +43,8 @@ public class Table extends JFrame{
 
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	layeredTablePane = new JLayeredPane();
+	layeredPane = new JLayeredPane();
 	Point origin = new Point(10, 20);
-	Color[] layerColors = { Color.yellow, Color.magenta,
-				Color.cyan,   Color.red,
-				Color.green };
-
 	int offset = 35;
 	for (int i = 0; i < 5; i++) {
 	  JLabel label = new JLabel();
@@ -58,20 +60,33 @@ public class Table extends JFrame{
  	  label.setBorder(BorderFactory.createLineBorder(Color.black));
  	  label.setBounds(origin.x, origin.y, 73, 97);
 
-	  layeredTablePane.add(label, new Integer(i));
+	  layeredPane.add(label, new Integer(i));
 	}
+	JLabel label = new JLabel("Player : -");
+	origin.x = 73;
+	origin.y += offset+97;
+	label.setBounds(origin.x, origin.y, 150, 20);
+	layeredPane.add(label, 5);
+	label = new JLabel("Round : -");
+	origin.x += 150;
+	origin.y += 0;
+	label.setBounds(origin.x, origin.y, 150, 20);
+	layeredPane.add(label, 6);
+	label = new JLabel("Briscola : -");
+	origin.x = 73;
+	origin.y += 40;
+	label.setBounds(origin.x, origin.y, 300, 20);
+	layeredPane.add(label, 7);
 	
 	infoTextArea = new JTextArea(5,00);
 	infoTextArea.setEditable(false);
 	GameInfo = new JScrollPane(infoTextArea);
 
-	VerticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, layeredTablePane,GameInfo);
-	//VerticalSplitPane.setPreferredSize(new Dimension(150,50));
+	VerticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, layeredPane,GameInfo);
 	VerticalSplitPane.setOneTouchExpandable(false);
 	VerticalSplitPane.setDividerLocation(450);
        
 	HorizontalSplitPlane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftDisplayPane,VerticalSplitPane );
-	//HorizontalSplitPlane.setPreferredSize(new Dimension(150,150));
 	HorizontalSplitPlane.setOneTouchExpandable(false);
 	HorizontalSplitPlane.setDividerLocation(900);
 
@@ -80,19 +95,6 @@ public class Table extends JFrame{
 	setSize( 1280, 768 );
         setVisible( true ); 
     }
-
-        public void displayHand(String name, int position, Card[] cards) {
-	  for(int i=0; i<8; i++) {
-	    cardsPane[position].add(new JLabel(cards[i].getCardImage()), i);	    
-	  }
-	  setVisible( true );
-  	}
-
-	public void playedCard(String name, int position, Card card) {
-	  JLabel label = (JLabel) layeredTablePane.getComponent(position);
-	  label.setIcon(card.getCardImage());
-	  setVisible( true );
-	}
 
 	public void addPlayer(String name, int position, int score, int bid) {
 	  Integer scoreInt = new Integer(score);
@@ -136,7 +138,50 @@ public class Table extends JFrame{
 
 	  setVisible( true );
     }
-      
+
+	public void displayHand(String name, int position, Hand hand) {
+	  hands[position] = hand;
+	  for(int i=0; i<8; i++) {
+	    cardsPane[position].add(new JLabel(hand.getCard(i).getCardImage()), i);	    
+	  }
+	  setVisible( true );
+  	}
+
+	public void playedCard(String name, int position, Card card) {
+	  java.net.URL imgURL = getClass().getResource("cards/b.gif");
+	  ImageIcon cardBack = new ImageIcon(imgURL);
+
+	  int pos = hands[position].findCard(card);
+	  JLabel imgLab = (JLabel) cardsPane[position].getComponent(pos);
+	  imgLab.setIcon(cardBack);
+
+	  JLabel label = (JLabel) layeredPane.getComponent(position);
+	  label.setIcon(card.getCardImage());
+	  JLabel player = (JLabel) layeredPane.getComponent(5);
+	  player.setText("Player : "+name);
+	  if(round==0) {
+	    JLabel roundLab = (JLabel) layeredPane.getComponent(6);
+	    roundLab.setText("Round : 1");
+	    round++;
+	  }
+	  setVisible( true );
+	}     
+
+      public void briscolaDeclared(String name, int position, Card card) {
+	JLabel briscolaLab = (JLabel) layeredPane.getComponent(7);
+	briscolaLab.setText("Briscola : "+card.getRank().getName()+" of "+card.getSuit().getName()+" by "+name);
+	JLabel declarer = (JLabel) playersPane[position].getComponent(0);
+	declarer.setForeground(Color.blue);
+	for(int i=0;i<5;i++) {
+	  if(hands[i].findCard(card)!=-1) {
+	    int pos = hands[i].findCard(card);
+	    JLabel teammate = (JLabel) playersPane[i].getComponent(0);
+	    teammate.setForeground(Color.blue);
+	  }
+	}
+	setVisible( true );
+      }
+ 
       public void updateScore(String name, int position, int score) {
 	Integer scoreInt = new Integer(score);
 	JLabel scoreLab = (JLabel) playersPane[position].getComponent(3);
@@ -148,6 +193,12 @@ public class Table extends JFrame{
 	Integer pointsInt = new Integer(points);
 	JLabel pointsLab = (JLabel) playersPane[position].getComponent(2);
 	pointsLab.setText("Points: "+pointsInt.toString());
+	JLabel roundLab = (JLabel) layeredPane.getComponent(6);
+	round++;
+	if(round<9) {
+	  Integer roundInt = new Integer(round);
+	  roundLab.setText("Round : "+roundInt.toString());
+	}
 	setVisible( true );
       }
 

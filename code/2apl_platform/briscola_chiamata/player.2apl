@@ -186,7 +186,7 @@ PC-rules:
     // --- Declare Briscola
     //B( getcard(H, 3, Briscola) ); FIXME this line do not work
     send(n, inform, declarebriscola([clubs, ace]));
-    //@cardtable(briscolaDeclared(clubs,ace));
+    @cardtable(briscolaDeclared(clubs,ace));
     if B( iscard(H, [clubs, ace]) ) then
     {
       print("I go alone!");
