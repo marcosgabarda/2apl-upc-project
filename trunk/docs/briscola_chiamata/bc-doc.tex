@@ -71,9 +71,21 @@ The analysis overview diagram is designed to show the interactions between the s
   \caption{Analysis overview diagram}
 \end{figure}
 
-The actors are all the people or external systems associated with the system that in our game we can model just as the User of the system. The scenarios are the processes which the system uses to handle the percepts and produce the actions. The percepts are all the types information which come into the system from the environment. The actions are everything that is sent from the system to the environment.
+The actors are the people or all external systems associated with the system that  we can model in our game as the User of the system. The scenarios are the processes which the system uses to handle the percepts and produce the actions. The percepts are all the types information which come into the system from the environment. The actions is everything that is sent from the system to the environment.
 
-Here follows a brief description of each of them: the ``start the game scenario'' is in charge of receveing join requests from users and accept and subscribe users or queue their requests. Once there are 5 players registered in the system, the ``dealing scenario'' is in charge of choosing the dealer, shuffle the deck and deal cards to all subscribed the players in the system. Once the dealing is over, the ``bidding scenario'' is in charge of let players bidding in turn. The player who wins the bid, must declare the Briscola card. If nobody bids, then the game has to be restarted. If the bid succedds, the Briscola card is declared by the winner and then the ``play the game scenario'' comes in to let the players start playing. The teams setting is obiousvly unknown to all the players until the Briscola card is played. The players have to update their beliefs about teams setting each time a card is played. Of course, cheating is part of the game. Communication that is used to model sign exchange among players is allowed to exchange information about players and cards. After each round, points are counted. Finally, the ``end the game scenario'' is in charge of declaring the winner team, update the score of each player according to the scoring rules and release the player from the system. 
+Here follows a brief description of each of them: 
+\begin{itemize}
+\item
+ "Start the game" Scenario' is in charge of receveing join requests from users and accept and subscribe users or queue their requests. Once there are 5 players registered in the system.
+\item
+Dealing scenario is in charge of choosing the dealer, shuffle the deck and deal cards to all subscribed the players in the system. 
+\item
+Bidding scenario takes place once the dealing is over. It is in charge of giving players a chance to bid. The player who wins the bid, must declare the Briscola card. If nobody bids, then the game has to be restarted. If the bidding succeeds, the Briscola card is declared by the winner of the bid.
+\item
+"Play the game" scenario occurs once all bids are over and the game finally starts. The team distributions are obviously unknown to all players until the Briscola card is played. The players have to update their beliefs about the team distributions each time a card is played. Of course, cheating is part of the game. Communication that is used to model sign exchange among players is allowed to exchange information about players and cards. After each round, points are counted. 
+\item
+"End of the game" scenario is in charge of declaring the winner team, update the score of each player according to the scoring rules and release the player from the system. 
+\end{itemize}
 
 Finally, percepts and actions in the system are summarized in Table~\ref{table:inout}.
 
