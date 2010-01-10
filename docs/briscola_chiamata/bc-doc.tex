@@ -75,16 +75,11 @@ The actors are the people or all external systems associated with the system tha
 
 Here follows a brief description of each of them: 
 \begin{itemize}
-\item
- "Start the game" Scenario' is in charge of receveing join requests from users and accept and subscribe users or queue their requests. Once there are 5 players registered in the system.
-\item
-Dealing scenario is in charge of choosing the dealer, shuffle the deck and deal cards to all subscribed the players in the system. 
-\item
-Bidding scenario takes place once the dealing is over. It is in charge of giving players a chance to bid. The player who wins the bid, must declare the Briscola card. If nobody bids, then the game has to be restarted. If the bidding succeeds, the Briscola card is declared by the winner of the bid.
-\item
-"Play the game" scenario occurs once all bids are over and the game finally starts. The team distributions are obviously unknown to all players until the Briscola card is played. The players have to update their beliefs about the team distributions each time a card is played. Of course, cheating is part of the game. Communication that is used to model sign exchange among players is allowed to exchange information about players and cards. After each round, points are counted. 
-\item
-"End of the game" scenario is in charge of declaring the winner team, update the score of each player according to the scoring rules and release the player from the system. 
+  \item ``Start the game Scenario'' is in charge of receveing join requests from users and accept and subscribe users or queue their requests. Once there are 5 players registered in the system.
+  \item ``Dealing scenario'' is in charge of choosing the dealer, shuffle the deck and deal cards to all subscribed the players in the system. 
+  \item ``Bidding scenario'' takes place once the dealing is over. It is in charge of giving players a chance to bid. The player who wins the bid, must declare the Briscola card. If nobody bids, then the game has to be restarted. If the bidding succeeds, the Briscola card is declared by the winner of the bid.
+  \item ``Play the game'' scenario occurs once all bids are over and the game finally starts. The team distributions are obviously unknown to all players until the Briscola card is played. The players have to update their beliefs about the team distributions each time a card is played. Of course, cheating is part of the game. Communication that is used to model sign exchange among players is allowed to exchange information about players and cards. After each round, points are counted. 
+  \item ``End of the game'' scenario is in charge of declaring the winner team, update the score of each player according to the scoring rules and release the player from the system. 
 \end{itemize}
 
 Finally, percepts and actions in the system are summarized in Table~\ref{table:inout}.
@@ -165,31 +160,31 @@ The roles that were formed in the last step of the previous phase are linked to 
 
 \subsection{Agent-Role Grouping Diagram}
 
-In this diagram we group the roles into agent types. Decisions regarding how to group depend on role similarity, as well as analysis of data usage. The agent-role coupling diagram shows the group of roles that come under an agent.
+In this diagram we group the roles into agent types. Decisions regarding how to group depend on role similarity, as well as analysis of data usage. The agent-role coupling diagram shows the group of roles that come under an agent. The ``dealer'' agent type represents the dealer that is in charge of dealing cards. The ``gatekeeper'' agent type represents the agent that let the players come in and out the system. The ``non-player charcter'' agent types represents the actual players in the system. Finally the ``notary'' agent type represents the agent in charge of controlling the game. Figure~\ref{fig:agentrole} provides the agent-role grouping diagram for our game.
 
 \begin{figure}[htp]
   \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/aget-role_grouping.png}
-  \label{fig:sysroles}
+  \label{fig:agentrole}
   \caption{Agent-role grouping diagram}
 \end{figure}
 
 \subsection{Agent Acquaintance Diagram}
 
-In the agent acquaintance diagram you can see all agents within the system and which agents interact.
+In the agent acquaintance diagram you can see all agents within the system and which agents interact. The agent acquaintance diagram is provided in Figure~\ref{fig:agentacq}. 
 
 \begin{figure}[htp]
   \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/agent_acquaintance.png}
-  \label{fig:sysroles}
+  \label{fig:agentacq}
   \caption{Agent acquaintance diagram}
 \end{figure}
 
-\subsection{System overview Diagram}
+\subsection{System Overview Diagram}
 
-In the system overview diagram you can see all agents in the system, along with their interface and interactions. This diagram is the central diagram of the entire system design.
+In the system overview diagram you can see all agents in the system, along with their interface and interactions. The system overview diagram is provided in Figure~\ref{fig:sysovervw}.
 
 \begin{figure}[htp]
   \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/system_overview.png}
-  \label{fig:sysroles}
+  \label{fig:sysovervw}
   \caption{System overview diagram}
 \end{figure}
 
@@ -198,24 +193,89 @@ In the system overview diagram you can see all agents in the system, along with 
 In this phase, the internals of each agent are developed in terms of capabilities, events, plans and data. Detailed Design is done at the level of individual agents.
 
 \subsection{Agent Overview Diagram}
-The agent overview diagram shows the internals of an agent. There is one agent overview diagram for every agent in the system. In the detailed design, much finer details of the system are established. The messages used to communicate between the agents are decided upon. If the roles within an agent grow very large, they are grouped into capabilities. As in the system overview diagram entities can be inserted or removed and edges can be reated or deleted.
+The agent overview diagram shows the internals of an agent. There is one agent overview diagram for every agent in the system: the dealer, the gatekeeper, the 5 non-player character and the notary. Diagrams for each of them are provided in Figure~\ref{fig:dealer}, Figure~\ref{fig:notary}, Figure~\ref{gatekeeper} and Figure~\ref{fig:nonplay-char}.
+
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/dealer_overview_diagram.png}
+  \label{fig:dealer}
+  \caption{Agent overview diagram for the dealer agent}
+\end{figure}
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/notary_overview_diagram.png}
+  \label{fig:notary}
+  \caption{Agent overview diagram for the notary agent}
+\end{figure}
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/gatekeeper_overview_diagram.png}
+  \label{fig:gatekeeper}
+  \caption{Agent overview diagram for the gatekeeper agent}
+\end{figure}
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/non-player_character_overview_diagram.png}
+  \label{fig:nonplay-char}
+  \caption{Agent overview diagram for the non-player character agent}
+\end{figure}
+  
 
 \subsection{Capability Overview Diagram}
-In the capability overview diagram you can see the direct internal of a capability. This diagram allows you to specify the internals of a capability in terms of plans, or sub-capabilities and messages between them. Data internal to the capability can also be specified.
+The capability overview diagram allows you to specify the internals of a capability in terms of plans, or sub-capabilities and messages between them. Figure~\ref{fig:dealing-cap} provides the capabilities for the dealer agent, Figure~\ref{fig:notary-cap} for the notary agent, Figure~\ref{fig:gatekeeper-cap} for the gatekeeper agent and Figure~\ref{fig:non-player-cap} for the non-player character agent, 
+
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/dealing_capability_overview_diagram.png}
+  \label{fig:dealer-cap}
+  \caption{Capability overview diagram for capabilities of the dealer agent}
+\end{figure}
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/turn_selection_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/end_the_game_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/start_dealing_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/control_bidding_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/count_points_capability_overview_diagram.png}
+  \label{fig:notary-cap}
+  \caption{Capability overview diagram for capabilities of the notary agent}
+\end{figure}
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/release_player_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/join_players_capability_overview_diagram.png}
+  \label{fig:notary-cap}
+  \caption{Capability overview diagram for capabilities of the gatekeeper agent}
+\end{figure}
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/receive_a_hand_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/bidding_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/declare_briscola_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/playing_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/join_to_game_capability_overview_diagram.png}
+  \label{fig:non-player-cap}
+  \caption{Capability overview diagram for capabilities of the non-player character agent}
+\end{figure}
 
 \section{Prototype}\label{sec:proto} 
 
-Description. Excerpt from the code.
+- prototipe developed following the Prometheus design
+- easy way to implement design solutions into 2APL agents
+- tring to use the maximun features and bondaries of 2APL
+- environment done in java, with gui to show the game (but not actually necessary)
+- posibility of add an human player in the future
+- other agents (that imports player.2apl) can add own strategies
+- limited use of Prolog in the belief base. probaly it can be improve if agents could add extra prolog libraries
+- bad parser of 2APL language, the syntactical error are not clear at all
+- add screenshot and sample of code (you dedice where to put, then ill add em)
+
 
 \section{Conclusion}\label{sec:concl} 
 
-What's wrong with 2APL?
-
-No security mechanisms, No documentation like a manual or of examples (only short example provided with the platform). Not all the constructs available are documented (e.g. random() or print())
-
-If an agent requires an action not related with changing its mental state, it has to be done through the environment. It would be nice to have agents in which part of its executing plan will consist of running some classification algorithm or some numerical method which is only owned by the agent and so it could be encapsulated in its program.
-
-The platform is well done, but it's still a tool for research
+- declarative way of programming its better to develop agents, you only have to care about "what" the agents have to do, and not "how" (conceptual division)
+- problems if you aren't confortable with declarative languages but it's ok the price to pay
+- the framework can be improved, adding more debug features (The platform is well done, but it's still a tool for research)
+- in global overview, we can develop agents solutions fast
+- we can connect with other JADE platform, and this is good
+- bad parser of 2APL language, the syntactical error are not clear at all
+- lib can be added (e.g. No security mechanisms)
+- No documentation like a manual or of examples (only short example provided with the platform). 
+- Not all the constructs available are documented (e.g. random() or print())
+- If an agent requires an action not related with changing its mental state, it has to be done through the environment. It would be nice to have agents in which part of its executing plan will consist of running some classification algorithm or some numerical method which is only owned by the agent and so it could be encapsulated in its program.
+- Anybody can write its onw player agent!
 
 \section{Bibliography}
 \nocite{*}
