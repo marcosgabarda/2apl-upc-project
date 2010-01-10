@@ -10,7 +10,7 @@ public class Table extends JFrame{
     private JPanel leftDisplayPane;
     private JPanel[] playersPane, cardsPane;
 
-    private JLayeredPane TablePane;
+    private JLayeredPane layeredTablePane;
     private JSplitPane VerticalSplitPane;
     private JScrollPane GameInfo;
     private JSplitPane HorizontalSplitPlane;
@@ -31,27 +31,35 @@ public class Table extends JFrame{
 
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-	TablePane = new JLayeredPane();
+	layeredTablePane = new JLayeredPane();
 	Point origin = new Point(50, 20);
 	Color[] layerColors = { Color.yellow, Color.magenta,
 				Color.cyan,   Color.red,
 				Color.green };
-	//This is the offset for computing the origin for the next label.
+
 	int offset = 35;
-		//Add several overlapping, colored labels to the layered pane
-	//using absolute positioning/sizing.
 	for (int i = 0; i < 5; i++) {
-	  JLabel label = createColoredLabel("card", layerColors[i], origin);
-		  TablePane.add(label, new Integer(i));
+	  JLabel label = new JLabel();
+	  
 	  origin.x += offset;
 	  origin.y += offset;
+
+	  label.setVerticalAlignment(JLabel.TOP);
+	  label.setHorizontalAlignment(JLabel.CENTER);
+	  label.setOpaque(true);
+	  label.setBackground(Color.red);
+	  label.setForeground(Color.black);
+	  label.setBorder(BorderFactory.createLineBorder(Color.black));
+	  label.setBounds(origin.x, origin.y, 140, 140);
+
+	  layeredTablePane.add(label, new Integer(i));
 	}
 	
 	infoTextArea = new JTextArea(5,00);
 	infoTextArea.setEditable(false);
 	GameInfo = new JScrollPane(infoTextArea);
 
-	VerticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, TablePane,GameInfo);
+	VerticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, layeredTablePane,GameInfo);
 	VerticalSplitPane.setPreferredSize(new Dimension(150,150));
 	VerticalSplitPane.setOneTouchExpandable(false);
 	VerticalSplitPane.setDividerLocation(400);
@@ -65,22 +73,13 @@ public class Table extends JFrame{
 	setVisible( true );
     }
 
-        private JLabel createColoredLabel(String text, Color color, Point origin) {
-	  JLabel label = new JLabel(text);
-	  label.setVerticalAlignment(JLabel.TOP);
-	  label.setHorizontalAlignment(JLabel.CENTER);
-	  label.setOpaque(true);
-	  label.setBackground(color);
-	  label.setForeground(Color.black);
-	  label.setBorder(BorderFactory.createLineBorder(Color.black));
-	  label.setBounds(origin.x, origin.y, 140, 140);
-  
-	  pack();
-	  setSize( 1024, 768 );
-	  setVisible( true );
-  
-	  return label;
-	}
+        public void playCard(String name, int position) {
+
+	  java.net.URL imgURL = getClass().getResource("cards/b.gif");
+	  ImageIcon cardBack = new ImageIcon(imgURL);
+
+	  cardsPane[position].add(new JLabel(cardBack), position);
+  	}
 
 
 	public void addPlayer(String name, int position, int score, int bid) {
@@ -90,33 +89,30 @@ public class Table extends JFrame{
 	  java.net.URL imgURL = getClass().getResource("cards/b.gif");
 	  ImageIcon cardBack = new ImageIcon(imgURL);
 	  
-
 	  playersPane[position].add(new JLabel("Player: "+name));
 	  playersPane[position].add(new JLabel("Bid: "+bidInt.toString()));
 	  playersPane[position].add(new JLabel(new String("Points: points here")));
 	  playersPane[position].add(new JLabel("Score: "+scoreInt.toString()));
 	
-	  cardsPane[position].add(new JButton(cardBack));
-	  cardsPane[position].add(new JButton(cardBack));
-	  cardsPane[position].add(new JButton(cardBack));
-	  cardsPane[position].add(new JButton(cardBack));
-	  cardsPane[position].add(new JButton(cardBack));
-	  cardsPane[position].add(new JButton(cardBack));
-	  cardsPane[position].add(new JButton(cardBack));
-	  cardsPane[position].add(new JButton(cardBack));
-	  setVisible(true);
-	  repaint();
+	  cardsPane[position].add(new JLabel(cardBack));
+	  cardsPane[position].add(new JLabel(cardBack));
+	  cardsPane[position].add(new JLabel(cardBack));
+	  cardsPane[position].add(new JLabel(cardBack));
+	  cardsPane[position].add(new JLabel(cardBack));
+	  cardsPane[position].add(new JLabel(cardBack));
+	  cardsPane[position].add(new JLabel(cardBack));
+	  cardsPane[position].add(new JLabel(cardBack));
     }
       
       public void updateScore(String name, int position, int score) {
 	Integer scoreInt = new Integer(score);
-	JLabel scoreLab = (JLabel) cardsPane[position].getComponent(4);
+	JLabel scoreLab = (JLabel) playersPane[position].getComponent(4);
 	scoreLab.setText(scoreInt.toString());
       }
 
       public void updateBid(String name, int position, int bid) {
 	Integer bidInt = new Integer(bid);
-	JLabel bidLab = (JLabel) cardsPane[position].getComponent(2);
+	JLabel bidLab = (JLabel) playersPane[position].getComponent(2);
 	bidLab.setText(bidInt.toString());
       }
 
