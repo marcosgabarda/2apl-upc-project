@@ -17,7 +17,8 @@ public class Deck {
 		    Iterator rankIterator = Rank.VALUES.iterator();
 		    while ( rankIterator.hasNext() ) {
 		        Rank rank = (Rank) rankIterator.next();
-		        ImageIcon cardImage = new ImageIcon( "cards/" + Card.getFilename( suit, rank ) );
+			java.net.URL imgURL = getClass().getResource("cards/" + Card.getFilename( suit, rank ));
+		        ImageIcon cardImage = new ImageIcon(imgURL);
 		        Card card = new Card( suit, rank, cardImage );
 		        addCard( card );
 		    }
@@ -51,5 +52,15 @@ public class Deck {
   public List getDeck() {
       return deck;
    }
+
+  public Card getCard(String suit, String rank) {
+      Iterator it = deck.iterator();
+      while ( it.hasNext() ) {
+	Card card = (Card) it.next();
+	if(card.getSuit().getName().toLowerCase().equals(suit) && card.getRank().getName().toLowerCase().equals(rank))
+	  return card;
+      }
+      return null;
+  }
 
 }
