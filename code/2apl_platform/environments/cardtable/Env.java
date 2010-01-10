@@ -164,7 +164,8 @@ public class Env extends Environment
 	public Term playCard(String sAgent, APLIdent suit, APLIdent rank) throws ExternalActionFailedException {
 	      Agent agent = getAgent(sAgent); 
 	      notifyEvent("cardPlayed", suit, rank, agent);
-	      //table.playCard(agent.getName(), agent._position);
+	      Card played_card = deck.getCard(suit.toString(), rank.toString());
+	      table.playedCard(agent.getName(), agent._position, played_card);
 	      return wrapBoolean(true);
 	}
 
