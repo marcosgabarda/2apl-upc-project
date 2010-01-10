@@ -164,6 +164,7 @@ public class Env extends Environment
 	public Term playCard(String sAgent, APLIdent suit, APLIdent rank) throws ExternalActionFailedException {
 	      Agent agent = getAgent(sAgent); 
 	      notifyEvent("cardPlayed", suit, rank, agent);
+	      table.playCard(agent.getName(), agent._position);
 	      return wrapBoolean(true);
 	}
 
@@ -177,7 +178,7 @@ public class Env extends Environment
 
 	public Term updateBid(String sAgent, APLNum bid) throws ExternalActionFailedException {
 	      Agent agent = getAgent(sAgent);
-	      table.updateScore(agent.getName(), agent._position, bid.toInt());
+	      table.updateBid(agent.getName(), agent._position, bid.toInt());
 	      return wrapBoolean(true);
 	}
 
@@ -386,7 +387,6 @@ public class Env extends Environment
 			{
 				//try {Thread.sleep(500);} catch(Exception e) {}
 				table.doLayout();
-				table.repaint();
 				
 				/*if (!m_window.isVisible())
 				{
