@@ -34,38 +34,12 @@ Universitat Polit\`ecnica de Catalunya}
 
 \section{Introduction}\label{sec:intro}
 
-2-APL stands for Abstract Agent Programming Language developed at the University of Utrecht as an academic tool for developing intelligent multi-agent systems.
+2-APL stands for Abstract Agent Programming Language , and is developed at the University of Utrecht as an academic tool for developing intelligent multi-agent systems. With its unique feature of integrating a declarative and an imperative style programming and the ability to use the JADE platform, 2APL is a resourceful environment to program in.
 
-Give it a short a introduction to the paper.
-....
+In a previous Paper we described the features of 2APL, along with a more formal description of the language. Its tools were presented and a few examples were showcased to see some agents in action.The aim of this Paper is to present our own prototype of a 2APL multiagent system to model the card game of Briscola Chiamata. In particular, we present in section 2 a description of the game . In the next sections we follow the Prometheus design methodology to create our system. We display the built prototype in Section 6 and w e conclude the paper in section 7 with some remarks, related works and conclusions on the overall success of the prototype.
 
-Why is suitable for a Multi-Agent System?
+There are hundreds of different card games, each with completely different approaches at building agents to play them. We selected Briscola Chiamata for the unique features of this game. Fistly having more computational power gives you no real advantage, so an agent being succesful will be thanks to its behaviour and its tactic and not thanks to its CPU. From a multiagent system point of view, the fact that partners in the game are unassigned and vary during the game adds a social problem for the agents to deal with : How do I recognise my partner?. Finally with the bidding system of the game, an agent also has the choice of risking more or less in a particular round. These uncertainties are what attracted us to this game and the reason why we decided to build a protoype in 2APL.
 
-Put the following points in a discorsive form.
-
-\begin{itemize}
-  \item Uncertainity (nobody knows who is actually its partner)
-  \item Sociality (its needed in order to discover partners/cheat opponents)
-  \item Coordination is needed
-  \begin{itemize}
-    \item Cooperation inside teams needed once partners are discovered
-    \item Competition between teams needed once partners are discovered
-  \end{itemize}
-  \item Trust/Reputation models needed 
-  \item Main agent properties are satisfied
-  \begin{itemize}
-    \item Autonomy (players are autonomous, they plan alone once there are at least 5 players)
-    \item Flexibility
-    \item Reactivity (players has to play when its their turn)
-    \item Proactivity (players can decide if they want to play even if it's not their turn, players can decide to start cheating other players by sending them messages)
-    \item Social (players have to interact with each others in order to discover their partners)
-  \end{itemize}
-\end{itemize}
-
-Describe the methodoly used:
- The Prometheus methodology involves 3 phases: System Specification, High-level (Architectural) Design and Detailed Design
-
-The rest of the report is organized as follows...
 
 \section{Game Description}
 
