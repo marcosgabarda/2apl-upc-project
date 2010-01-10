@@ -177,6 +177,12 @@ public class Env extends Environment
 	      return wrapBoolean(true);
 	}
 
+	public Term updatePoints(String sAgent, APLNum points) throws ExternalActionFailedException {
+	      Agent agent = getAgent(sAgent);
+	      table.updateBid(agent.getName(), agent._position, points.toInt());
+	      return wrapBoolean(true);
+	}
+
 	public Term updateBid(String sAgent, APLNum bid) throws ExternalActionFailedException {
 	      Agent agent = getAgent(sAgent);
 	      table.updateBid(agent.getName(), agent._position, bid.toInt());

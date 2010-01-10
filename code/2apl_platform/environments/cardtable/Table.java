@@ -144,6 +144,13 @@ public class Table extends JFrame{
 	setVisible( true );
       }
 
+      public void updatePoints(String name, int position, int points) {
+	Integer pointsInt = new Integer(points);
+	JLabel pointsLab = (JLabel) playersPane[position].getComponent(2);
+	pointsLab.setText("Points: "+pointsInt.toString());
+	setVisible( true );
+      }
+
       public void updateBid(String name, int position, int bid) {
 	Integer bidInt = new Integer(bid);
 	JLabel bidLab = (JLabel) playersPane[position].getComponent(1);
