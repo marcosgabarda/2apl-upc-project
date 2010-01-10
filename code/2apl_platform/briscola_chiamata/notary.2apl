@@ -6,6 +6,8 @@ BeliefUpdates:
   { currentturn(X) }  RemoveTrun(X)  { not currentturn(X) }
   { true }  PlayerPass(X)  { playerpass(X) }
   { true }  AddCardPlayed(S, R, X) { cardontable(S, R, X) } 
+  { true }  AddBriscola(S, R) { briscola(S, R) } 
+  { true }  RemoveCardPlayed(S, R, X) { not cardontable(S, R, X) } 
 
 Beliefs:
   gatekeeper(gk).		/* we know who the gatekeeper is, for simplicity */
@@ -18,6 +20,18 @@ Beliefs:
   getpoints(three, X) :- X is 10.
   getpoints(ace, X) :- X is 11.
   getpoints(Y, X) :- X is 0.
+  
+  //Get The Winner
+  getwinner(Winner) :- cardontable(_, ace, Winner), !.
+  getwinner(Winner) :- cardontable(_, three, Winner), !.
+  getwinner(Winner) :- cardontable(_, king, Winner), !.
+  getwinner(Winner) :- cardontable(_, queen, Winner), !.
+  getwinner(Winner) :- cardontable(_, jack, Winner), !.
+  getwinner(Winner) :- cardontable(_, seven, Winner), !.
+  getwinner(Winner) :- cardontable(_, six, Winner), !.
+  getwinner(Winner) :- cardontable(_, five, Winner), !.
+  getwinner(Winner) :- cardontable(_, four, Winner), !.
+  getwinner(Winner) :- cardontable(_, two, Winner), !.
 
 Plans:
   @cardtable(enterAsNotary())	/* join the game as notary */
@@ -63,6 +77,8 @@ PC-rules:
   */
   message(X, inform, _, _, declarebriscola(Briscola)) <- true | 
   {
+    B( Briscola = [S, R] );
+    AddBriscola(S, R);
     B( assigned(Pos, X) );
     if B( Pos = 0 ) then
     {
@@ -134,7 +150,7 @@ PC-rules:
       RemoveTrun(X);
       UpdateTrun(0);
       B( assigned(0, P));
-      print("Hands over!");
+      print("Round over!");
       countpoints()
     }
     else
@@ -154,30 +170,46 @@ PC-rules:
   }
   
   countpoints() <- true |
-  {
+  {      
      B( assigned(0, P0));
      B( cardontable(S0, R0, P0));
      B( getpoints(R0, X0));
-     send(P0, inform, yourscore(X0));
-     @cardtable(updateScore(P0, X0));
      B( assigned(1, P1));
      B( cardontable(S1, R1, P1));
      B( getpoints(R1, X1));
-     send(P1, inform, yourscore(X1));
-     @cardtable(updateScore(P1, X1));
      B( assigned(2, P2));
      B( cardontable(S2, R2, P2));
      B( getpoints(R2, X2));
-     send(P2, inform, yourscore(X2));
-     @cardtable(updateScore(P2, X2));
      B( assigned(3, P3));
      B( cardontable(S3, R3, P3));
      B( getpoints(R3, X3));
-     send(P3, inform, yourscore(X3));
-     @cardtable(updateScore(P3, X3));
      B( assigned(4, P4));
      B( cardontable(S4, R4, P4));
      B( getpoints(R4, X4));
-     send(P4, inform, yourscore(X4));
-     @cardtable(updateScore(P4, X4))
+     
+     
+     //Send point to the winner
+     B( getwinner(W) );
+     send(W, inform, yourscore( X0 + X1 + X2 + X3 + X4));
+     @cardtable(updateScore(W, X0 + X1 + X2 + X3 + X4));
+     
+     //Clean table
+     B( assigned(0, P0));
+     B( cardontable(S0, R0, P0));
+     RemoveCardPlayed(S0, R0, P0);
+     B( assigned(1, P1));
+     B( cardontable(S1, R1, P1));
+     RemoveCardPlayed(S1, R1, P1);
+     B( assigned(2, P2));
+     B( cardontable(S2, R2, P2));
+     RemoveCardPlayed(S2, R2, P2);
+     B( assigned(3, P3));
+     B( cardontable(S3, R3, P3));
+     RemoveCardPlayed(S3, R3, P3);
+     B( assigned(4, P4));
+     B( cardontable(S4, R4, P4));
+     RemoveCardPlayed(S4, R4, P4);
+     
+     //New round
+     selectturn()
   }
