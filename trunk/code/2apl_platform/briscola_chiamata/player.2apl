@@ -224,7 +224,7 @@ PC-rules:
   
   endround() <- hand([]) | 
   {
-    print("I don't have any cards!")
+    print("I finish my hand!")
   }
   
   
