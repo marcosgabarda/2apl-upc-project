@@ -141,6 +141,7 @@ PC-rules:
     print("I bid!");
     AddBidHistorical(61, Me);
     AddLastBid(61);
+    @cardtable(updateBid(61));
     send(Next, inform, bid(61, Pos))
   }
   
@@ -158,6 +159,7 @@ PC-rules:
     {
       print("I bid!");
       AddBidHistorical(LB + 1, Me);
+      @cardtable(updateBid(LB + 1));
       send(Next, inform, bid(LB + 1, Pos));
       RemoveLastBid(LB);
       AddLastBid(LB + 1)
@@ -212,6 +214,12 @@ PC-rules:
     {
       endround()
     }
+  }
+  
+  message(n, inform, _, _, yourscore(Y)) <-  true | 
+  {
+    B( assigned(Pos, Me) );
+    @cardtable(updateScore(Me, Y))
   }
   
   endround() <- hand([]) | 
