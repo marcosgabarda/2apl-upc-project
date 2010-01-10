@@ -25,7 +25,6 @@ Universitat Polit\`ecnica de Catalunya}
   {\begin{Sbox}\begin{minipage}}%
   {\end{minipage}\end{Sbox}\fbox{\TheSbox}}
 
-
 \maketitle
 
 \tableofcontents
@@ -34,9 +33,9 @@ Universitat Polit\`ecnica de Catalunya}
 
 \section{Introduction}\label{sec:intro}
 
-2-APL stands for Abstract Agent Programming Language , and is developed at the University of Utrecht as an academic tool for developing intelligent multi-agent systems. With its unique feature of integrating a declarative and an imperative style programming and the ability to use the JADE platform, 2APL is a resourceful environment to program in.
+2-APL stands for A Practical Programming Language , and is developed at the University of Utrecht as an academic tool for developing intelligent multi-agent systems. With its unique feature of integrating a declarative and an imperative style programming and the ability to use the JADE platform, 2APL is a resourceful environment to program in.
 
-In a previous Paper we described the features of 2APL, along with a more formal description of the language. Its tools were presented and a few examples were showcased to see some agents in action.The aim of this Paper is to present our own prototype of a 2APL multiagent system to model the card game of Briscola Chiamata. In particular, we present in section 2 a description of the game . In the next sections we follow the Prometheus design methodology to create our system. We display the built prototype in Section 6 and w e conclude the paper in section 7 with some remarks, related works and conclusions on the overall success of the prototype.
+In a previous Paper we described the features of 2APL, along with a more formal description of the language. Its tools were presented and a few examples were showcased to see some agents in action.The aim of this Paper is to present our own prototype of a 2APL multiagent system to model the card game of Briscola Chiamata. 
 
 There are many features that make Briscola Chiamata an ideal game to model with a multiagent system. The way the game works forces the developer to give agents cooperation, while at the same time being competitive; they have to be reactive, but also proactive; finally they need to also be autonomous and social.
 
@@ -46,10 +45,11 @@ Reactivity is an obvious requirement in any group game; when it is your turn to 
 
 The social factor comes from the fact that players have to interact with each other in order to advance the game. The bidding system each round of the game and the fact that teams are created without the agents knowing who they are partners with creates the necessity for communication between them in order to try and determine who this partner is. Having agents change status from partner to opponent between rounds makes a dynamic social multiagent system which is worth studying.
 
+The rest of the report is organized as follows. Section~\ref{sec:gamedescr} a description of the game. In the next sections we follow the Prometheus design methodology to create our system where the the System Specification phase is illustrated in Section~\ref{sec:sysspec}, the High-level (Architectural) Design in Section~\ref{sec:highdesign} and Detailed Design in Section~\ref{sec:detaildesign}. Finally, we display the built prototype in Section~\ref{sec:proto} and we conclude the paper in Section~\ref{sec:concl} with some remarks, related works and conclusions on the overall success of the prototype.
 
-\section{Game Description}
+\section{Game Description}\label{sec:gamedescr}
 
-\emph{Briscola Chiamata} is the five-player version of \emph{Briscola}. Every player is dealt eight cards, so that no cards remain undealt. Then, each player, starting from the dealer's right\footnote{If the dealer is not a player, then starting from the declearer's right} and proceeding counter-clockwise, bids in an auction to declare how many points they will score. A player may pass, and hence cannot bid again in that game. The bid represents the number of points that player believes he is capable of accumulating. Bidding continues until all but one player have passed in a round. This remaining player has then "won the bid" and therefore gets to declare the Briscola. The declarer also declares a specific Briscola card (example, the ``Ace of Cups'' if Cups was the declared Briscola) and the holder of this card is then determined to be the declarer's partner. Logically, the declarer would declare the highest Briscola card he does not already hold in the hopes of creating the strongest combined hand between him and his partner.
+Briscola Chiamata is the five-player version of Briscola. Every player is dealt eight cards, so that no cards remain undealt. Then, each player, starting from the dealer's right\footnote{If the dealer is not one the players, then starting from the declearer's right.} and proceeding counter-clockwise, bids in an auction to declare how many points they will score. A player may pass, and hence cannot bid again in that game. The bid represents the number of points that player believes he is capable of accumulating. Bidding continues until all but one player have passed in a round. This remaining player has then "won the bid" and therefore gets to declare the Briscola. The declarer also declares a specific Briscola card (example, the ``Ace of Cups'' if Cups was the declared Briscola) and the holder of this card is then determined to be the declarer's partner. Logically, the declarer would declare the highest Briscola card he does not already hold in the hopes of creating the strongest combined hand between him and his partner.
 The remaining three players are partnered with each other, without their knowledge. Each player, other than the declarer's partner, acts independently, until it is clear which players are partners. Infrequently, the declarer may declare a Briscola card he already holds (if he feels he has a very strong hand), in which case the other four players are partenered against him.
 Game strategy is often devised to determine which player is partnered with the declarer, whereas the declarer's partner may devise ruses and decoy strategies to fool the other players, such as not taking a trick, or playing points on a trick that will be won by an opponent.
 
@@ -63,33 +63,26 @@ In this phase, actors (human or software) expected to interact with the system, 
 
 \subsection{Analysis Overview Diagram}
 
-The analysis overview diagram is designed to show the interactions between the system and the environment. At this abstract level it is necessary to identify the actors, scenarios, percepts and actions involved in the system. This consists of a two step process. Firstly, we identify the actors and the scenarios they participate in with the system. Secondly, we identify and define the actions and percepts between the actors and the system.
+The analysis overview diagram is designed to show the interactions between the system and the environment. At this abstract level it is necessary to identify the actors, scenarios, percepts and actions involved in the system. This consists of a two step process. Firstly, we identify the actors and the scenarios they participate in with the system. Secondly, we identify and define the actions and percepts between the actors and the system. Figure~\ref{fig:analysis} provides the analysis overview diagram for our game.
 
-The actors are all the people or external systems associated with the system. The scenarios are the processes which the system uses to handle the percepts and produce the actions. The percepts are all the types information which come into the system from the environment. The actions are everything that is sent from the system to the environment.
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.35]{pdt/images/system_specification/analysis_overview.png}
+  \label{fig:analysis}
+  \caption{Analysis overview diagram}
+\end{figure}
 
-%Specify key external actors that will use the system, and key scenarios they will be involved in.
-%Link the actors to the scenarios they are involved in, using percepts and actions. Percepts are signals from actor to system. Actions are responses from the system, possibly directed towards a particular actor. This diagram can be used very freely to sketch a design of the system.
+The actors are all the people or external systems associated with the system that in our game we can model just as the User of the system. The scenarios are the processes which the system uses to handle the percepts and produce the actions. The percepts are all the types information which come into the system from the environment. The actions are everything that is sent from the system to the environment.
 
-Actors:
-\begin{itemize}
-  \item User: user of the system
-\end{itemize}
+Here follows a brief description of each of them: the ``start the game scenario'' is in charge of receveing join requests from users and accept and subscribe users or queue their requests. Once there are 5 players registered in the system, the ``dealing scenario'' is in charge of choosing the dealer, shuffle the deck and deal cards to all subscribed the players in the system. Once the dealing is over, the ``bidding scenario'' is in charge of let players bidding in turn. The player who wins the bid, must declare the Briscola card. If nobody bids, then the game has to be restarted. If the bid succedds, the Briscola card is declared by the winner and then the ``play the game scenario'' comes in to let the players start playing. The teams setting is obiousvly unknown to all the players until the Briscola card is played. The players have to update their beliefs about teams setting each time a card is played. Of course, cheating is part of the game. Communication that is used to model sign exchange among players is allowed to exchange information about players and cards. After each round, points are counted. Finally, the ``end the game scenario'' is in charge of declaring the winner team, update the score of each player according to the scoring rules and release the player from the system. 
 
-Scenarios:
-\begin{itemize}
-  \item Start the game scenario: join requests are received. Two options are possible: the request is accepted or queued. A message is then sent back acknowledging the request.
-  \item Dealing scenario: if there are 5 players subscribed in the system, then a card dealer is chosen that shuffle the deck and deal the cards to all the players.
-  \item Bidding scenario: once the dealing is over, players can start bidding in turn. The player who wins the bid, must declare the Briscola card. If nobody bids, then the game has to be restarted.
-  \item Play the Game scenario: once the Briscola card has been declared, the players start playing. The teams setting is unknown to all the players until the Briscola card is played. The players have to update their beliefs about teams setting each time a card is played. Of course, cheating is part of the game. Communication (sign exchange) among players is allowed to exchange information about players and cards. After each hand, points are counted.
-  \item End the game scenario: once the winner team is declared, scoring is updated and players are released from the system.
-\end{itemize}
+Finally, percepts and actions in the system are summarized in Table~\ref{table:inout}.
 
-Inputs/outputs (percepts/actions)
 \begin{table}[htp]
-  \begin{tabular}{|l|l|}	
-    Join request	& Subscribe user and manage request (the request has been accepted or queued) \\
+  \begin{tabular}{|l|l|}
     \hline
-    5 players in the system	& Choose the card dealer and start shuffling and dealing cards to the players \\
+    Join request	& Subscribe user and manage request  \\
+    \hline
+    5 players in the system	& Choose the card dealer, shuffling and dealing cards  \\
     \hline
     Dealing is over	& Start bidding in turn \\
     \hline
@@ -99,7 +92,7 @@ Inputs/outputs (percepts/actions)
     \hline
     Card played	& Update internal beliefs about teams setting \\
     \hline
-    Message from other players (Sign exchange)	& Update internal beliefs about teams setting \\
+    Message from other players & Update internal beliefs about teams setting \\
     \hline
     The hand is over	& Count points \\
     \hline
@@ -110,56 +103,39 @@ Inputs/outputs (percepts/actions)
     System scoring updated	& Release the agents from the system \\
     \hline
   \end{tabular}
+  \label{table:inout}
+  \caption{Summary of percepts and actions in the system}
 \end{table}
-
-\includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/analysis_overview.png}
 
 \subsection{Scenarios Diagram}
 
-Scenarios are an example of the dynamics, the process of how something can happen. Conversely, the goal hierarchy is a static representation  - it tries to break down all the high level goals into subgoals. Each scenario must be associated with some goal, that represents what that scenario is trying to achieve. 
+The scenarions diagram provided in Figure~\ref{fig:scenarios} shows the dynamics of the game. The scenarios cover all the phases of the game. First, the ``start the game scenario'' waits for players to register in the system, then the ``dealing scenario'' deals cards to the players, after that the ``bidding scenario'' allows the players to do their bids, then ``play the game scenario'' allows them to play the gam and finally the ``end the game scenario'' assigns them their socre. If nobody of the players leave the system, another game can be started, again from the ``dealing scenario''.
 
-\begin{enumerate}
-  \item Start the game scenario
-  \begin{itemize}
-    \item Register players and inform them to wait if there are less than 5 players registered
-    \item Queue players if there are already 5 players registered
-  \end{itemize}
-  \item Dealing scenario
-  \begin{itemize}
-    \item Choose the card dealer
-    \item Shuffle the deck
-    \item Deal cards
-  \end{itemize}
-  \item Bidding scenario
-  \begin{itemize}
-    \item Start bidding in turn until the highest bid is established
-    \item Declare the Briscola card
-  \end{itemize}
-  \item Play the Game scenario
-  \begin{itemize}
-      \item Play cards in turn
-      \item Collect points for each hand
-  \end{itemize}
-  \item End the game scenario
-  \begin{itemize}
-    \item Count points
-    \item Declare the winner
-    \item Release the players
-  \end{itemize}
-\end{enumerate}
-
-\includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/scenarios.png}
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.5]{pdt/images/system_specification/scenarios.png}
+  \label{fig:scenarios}
+  \caption{Scenarios diagram}
+\end{figure}
 
 \subsection{Goals Diagram}
 
-The goal overview diagram is a directed acyclic graph of all goals in the system. Sub-goals can be generated by asking ``how will the system accomplish this goal'' Parent goals can be generated by asking ``why does the system accomplish this goal'' .
+The goal overview diagram is a directed acyclic graph of all goals in the system showing how goals can be decomposed into subgoals. Sub-goals can be generated by asking ``how will the system accomplish this goal'' Parent goals can be generated by asking ``why does the system accomplish this goal''. Figure~\ref{fig:goals} shows our goals diagram for the game.
 
-  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/goal_overview.png}
-
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.4]{pdt/images/system_specification/goal_overview.png}
+  \label{fig:goals}
+  \caption{Goals diagram}
+\end{figure}
+  
 \subsection{System Roles Diagram}
-The next stage of the process is to group similar goals together into roles. Each role should be limited in scope, and be able to be described fully be 1-2 sentences. Grouping is done using the System Roles diagram. In a system roles diagram, we group different goals, percepts and actions under roles. This helps in further modularizing the system. The input is represented as a percept and the output as an action.
 
-\includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/system_roles.png}
+The next stage of the process is to group similar goals together into roles. Each role should be limited in scope, and be able to be described fully be 1-2 sentences. In a system roles diagram, we group different goals, percepts and actions under roles. This helps in further modularizing the system into functionality. The input is represented as a percept and the output as an action. Figure~\ref{fig:sysroles} shows our system roles diagram for the game. As stated, the description of each role can be given in a short sentence and they are quite obvious. The ``starting game role'' manages join requests, ``identify the dealer role'' identifies the dealer in the system, ``dealing role'' shuffle and deal cards, ``bidding role'' manage bids, ``declaring briscola role'' is used to declare the briscola card, ``turn control role'' decides player's turn to play, ``playing role'' is used to play cards, ``team setting role'' try to infer team settings, ``counting points role'' counts points for each rounds, ``declare the winner role'' declares the winner team of the game, ``update score points'' updates the score table while ``release the player'' release the players from the system. 
+
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.4]{pdt/images/system_specification/system_roles.png}
+  \label{fig:sysroles}
+  \caption{System roles diagram}
+\end{figure}
 
 \section{High-level (Architectural) Design}\label{sec:highdesign}
 
@@ -167,31 +143,47 @@ In this phase, the agent types that will exist in the system are defined by comb
 
 \subsection{Data Coupling Diagram}
 
-The roles that were formed in the last step of the previous phase are linked to data that has been identified as necessary for performing that role. In the data-coupling diagram you can see all roles and data types in the system.
+The roles that were formed in the last step of the previous phase are linked to data that has been identified as necessary for performing that role. In the data-coupling diagram you can see all roles and data types in the system. The following data types have been identified in the system: ``position'' that record the position of the player at the table that is useful to decide its turn, the ``deck'' that contains all the cards, the ``hand'' that represents the cards in hand of each player, the ``historic of bids'' that records the historic of bids, the ``historicic of card played'' that analogusly records the historic of card played in order to decide which card to play, the ``team information'' that is used to store beliefs about team settings, the ``points'' that is used to store the points of each round and finally the ``scoreboard'' that contains the all the times score of the games for each player. The data coupling diagram is provided in Figure~\ref{fig:datacoupl}.
 
-\includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/data_coupling.png}
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/data_coupling.png}
+  \label{fig:datacoupl}
+  \caption{Data coupling diagram}
+\end{figure}
 
 \subsection{Agent-Role Grouping Diagram}
 
 In this diagram we group the roles into agent types. Decisions regarding how to group depend on role similarity, as well as analysis of data usage. The agent-role coupling diagram shows the group of roles that come under an agent.
 
-\includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/aget-role_grouping.png}
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/aget-role_grouping.png}
+  \label{fig:sysroles}
+  \caption{Agent-role grouping diagram}
+\end{figure}
 
 \subsection{Agent Acquaintance Diagram}
 
 In the agent acquaintance diagram you can see all agents within the system and which agents interact.
 
-\includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/agent_acquaintance.png}
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/agent_acquaintance.png}
+  \label{fig:sysroles}
+  \caption{Agent acquaintance diagram}
+\end{figure}
 
 \subsection{System overview Diagram}
 
 In the system overview diagram you can see all agents in the system, along with their interface and interactions. This diagram is the central diagram of the entire system design.
 
-\includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/system_overview.png}
+\begin{figure}[htp]
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/system_overview.png}
+  \label{fig:sysroles}
+  \caption{System overview diagram}
+\end{figure}
 
 \section{Detailed Design}\label{sec:detaildesign}
 
-n this phase, the internals of each agent are developed in terms of capabilities, events, plans and data. Detailed Design is done at the level of individual agents.
+In this phase, the internals of each agent are developed in terms of capabilities, events, plans and data. Detailed Design is done at the level of individual agents.
 
 \subsection{Agent Overview Diagram}
 The agent overview diagram shows the internals of an agent. There is one agent overview diagram for every agent in the system. In the detailed design, much finer details of the system are established. The messages used to communicate between the agents are decided upon. If the roles within an agent grow very large, they are grouped into capabilities. As in the system overview diagram entities can be inserted or removed and edges can be reated or deleted.
