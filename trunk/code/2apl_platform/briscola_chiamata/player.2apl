@@ -8,8 +8,13 @@ BeliefUpdates:
   { not lastbid(X) } AddLastBid(X) { lastbid(X) }
   { lastbid(X) } RemoveLastBid(X) { not lastbid(X) }
   
-  { true }  AddTeamMember(X) { team(X) }
+  { not points(X) } AddPoints(X) { points(X) }
+  { points(X) } RemovePoints(X) { not points(X) }
   
+  { true }  AddTeamMember(X) { team(X) }
+ 
+  { true } AddBriscola(X) { briscola(X) }
+ 
 Beliefs:
   notary(n).
   gatekeeper(gk).
@@ -28,6 +33,8 @@ Beliefs:
   deletehandcard(R, S, [R, S|T], T).
   deletehandcard(R, S, [X, Y|T], [H|T1]):- deletehandcard(R, S, T, T1).
 
+  points(0).
+  
   getpoints(jack, X) :- X is 2.
   getpoints(queen, X) :- X is 3.
   getpoints(king, X) :- X is 4.
@@ -175,6 +182,7 @@ PC-rules:
   message(X, inform, _, _, bidwinner(Y)) <- hand(H) | 
   {
     print("I've the Briscola!");
+    AddBriscola(0);
     // --- Declare Briscola
     //B( getcard(H, 3, Briscola) ); FIXME this line do not work
     send(n, inform, declarebriscola([clubs, ace]));
@@ -213,18 +221,46 @@ PC-rules:
     // Check if hand is ended
     if B(RES = []) then
     {
-      endround()
+      endhand()
     }
   }
   
-  message(n, inform, _, _, yourscore(Y)) <-  true | 
+  message(n, inform, _, _, yourpoints(Y)) <-  true | 
   {
-    skip
+    B( points(P) );
+    RemovePoints(P);
+    AddPoints(P + Y)
   }
   
-  endround() <- hand([]) | 
+  endhand() <- hand([]) | 
   {
-    print("I finish my hand!")
+    print("I finish my hand!");
+    RemoveHand([]);
+    B( points(P) );
+    send(n, inform, doiwin(P))
   }
   
+  message(n, inform, _, _, youwin(Y)) <- briscola(_) |
+  {
+    B( assigned(Pos, Me) );
+    @cardtable(updateScore(Me, 2))
+  }
+  
+  message(n, inform, _, _, youwin(Y)) <- not briscola(_) |
+  {
+    B( assigned(Pos, Me) );
+    @cardtable(updateScore(Me, 1))
+  }
+  
+  message(n, inform, _, _, youlose(Y)) <- briscola(_) |
+  {
+  B( assigned(Pos, Me) );
+    @cardtable(updateScore(Me, -2))
+  }
+  
+  message(n, inform, _, _, youlose(Y)) <- not briscola(_) |
+  {
+    B( assigned(Pos, Me) );
+    @cardtable(updateScore(Me, -1))
+  }
   
