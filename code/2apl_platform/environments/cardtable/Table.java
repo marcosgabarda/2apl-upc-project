@@ -75,12 +75,17 @@ public class Table extends JFrame{
         setVisible( true ); 
     }
 
-        public void playCard(String name, int position) {
+        public void displayHand(String name, int position, Card[] cards) {
 
 	  java.net.URL imgURL = getClass().getResource("cards/b.gif");
 	  ImageIcon cardBack = new ImageIcon(imgURL);
 
-	  cardsPane[position].add(new JLabel(cardBack), position);
+	  for(int i=0; i<8; i++) {
+	    cardsPane[position].add(new JLabel(cards[i].getCardImage()), i);	    
+//	    writeLog(cards[i].getRank()+cards[i].getSuit());
+	  }
+	  
+	  setVisible( true );
   	}
 
 
@@ -110,14 +115,14 @@ public class Table extends JFrame{
       
       public void updateScore(String name, int position, int score) {
 	Integer scoreInt = new Integer(score);
-	JLabel scoreLab = (JLabel) playersPane[position].getComponent(4);
+	JLabel scoreLab = (JLabel) playersPane[position].getComponent(3);
 	scoreLab.setText("Score: "+scoreInt.toString());
 	setVisible( true );
       }
 
       public void updateBid(String name, int position, int bid) {
 	Integer bidInt = new Integer(bid);
-	JLabel bidLab = (JLabel) playersPane[position].getComponent(2);
+	JLabel bidLab = (JLabel) playersPane[position].getComponent(1);
 	bidLab.setText("Bid: "+bidInt.toString());
 	setVisible( true );
       }

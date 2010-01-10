@@ -164,12 +164,12 @@ public class Env extends Environment
 	public Term playCard(String sAgent, APLIdent suit, APLIdent rank) throws ExternalActionFailedException {
 	      Agent agent = getAgent(sAgent); 
 	      notifyEvent("cardPlayed", suit, rank, agent);
-	      table.playCard(agent.getName(), agent._position);
+	      //table.playCard(agent.getName(), agent._position);
 	      return wrapBoolean(true);
 	}
 
 	public Term updateScore(String sAgent, APLIdent player_name, APLNum score) throws ExternalActionFailedException {
-	      Agent agent = getAgent(sAgent);
+	      Agent agent = getAgent(player_name.toString());
 	      sb.updateScore(player_name.toString(), score.toInt());
 	      table.updateScore(agent.getName(), agent._position, score.toInt());
 	      notifyEvent("scoreUpdated", player_name, score);
@@ -180,6 +180,28 @@ public class Env extends Environment
 	      Agent agent = getAgent(sAgent);
 	      table.updateBid(agent.getName(), agent._position, bid.toInt());
 	      return wrapBoolean(true);
+	}
+
+	public Term handDealt(String sAgent, APLList cards, APLIdent player_name) throws ExternalActionFailedException {
+		Agent agent = getAgent(sAgent);
+
+		if (agent.getType()!=3) 
+		{
+			throw new ExternalActionFailedException("Only the dealer can deal cards.");
+		}
+
+		LinkedList<Term> ll = cards.toLinkedList();
+		Card[] hand = new Card[8];
+		for(int i=0, j=0; i<8; i++, j+=2) {
+		  hand[i] = deck.getCard(ll.get(j).toString(), ll.get(j+1).toString());
+		  //System.out.println(hand[i].getSuit().getName()+" "+hand[i].getRank().getName());
+		}
+
+		Agent player_agent = getAgent(player_name.toString());
+
+		table.displayHand(player_name.toString(), player_agent._position, hand);
+
+		return wrapBoolean(true);
 	}
 
 	/* Standard functions --------------------------------------*/
