@@ -70,7 +70,9 @@ public class Table extends JFrame{
 	HorizontalSplitPlane.setDividerLocation(600);
 
 	getContentPane().add(HorizontalSplitPlane);
-	setVisible( true );
+	pack();
+	setSize( 1024, 768 );
+        setVisible( true ); 
     }
 
         public void playCard(String name, int position) {
@@ -102,18 +104,22 @@ public class Table extends JFrame{
 	  cardsPane[position].add(new JLabel(cardBack));
 	  cardsPane[position].add(new JLabel(cardBack));
 	  cardsPane[position].add(new JLabel(cardBack));
+
+	  setVisible( true );
     }
       
       public void updateScore(String name, int position, int score) {
 	Integer scoreInt = new Integer(score);
 	JLabel scoreLab = (JLabel) playersPane[position].getComponent(4);
-	scoreLab.setText(scoreInt.toString());
+	scoreLab.setText("Score: "+scoreInt.toString());
+	setVisible( true );
       }
 
       public void updateBid(String name, int position, int bid) {
 	Integer bidInt = new Integer(bid);
 	JLabel bidLab = (JLabel) playersPane[position].getComponent(2);
-	bidLab.setText(bidInt.toString());
+	bidLab.setText("Bid: "+bidInt.toString());
+	setVisible( true );
       }
 
       public void writeLog(String text) {
