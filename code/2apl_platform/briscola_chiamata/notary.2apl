@@ -9,6 +9,9 @@ BeliefUpdates:
   { true }  AddBriscola(S, R) { briscola(S, R) } 
   { true }  RemoveCardPlayed(S, R, X) { not cardontable(S, R, X) } 
 
+  { not points(P, X) } AddPoints(P, X) { points(P, X) }
+  { points(P, X) } RemovePoints(P, X) { not points(P, X) }
+  
 Beliefs:
   gatekeeper(gk).		/* we know who the gatekeeper is, for simplicity */
   dealer(d).
@@ -32,6 +35,12 @@ Beliefs:
   getwinner(Winner) :- cardontable(_, five, Winner), !.
   getwinner(Winner) :- cardontable(_, four, Winner), !.
   getwinner(Winner) :- cardontable(_, two, Winner), !.
+  
+  major(X, Y) :- X >= Y.
+  win(X, P1, [X, P1]).
+  win(X, P1, [X, P1|T]) :- win(Y, P2, T), major(P1, P2).
+  win(Y, P2, [X, P1|T]) :- win(Y, P2, T), major(P2, P1).
+  whowins(X) :- points(P0, S0), points(P1, S1), points(P2, S2), points(P3, S3), points(P4, S4), not P0 = P1, not P1 = P2, not P2 = P3, not P3 = P4, not P0 = P2, not P0 = P3, not P0 = P4, not P1 = P3, not P1 = P4, not P2 = P4, win(X, Y, [P0, S0, P1, S1, P2, S2, P3, S3, P4, S4]).
 
 Plans:
   @cardtable(enterAsNotary())	/* join the game as notary */
@@ -40,6 +49,7 @@ PC-rules:
   message(X, inform, _, _, registered(POS, Y)) <- true |
   {
     SetAssigned(POS, Y);	/* update belief about assigned sit */
+    AddPoints(Y, 0);
     if B( POS = 4 ) then	/* if we believe we already assigned all the sits, then choose the dealer */
     { 
       /*@cardtable(chooseDealer(), D);*/
@@ -190,8 +200,11 @@ PC-rules:
      
      //Send point to the winner
      B( getwinner(W) );
-     send(W, inform, yourscore( X0 + X1 + X2 + X3 + X4));
-     @cardtable(updateScore(W, X0 + X1 + X2 + X3 + X4));
+     send(W, inform, yourpoints( X0 + X1 + X2 + X3 + X4));
+     @cardtable(updatePoints(W, X0 + X1 + X2 + X3 + X4));
+     B( points(W, POINTS) );
+     RemovePoints(W, POINTS);
+     AddPoints(W, POINTS + X0 + X1 + X2 + X3 + X4);
      
      //Clean table
      B( assigned(0, P0));
@@ -213,3 +226,17 @@ PC-rules:
      //New round
      selectturn()
   }
+  
+  message(X, inform, _, _, doiwin(P)) <- true |
+  {
+    if B(whowins(X)) then
+    {
+      send(X, inform, youwin(P))
+    }
+    else
+    {
+      send(X, inform, youlose(P))
+    }
+  }
+  
+  
