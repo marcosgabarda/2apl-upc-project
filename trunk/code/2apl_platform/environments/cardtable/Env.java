@@ -188,6 +188,13 @@ public class Env extends Environment
 	      table.updateBid(agent.getName(), agent._position, bid.toInt());
 	      return wrapBoolean(true);
 	}
+  
+	public Term briscolaDeclared(String sAgent, APLIdent suit, APLIdent rank) throws ExternalActionFailedException {
+	      Agent agent = getAgent(sAgent);
+	      Card played_card = deck.getCard(suit.toString(), rank.toString());
+	      table.briscolaDeclared(agent.getName(), agent._position, played_card);
+	      return wrapBoolean(true);
+	}
 
 	public Term handDealt(String sAgent, APLList cards, APLIdent player_name) throws ExternalActionFailedException {
 		Agent agent = getAgent(sAgent);
@@ -198,9 +205,9 @@ public class Env extends Environment
 		}
 
 		LinkedList<Term> ll = cards.toLinkedList();
-		Card[] hand = new Card[8];
+		Hand hand = new Hand();
 		for(int i=0, j=0; i<8; i++, j+=2) {
-		  hand[i] = deck.getCard(ll.get(j).toString(), ll.get(j+1).toString());
+		  hand.addCard(deck.getCard(ll.get(j).toString(), ll.get(j+1).toString()));
 		  //System.out.println(hand[i].getSuit().getName()+" "+hand[i].getRank().getName());
 		}
 

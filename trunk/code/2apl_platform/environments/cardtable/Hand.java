@@ -3,10 +3,9 @@ package cardtable;
 import java.util.*;
 
 
-public abstract class Hand implements Comparable {
+public class Hand {
 
    private java.util.List hand = new ArrayList();
-
 
    public void addCard( Card card ) {
       hand.add( card );
