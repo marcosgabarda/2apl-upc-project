@@ -28,11 +28,12 @@ Beliefs:
   deletehandcard(R, S, [R, S|T], T).
   deletehandcard(R, S, [X, Y|T], [H|T1]):- deletehandcard(R, S, T, T1).
 
-  getpoints(jack, X) :- X is 2
-  getpoints(queen, X) :- X is 3
-  getpoints(king, X) :- X is 4
-  getpoints(three, X) :- X is 10
-  getpoints(ace, X) :- X is 11
+  getpoints(jack, X) :- X is 2.
+  getpoints(queen, X) :- X is 3.
+  getpoints(king, X) :- X is 4.
+  getpoints(three, X) :- X is 10.
+  getpoints(ace, X) :- X is 11.
+  getpoints(Y, X) :- X is 0.
 
 Plans:
   [ B(gatekeeper(X)) ; send(X, request, register(me)) ]
@@ -218,8 +219,7 @@ PC-rules:
   
   message(n, inform, _, _, yourscore(Y)) <-  true | 
   {
-    B( assigned(Pos, Me) );
-    @cardtable(updateScore(Me, Y))
+    skip
   }
   
   endround() <- hand([]) | 
