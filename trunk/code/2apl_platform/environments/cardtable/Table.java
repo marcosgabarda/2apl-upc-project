@@ -18,21 +18,27 @@ public class Table extends JFrame{
 
     public Table( ){
 	super( "Briscola Chiamata" );
-	leftDisplayPane = new JPanel(new GridLayout(5,2));
+	leftDisplayPane = new JPanel(new GridBagLayout());
 	playersPane = new JPanel[5];
 	cardsPane = new JPanel[5];
 
 	for(int i=0; i<5; i++) {
-	  playersPane[i] = new JPanel(new GridLayout(4,1));
-	  cardsPane[i] = new JPanel(new GridLayout(1,8));
-	  leftDisplayPane.add(playersPane[i]);
-	  leftDisplayPane.add(cardsPane[i]);
+	  playersPane[i] = new JPanel(new GridBagLayout());
+	  cardsPane[i] = new JPanel(new GridBagLayout());
+	  GridBagConstraints c = new GridBagConstraints();
+	  c.fill = GridBagConstraints.HORIZONTAL;
+	  c.anchor = GridBagConstraints.CENTER;
+	  c.gridx = 0;
+	  c.gridy = i;
+	  leftDisplayPane.add(playersPane[i], c);
+	  c.gridx = 1;
+	  leftDisplayPane.add(cardsPane[i], c);
 	}
 
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	layeredTablePane = new JLayeredPane();
-	Point origin = new Point(50, 20);
+	Point origin = new Point(10, 20);
 	Color[] layerColors = { Color.yellow, Color.magenta,
 				Color.cyan,   Color.red,
 				Color.green };
@@ -44,13 +50,13 @@ public class Table extends JFrame{
 	  origin.x += offset;
 	  origin.y += offset;
 
-	  label.setVerticalAlignment(JLabel.TOP);
-	  label.setHorizontalAlignment(JLabel.CENTER);
-	  label.setOpaque(true);
-	  label.setBackground(Color.red);
-	  label.setForeground(Color.black);
-	  label.setBorder(BorderFactory.createLineBorder(Color.black));
-	  label.setBounds(origin.x, origin.y, 140, 140);
+ 	  label.setVerticalAlignment(JLabel.TOP);
+ 	  label.setHorizontalAlignment(JLabel.CENTER);
+ 	  label.setOpaque(true);
+ 	  label.setBackground(Color.gray);
+ 	  label.setForeground(Color.black);
+ 	  label.setBorder(BorderFactory.createLineBorder(Color.black));
+ 	  label.setBounds(origin.x, origin.y, 73, 97);
 
 	  layeredTablePane.add(label, new Integer(i));
 	}
@@ -60,34 +66,33 @@ public class Table extends JFrame{
 	GameInfo = new JScrollPane(infoTextArea);
 
 	VerticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, layeredTablePane,GameInfo);
-	VerticalSplitPane.setPreferredSize(new Dimension(150,150));
+	//VerticalSplitPane.setPreferredSize(new Dimension(150,50));
 	VerticalSplitPane.setOneTouchExpandable(false);
-	VerticalSplitPane.setDividerLocation(400);
+	VerticalSplitPane.setDividerLocation(450);
        
 	HorizontalSplitPlane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftDisplayPane,VerticalSplitPane );
-	HorizontalSplitPlane.setPreferredSize(new Dimension(150,150));
+	//HorizontalSplitPlane.setPreferredSize(new Dimension(150,150));
 	HorizontalSplitPlane.setOneTouchExpandable(false);
-	HorizontalSplitPlane.setDividerLocation(600);
+	HorizontalSplitPlane.setDividerLocation(900);
 
 	getContentPane().add(HorizontalSplitPlane);
 	pack();
-	setSize( 1024, 768 );
+	setSize( 1280, 768 );
         setVisible( true ); 
     }
 
         public void displayHand(String name, int position, Card[] cards) {
-
-	  java.net.URL imgURL = getClass().getResource("cards/b.gif");
-	  ImageIcon cardBack = new ImageIcon(imgURL);
-
 	  for(int i=0; i<8; i++) {
 	    cardsPane[position].add(new JLabel(cards[i].getCardImage()), i);	    
-//	    writeLog(cards[i].getRank()+cards[i].getSuit());
 	  }
-	  
 	  setVisible( true );
   	}
 
+	public void playedCard(String name, int position, Card card) {
+	  JLabel label = (JLabel) layeredTablePane.getComponent(position);
+	  label.setIcon(card.getCardImage());
+	  setVisible( true );
+	}
 
 	public void addPlayer(String name, int position, int score, int bid) {
 	  Integer scoreInt = new Integer(score);
@@ -96,19 +101,38 @@ public class Table extends JFrame{
 	  java.net.URL imgURL = getClass().getResource("cards/b.gif");
 	  ImageIcon cardBack = new ImageIcon(imgURL);
 	  
-	  playersPane[position].add(new JLabel("Player: "+name));
-	  playersPane[position].add(new JLabel("Bid: "+bidInt.toString()));
-	  playersPane[position].add(new JLabel(new String("Points: points here")));
-	  playersPane[position].add(new JLabel("Score: "+scoreInt.toString()));
+	  GridBagConstraints c = new GridBagConstraints();
+	  c.fill = GridBagConstraints.HORIZONTAL;
+	  c.anchor = GridBagConstraints.CENTER;
+	  c.gridx = 0;
+	  c.gridy = 0;
+	  playersPane[position].add(new JLabel("Player: "+name), c);
+	  c.gridy = 1;
+	  playersPane[position].add(new JLabel("Bid: "+bidInt.toString()), c);
+	  c.gridy = 2;
+	  playersPane[position].add(new JLabel(new String("Points: -")), c);
+	  c.gridy = 3;
+	  playersPane[position].add(new JLabel("Score: "+scoreInt.toString()), c);
 	
-	  cardsPane[position].add(new JLabel(cardBack));
-	  cardsPane[position].add(new JLabel(cardBack));
-	  cardsPane[position].add(new JLabel(cardBack));
-	  cardsPane[position].add(new JLabel(cardBack));
-	  cardsPane[position].add(new JLabel(cardBack));
-	  cardsPane[position].add(new JLabel(cardBack));
-	  cardsPane[position].add(new JLabel(cardBack));
-	  cardsPane[position].add(new JLabel(cardBack));
+	  c.fill = GridBagConstraints.VERTICAL;
+	  c.anchor = GridBagConstraints.CENTER;
+	  c.gridx = 0;
+	  c.gridy = 0;
+	  cardsPane[position].add(new JLabel(cardBack), c);
+	  c.gridx = 1;
+	  cardsPane[position].add(new JLabel(cardBack), c);
+	  c.gridx = 2;
+	  cardsPane[position].add(new JLabel(cardBack), c);
+	  c.gridx = 3;
+	  cardsPane[position].add(new JLabel(cardBack), c);
+	  c.gridx = 4;
+	  cardsPane[position].add(new JLabel(cardBack), c);
+	  c.gridx = 5;
+	  cardsPane[position].add(new JLabel(cardBack), c);
+	  c.gridx = 6;
+	  cardsPane[position].add(new JLabel(cardBack), c);
+	  c.gridx = 7;
+	  cardsPane[position].add(new JLabel(cardBack), c);
 
 	  setVisible( true );
     }
