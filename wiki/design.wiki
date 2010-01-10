@@ -149,7 +149,7 @@ interface and interactions. This diagram is the central diagram of the entire sy
 
 [http://2apl-upc-project.googlecode.com/svn/trunk/docs/briscola_chiamata/pdt/images/architectural_design/system_overview.png]
 
-== Detailed design ==
+== Detailed design [OLD! To be updated] ==
 
 In this phase, the internals of each agent are developed in terms of capabilities, events, plans and data. Detailed Design is done at the level of individual agents. 
 
