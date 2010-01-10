@@ -252,17 +252,15 @@ The capability overview diagram allows you to specify the internals of a capabil
 
 \section{Prototype}\label{sec:proto} 
 
-- prototipe developed following the Prometheus design
-- easy way to implement design solutions into 2APL agents
-- tring to use the maximun features and bondaries of 2APL
-- environment done in java, with gui to show the game (but not actually necessary)
-- posibility of add an human player in the future
-- other agents (that imports player.2apl) can add own strategies
-- limited use of Prolog in the belief base. probaly it can be improve if agents could add extra prolog libraries
-- bad parser of 2APL language, the syntactical error are not clear at all
-- add screenshot and sample of code (you dedice where to put, then ill add em)
-- important: what's is missing in the prototype? well actual agents do only dumb reasoning about team settings and cheating
- personalized agents that implements different strategies each one with its reasoning would be great, also implement reinforce learning would be nice,
+The Prototype was built following the Prometheus design, and as described in the previous sections, each step was carefully defined, built and implmented. The idea was to use as many features as 2APL as possible, and thus our own personal environment was also created for this Paper.The prototype can therefore be logically separated in two parts : Firstly the environment in which the agents interact, and secondly the agents themselves.
+
+Environments in 2APL, as previously mentioned, are created as a Java class extension. By using the example environment given in the documentation of 2APL we were able to build our own graphic user interface to allow researchers to see the agents in action. This environment was built so that it would allow agents to interact in all of the possible manners defined during the design stage, but also to manage the addition and removal of agents. We succesfully implemented it and achieved the desired level of detail as to be pleasing to the eye but not a burden to the real task at hand : the way the agents act and interact. A screenshot of the GUI can be seen in figure 6.1 . As you can see it was decided to split the program into three panels : The left panel being the one which shows each players cards, score and bid; a top right corner in which cards played are shown, and a bottom right panel in which information about the agent interactions is displayed, along with game information.
+
+The Agents were designed separetely using prolog, and saved in separate files depending on the strategy they were programmed to have. Since there are five players in a Briscola Chiamata game, we were able to have up to five agents having different strategies fighting against each other and we would be able to see the victorious strategy. Even though prolog is mainly used to create the Agent, it is of limited use in the belief base and the usage of extra libraries could give the user more freedom when designing them (and  stronger strategies too). In figure 6,2 you can see a sample agent that was used in our prototype along with its settings.
+
+The prototype however, as its name indicates, is marely a prototype and thus implements the most simplistic aspects . The agents were implemented to follow straight forward strategies with very little cooperation and even "cheating" in order to find their partners during a game round. It is worth mentioning that during the testing part, the 2APL parser was in most cases completely uselesss as the error messages it provides as feedback are unclear and unhelpful. This makes the task of perfectioning the prototype hard and tidious. Finally it is worth mentioning that this prototype was built so that it could easely be extended.For example it could be extended into an application which accepts both human and agent players, and even further to be played using a network and/or the internet in order to fight other agents.
+
+We would have loved to add some of those more advanced features such as having completely radical strategies fighting each other, or even some form of reinforcement learning would have been fantastic to see in action, but time and the difficulty of extending things in 2APL have made it impossible have made this impossible.
 
 
 \section{Conclusion}\label{sec:concl} 
