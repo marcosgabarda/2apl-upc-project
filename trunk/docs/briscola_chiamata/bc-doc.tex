@@ -75,9 +75,10 @@ The only actor we felt to model in this first sketch of our game is the user of 
   \item ``End of the game'' scenario is in charge of declaring the winner team, update the score of each player according to the scoring rules and release the player from the system. 
 \end{itemize}
 
-Finally, percepts in the system and their subsequent actions are summarized in Table~\ref{table:inout}.
+Finally, percepts in the system and their consequent actions are summarized in Table~\ref{table:inout}.
 
 \begin{table}[htp]
+  \centering
   \begin{tabular}{|l|l|}
     \hline
     Join request	& Subscribe user and manage request  \\
@@ -88,13 +89,15 @@ Finally, percepts in the system and their subsequent actions are summarized in T
     \hline
     Deal is over	& Select turn \\
     \hline
+    Turn selected	& Declare bid \\
+    \hline
     Bid is over	& Declare Briscola card \\ 
     \hline
-    Briscola card declared	& Select turn  \\
+    Briscola card	& Select turn  \\
     \hline
-    Turn selected	& Play card or Bid \\
+    Turn selected	& Play card  \\
     \hline
-    Card played	& Internal beliefs are updated\\
+    Card played	& Select turn\\
     \hline
     No percepts needed & Exchange information \\
     \hline
