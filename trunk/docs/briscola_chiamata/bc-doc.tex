@@ -109,21 +109,19 @@ Finally, percepts in the system and their consequent actions are summarized in T
     \hline
     Scoring updated	& Release the players \\
     \hline
-  \end{tabular}
-  \label{table:inout}
+  \end{tabular}  
   \caption{Summary of percepts and actions in the system}
+  \label{table:inout}
 \end{table}
 
+Figure~\ref{fig:analysis} provides the analysis overview diagram for our game.
 
 \begin{figure}[htp]
   \centering
   \includegraphics[keepaspectratio,scale=0.4]{pdt/images/system_specification/analysis_overview.png}
-  \label{fig:analysis}
   \caption{Analysis overview diagram}
+  \label{fig:analysis}
 \end{figure}
-
-Figure~\ref{fig:analysis} provides the analysis overview diagram for our game.
-
 
 \subsection{Scenarios Diagram}
 
@@ -131,9 +129,9 @@ The scenarios cover all the phases of the game shows the dynamics of the game. F
 
 \begin{figure}[htp]
   \centering
-  \includegraphics[keepaspectratio,scale=0.5]{pdt/images/system_specification/scenarios.png}
-  \label{fig:scenarios}
+  \includegraphics[keepaspectratio,scale=0.5]{pdt/images/system_specification/scenarios.png}  
   \caption{Scenarios diagram}
+  \label{fig:scenarios}
 \end{figure}
 
 \subsection{Goals Diagram}
@@ -142,9 +140,9 @@ The goal overview diagram is a directed acyclic graph of all goals in the system
 
 \begin{figure}[htp]
   \centering
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/system_specification/goal_overview.png}
-  \label{fig:goals}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/system_specification/goal_overview.png}  
   \caption{Goals diagram}
+  \label{fig:goals}
 \end{figure}
   
 \subsection{System Roles Diagram}
@@ -167,8 +165,8 @@ In the system roles diagram, we group different goals, percepts and actions unde
 \begin{figure}[htp]
   \centering
   \includegraphics[keepaspectratio,scale=0.4]{pdt/images/system_specification/system_roles.png}
-  \label{fig:sysroles}
   \caption{System roles diagram}
+  \label{fig:sysroles}
 \end{figure}
 
 \newpage 
@@ -194,9 +192,9 @@ The data coupling diagram is provided in Figure~\ref{fig:datacoupl}.
 
 \begin{figure}[htp]
   \centering
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/data_coupling.png}
-  \label{fig:datacoupl}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/data_coupling.png} 
   \caption{Data coupling diagram}
+  \label{fig:datacoupl}
 \end{figure}
 
 \subsection{Agent-Role Grouping Diagram}
@@ -204,7 +202,7 @@ The data coupling diagram is provided in Figure~\ref{fig:datacoupl}.
 In this diagram we group the roles into agent types. The agent-role coupling diagram shows the group of roles that come under an agent. Here follows the list of the agent types that we have identified:
 \begin{itemize}
   \item ``Dealer'' that is the that represents the dealer that is in charge of dealing cards
-  \item ``Gatekeeper'' that is the that represents the agent that let the players come in and out the system
+  \item ``Gatekeeper'' that is the that represents the agent that let players come in and out the system
   \item ``Non-player charcter'' that is the that represents the actual players in the system
   \item ``Notary'' that is the that agent type represents the agent in charge of controlling the flow of the game
 \end{itemize}
@@ -213,9 +211,9 @@ Figure~\ref{fig:agentrole} provides the agent-role grouping diagram for our game
 
 \begin{figure}[htp]
   \centering
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/aget-role_grouping.png}
-  \label{fig:agentrole}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/aget-role_grouping.png}  
   \caption{Agent-role grouping diagram}
+  \label{fig:agentrole}
 \end{figure}
 
 \subsection{Agent Acquaintance Diagram}
@@ -224,9 +222,9 @@ In the agent acquaintance diagram you can see all agents within the system and w
 
 \begin{figure}[htp]
   \centering
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/agent_acquaintance.png}
-  \label{fig:agentacq}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/agent_acquaintance.png}  
   \caption{Agent acquaintance diagram}
+  \label{fig:agentacq}
 \end{figure}
 
 \subsection{System Overview Diagram}
@@ -236,11 +234,11 @@ In the system overview diagram you can see all agents in the system, along with 
 \begin{figure}[htp]
   \centering
   \includegraphics[keepaspectratio,scale=0.45]{pdt/images/architectural_design/system_overview.png}
-  \label{fig:sysovervw}
   \caption{System overview diagram}
+  \label{fig:sysovervw}
 \end{figure}
 
-In the context of the system overview diagram, simple internal protocols are developed for the game to let agent communicate. Figure~\ref{fig:protocols} provides diagrams for them all.
+In the context of the system overview diagram, simple internal protocols are developed for the game to let agents communicate. Figure~\ref{fig:protocols} provides diagrams for them all.
 
 \begin{figure}[htp]
   \centering
@@ -250,9 +248,9 @@ In the context of the system overview diagram, simple internal protocols are dev
   \subfloat[First bid protocol]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/protocols/First_bid_protocol.png}}
   \subfloat[Communication protocol]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/protocols/Communication_protocol.png}}\\
   \subfloat[Join the game protocol]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/protocols/Join_game_protocol.png}}
-  \subfloat[Wake up dealer procotol]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/protocols/Wake_up_dealer_protocol.png}}
-  \label{fig:protocols}
+  \subfloat[Wake up dealer procotol]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/protocols/Wake_up_dealer_protocol.png}}  
   \caption{Protocols for agent coordination}
+  \label{fig:protocols}
 \end{figure}
 
 
@@ -265,26 +263,26 @@ The agent overview diagram shows the internals of an agent. Thus, there is one a
 
 \begin{figure}[htp]
   \centering
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/dealer_overview_diagram.png}
-  \label{fig:dealer}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/dealer_overview_diagram.png}  
   \caption{Agent overview diagram for the dealer agent}
+  \label{fig:dealer}
 \end{figure}
 \begin{figure}[htp]
   \centering
   \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/notary_overview_diagram.png}
-  \label{fig:notary}
   \caption{Agent overview diagram for the notary agent}
+  \label{fig:notary}  
 \end{figure}
 \begin{figure}[htp]
   \centering
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/gatekeeper_overview_diagram.png}
-  \label{fig:gatekeeper}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/gatekeeper_overview_diagram.png}  
   \caption{Agent overview diagram for the gatekeeper agent}
+  \label{fig:gatekeeper}
 \end{figure}
 \begin{figure}[htp]
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/non-player_character_overview_diagram.png}
-  \label{fig:nonplay-char}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/non-player_character_overview_diagram.png}  
   \caption{Agent overview diagram for the non-player character agent}
+  \label{fig:nonplay-char}
 \end{figure}
   
 
@@ -293,9 +291,9 @@ The capability overview diagram allows to specify the internals of a capability 
 
 \begin{figure}[htp]
   \centering
-  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/dealing_capability_overview_diagram.png}
-  \label{fig:dealing-cap}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/dealing_capability_overview_diagram.png}  
   \caption{Capability overview diagram of the dealer agent}
+  \label{fig:dealing-cap}
 \end{figure}
 \begin{figure}[htp]
   \centering
@@ -303,16 +301,16 @@ The capability overview diagram allows to specify the internals of a capability 
   \subfloat[End the game]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/end_the_game_capability_overview_diagram.png}}\\
   \subfloat[Start dealing]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/start_dealing_capability_overview_diagram.png}}
   \subfloat[Control bidding]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/control_bidding_capability_overview_diagram.png}}\\
-  \subfloat[Count points]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/count_points_capability_overview_diagram.png}}
-  \label{fig:notary-cap}
+  \subfloat[Count points]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/count_points_capability_overview_diagram.png}}  
   \caption{Capability overview diagram of the notary agent}
+  \label{fig:notary-cap}
 \end{figure}
 \begin{figure}[htp]
   \centering
   \subfloat[Release player]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/release_player_capability_overview_diagram.png}}
-  \subfloat[Join players]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/join_players_capability_overview_diagram.png}}
-  \label{fig:gatekeeper-cap}
+  \subfloat[Join players]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/join_players_capability_overview_diagram.png}}  
   \caption{Capability overview diagram of the gatekeeper agent}
+  \label{fig:gatekeeper-cap}
 \end{figure}
 \begin{figure}[htp]
   \centering
@@ -320,9 +318,9 @@ The capability overview diagram allows to specify the internals of a capability 
   \subfloat[Bidding]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/bidding_capability_overview_diagram.png}}\\
   \subfloat[Playing]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/playing_capability_overview_diagram.png}}\\
   \subfloat[Declare briscola]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/declare_briscola_capability_overview_diagram.png}}
-  \subfloat[Join the game]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/join_to_game_capability_overview_diagram.png}}
-  \label{fig:non-player-cap}
+  \subfloat[Join the game]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/join_to_game_capability_overview_diagram.png}}  
   \caption{Capability overview diagram of the non-player character agent}
+  \label{fig:non-player-cap}
 \end{figure}
 
 \section{Prototype}\label{sec:proto} 
@@ -334,16 +332,16 @@ Environments in 2APL, as mentioned in the previous paper, are created as a Java 
 
 \begin{figure}[htp]
   \centering
-  \includegraphics[keepaspectratio,scale=0.3]{fig/gui1.png}
-  \label{fig:gui1}
+  \includegraphics[keepaspectratio,scale=0.3]{fig/gui1.png}  
   \caption{Screenshot from the graphical user interface}
+  \label{fig:gui1}
 \end{figure}
 
 %The agents were designed separately using prolog, and saved in separate files depending on the strategy they were programmed to have.
 Since there are five players in a Briscola Chiamata game, we were able to have up to five agents having different strategies fighting against each other and we would be able to see the victorious strategy. 
 %Even though Prolog is mainly used to create the agent, it is of limited use in the belief base and the usage of extra libraries could give the user more freedom when designing them (and  stronger strategies too).
 
-The prototype however, as its name indicates, is merely a prototype and thus implements the most simplistic aspects . The agents were implemented to follow straight forward strategies with very little cooperation and even ``cheating'' in order to find their partners during a game round. It is worth mentioning that during the testing part, the 2APL parser was in most cases completely useless as the error messages it provides as feedback are unclear and unhelpful. This makes the task of perfectioning the prototype hard and tedious. %Finally it is worth mentioning that this prototype was built so that it could easily be extended. For example it could be extended into an application which accepts both human and agent players, and even further to be played using a network and/or the internet in order to fight other agents.
+The prototype however, as its name indicates, is merely a prototype and thus implements the most simplistic aspects . The agents were implemented to follow straight forward strategies with very little cooperation and even ``cheating'' in order to find their partners during a game round. %It is worth mentioning that during the testing part, the 2APL parser was in most cases completely useless as the error messages it provides as feedback are unclear and unhelpful. This makes the task of perfectioning the prototype hard and tedious. %Finally it is worth mentioning that this prototype was built so that it could easily be extended. For example it could be extended into an application which accepts both human and agent players, and even further to be played using a network and/or the internet in order to fight other agents.
 
 We would have loved to add some of those more advanced features such as having completely radical strategies fighting each other, or even some form of reinforcement learning would have been fantastic to see in action, but time and the difficulty of extending things in 2APL have made it impossible for now.
 
@@ -357,7 +355,7 @@ The JADE platform tools and some of 2APL tools were certainly helpful from begin
 
 The negative aspects of 2APL are few, but certainly relevant. Firstly it is clearly a tool designed primarily for research and not for industry development. The documentation for 2APL is still relatively vague and requires some updating, while the examples given are few and sadly not fully detailed. The environment and the agents we built were done mostly by scanning the code of the blockworld example and thus we lacked the true ability to implement a full application (this was never our intention, but knowing that implementing a fully operational high scale piece of software would be made harder due to the poor support is worth mentioning).
 
-Even though declarative programming does give us a very powerful logic system, 2APL does lack to provide agents with the capability to compute things on their own. In its current state the designer is forced to have the environment calculate it for the agent, instead of allowing the agent to encapsulate the calculation method in its own code. Finally, even though it was previously mentioned, the 2APL parser was so unhelpful that it barely provided us with any useful information. Clearer instructions or error messages would be necessary if any serious development was to be made in this language.
+Even though declarative programming offers a powerful way to program agents, in our opinion, a good balance of the following two ingredients are still missing for the perfect receipt: the capability of integrating the declarative programming with imperative programming also on agent side (not only with the environment) and the availability of a set of extra libraries to make the life of a Prolog programmer easier. Finally, even though it was previously mentioned, clearer instructions or error messages would be necessary if any serious development was to be made in this language as well as a faster execution would be also appreciated.
 
 So even though we praised 2APL for some things and despised it for others, as a whole we were pleased to develop with 2APL and do believe that with more work it can become the ``go to'' language of multi-agent systems, at least from a research point of view.
 
