@@ -20,170 +20,320 @@
 
 \frame{
 	\frametitle{Outline}
-	\tableofcontents
+  \begin{itemize}
+   \item Problem Specification
+   \vskip 2.0ex
+   \item System Specification
+   \item High level/Architectural Design
+   \item Detailed Design
+   \vskip 2.0ex
+   \item Prototype
+   \item Demo
+   \item Conclusions
+  \end{itemize}
 }
 
-\frame[allowframebreaks]{
-  \frametitle{Introduction}
-\begin{itemize}
-  \item Briscola Chiamata
-  \item Prometheus methodology (PDT Tool)
-  \item 2APL
-  \item ...
-\end{itemize}
+\part{Problem Specification}
+\frame{\partpage}
+
+\frame{
+    \frametitle{Problem Specification}
+  \begin{itemize}
+   \item Introduction to Briscola Chiamata card game
+   \item Why the game is suitable for a multi-agents system?
+  \end{itemize}
 }
 
-\section{Problem Specification}
-
-\frame[allowframebreaks]{
+\frame{
     \frametitle{A bit of terminology}
   
     \begin{itemize}
-      \item Game:
-      \item Hand/Turn:
-      \item Trick:
-      \item Suit:
-      \item Rank:
-      \item Briscola:
+      \item Game: ....definition here......
+      \item Hand/Round: .......definition here........
+      \item Trick: points collected in one round
+      \item Suit: spades, hearts, diamonds, clubs
+      \item Rank: 1-7, jack, queen, king
+      \item Briscola (Brisca): a particular suit
+      \item Non-player charcacter: .....definiton here.....
     \end{itemize}
 }
 
-\frame[allowframebreaks]{
+\frame{
     \frametitle{Briscola Chiamata}
 
-    5 players, 8 cards each, no cards undealt
+    In short: italian game, 5 players, 8 cards each, no cards undealt
 
     \vskip 2.0ex
 
-    Phases of the game:
+    Game in two-phases:
     \begin{itemize}  
-      \item Card giving
-      \item Bidding
-      \item Partner selection
-      \item Playing cards
-      \item Winner/Loser declaration with point distribution
+      \item Bidding phase
+      \item Playing phase
     \end{itemize}
 }
 
 
-\frame[allowframebreaks]{
-  \frametitle{Why is suitable for MAS?}
+\frame{
+  \frametitle{Why is suitable for multi-agents system?}
 
   \begin{itemize}
     \item Uncertainity (nobody knows who is actually its partner)
-    \item Sociality (its needed in order to discover partners/cheat opponents)
-    \item Coordination is needed
+    \item Sociality (needed in order to discover team settings)
     \begin{itemize}
-      \item Cooperation inside teams needed once partners are discovered
-      \item Competition between teams needed once partners are discovered
+      \item Cooperation (inside the team once partners are discovered)
+      \item Competition (between opponent's teams)
     \end{itemize}
     \item Trust/Reputation models needed 
+  \end{itemize}
+	
+  \vskip 2.0ex
+
+  \begin{itemize}
     \item Main agent properties are satisfied
     \begin{itemize}
-      \item Autonomy (players are autonomous, they plan alone once there are at least 5 players)
+      \item Autonomy (players can be autonomous agents)
       \item Flexibility
-      \item Reactivity (players has to play when its their turn)
-      \item Proactivity (players can decide if they want to play even if it's not their turn, players can decide to start cheating other players by sending them messages)
-      \item Social (players have to interact with each others in order to discover their partners)
+      \begin{itemize}
+	      \item Reactivity (players have to play when its their turn)
+	      \item Proactivity (players can exchange information at any moment)
+	      \item Social (players have to interact for discovering team settings)
+      \end{itemize}
     \end{itemize}
   \end{itemize}
-
-%     Uncertainity (nobody knows who is actually its partner)
-%     Sociality (its needed in order to discover partners/cheat opponents)
-%     Coordination is needed that is:
-%       Cooperation inside teams needed once partners are discovered
-%       Competition between teams needed once partners are discovered
-%     Trust/Reputation models needed 
-%     
-%     Main agent properties are satisfied:
-%       Autonomy (players are autonomous, they plan alone once there are at least 5 players)
-%       Flexibility that is:
-%          Reactivity (players has to play when its their turn)
-%          Proactivity (players can decide if they want to play even if it's not their turn, players can decide to start cheating other players by sending them messages)
-%          Social (players have to interact with each others in order to discover their partners)
 }
 
-\section{System Specification}
+\part{System Specification}
+\frame{\partpage}
 
-\frame[allowframebreaks]{
+\frame{
+  \frametitle{System Specification}
+
+  \begin{itemize}
+    \item Analysis overview diagram: the interactions between the system and the environment
+    \item Scenarios diagram: the dynamics of the game
+    \item Goals overview diagram: how goals can be decomposed into subgoals
+    \item System roles diagram: group different goals, percepts and actions under roles
+  \end{itemize}
+}
+
+\frame[shrink,squeeze]{
   \frametitle{Analysis Overview Diagram}
 
-  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/analysis_overview.png}
-
+  \begin{center}
+    \includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/analysis_overview.png}
+  \end{center}
 }
 
-\frame[allowframebreaks]{
+\frame{
   \frametitle{Scenarios Diagram}
 
-  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/scenarios.png}
-
+  \begin{center}
+    \includegraphics[keepaspectratio,scale=0.4]{pdt/images/system_specification/scenarios.png}
+  \end{center}
 }
 
-\frame[allowframebreaks]{
+\frame{
   \frametitle{Goals Overview Diagram}
 
-  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/goal_overview.png}
-
+  \begin{center}
+    \includegraphics[keepaspectratio,scale=0.35]{pdt/images/system_specification/goal_overview.png}
+  \end{center}
 }
 
-\frame[allowframebreaks]{
+\frame{
   \frametitle{System Roles Diagram}
 
-  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/system_roles.png}
+  ............ to be split into two subfigure with gimp
 
+  \begin{center}
+    \includegraphics[keepaspectratio,scale=0.3]{pdt/images/system_specification/system_roles.png}
+  \end{center}
 }
 
-\section{High-level (Architectural) Design}
+\part{High-level/Architectural Design}
+\frame{\partpage}
 
-\frame[allowframebreaks]{
+\frame{
+  \frametitle{High-level/Architectural Specification}
+
+  \begin{itemize}
+    \item Data coupling diagram: links roles to data
+    \item Agent-role grouping diagram: group the roles into agent types
+    \item Agent acquaintance diagram: how agents interact with each's other
+    \item System overview diagram: all agents in the system, along with their interface and interaction
+  \end{itemize}
+}
+
+\frame{
   \frametitle{Data Coupling Diagram}
 
-  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/data_coupling.png}
-
+  \begin{center}
+    \includegraphics[keepaspectratio,scale=0.4]{pdt/images/architectural_design/data_coupling.png}
+  \end{center}
 }
 
-\frame[allowframebreaks]{
+\frame{
   \frametitle{Agent-Role Grouping Diagram}
 
-  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/aget-role_grouping.png}
-
+  \begin{center}
+    \includegraphics[keepaspectratio,scale=0.35]{pdt/images/architectural_design/aget-role_grouping.png}
+  \end{center}
 }
 
-\frame[allowframebreaks]{
+\frame{
   \frametitle{Agent Acquaintance Diagram}
 
-  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/agent_acquaintance.png}
-
+  \begin{center}
+    \includegraphics[keepaspectratio,scale=0.4]{pdt/images/architectural_design/agent_acquaintance.png}
+  \end{center}
 }
 
-\frame[allowframebreaks]{
+\frame{
   \frametitle{System Overview Diagram}
 
-  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/system_overview.png}
+  \begin{center}
+    \includegraphics[keepaspectratio,scale=0.3]{pdt/images/architectural_design/system_overview.png}
+  \end{center}
+}
+
+\frame[allowframebreaks]{
+  \frametitle{Protocols}
+
+  \begin{center}
+  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/protocols/Bidding_protocol.png}
+  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/protocols/Game_protocol.png}\\
+  \includegraphics[keepaspectratio,scale=0.3]{pdt/images/protocols/Dealing_protocol.png}\\
+  \includegraphics[keepaspectratio,scale=0.35]{pdt/images/protocols/First_bid_protocol.png}
+  \includegraphics[keepaspectratio,scale=0.35]{pdt/images/protocols/Wake_up_dealer_protocol.png}\\
+  \includegraphics[keepaspectratio,scale=0.35]{pdt/images/protocols/Communication_protocol.png}
+  \includegraphics[keepaspectratio,scale=0.35]{pdt/images/protocols/Join_game_protocol.png}\\
+  \end{center}
 
 }
 
-\section{Detailed Design}
+\part{Detailed Design}
+\frame{\partpage}
 
-\frame[allowframebreaks]{
-  \frametitle{Agent Overview Diagram}
+\frame{
+  \frametitle{Detailed Design}
 
+  \begin{itemize}
+    \item Agent overview diagrams: internals of agents
+    \item Capability overview diagrams: internals of a capability in terms of plans or sub-capabilities and messages
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Agent Overview Diagram: gatekeeper agent}
   
+  \begin{center}
+    \includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/gatekeeper_overview_diagram.png}
+  \end{center}
 }
 
-\frame[allowframebreaks]{
-  \frametitle{Capability Overview Diagram}
+\frame{
+  \frametitle{Capability Overview Diagram: gatekeeper agent}
+  \begin{center}
+ \includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/release_player_capability_overview_diagram.png}
+ \includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/join_players_capability_overview_diagram.png}
+  \end{center}
+}
 
+\frame{
+  \frametitle{Agent Overview Diagram: notary agent}
   
+  \begin{center}
+  \includegraphics[keepaspectratio,scale=0.35]{pdt/images/detailed_design/notary_overview_diagram.png}
+  \end{center}
 }
 
+\frame[allowframebreaks]{
+  \frametitle{Capability Overview Diagram: notary agent}
+  
+  \begin{center}
+  \includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/turn_selection_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/end_the_game_capability_overview_diagram.png}\\
+  \includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/start_dealing_capability_overview_diagram.png}
+  \includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/control_bidding_capability_overview_diagram.png}\\
+  \includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/count_points_capability_overview_diagram.png}
+  \end{center}
+}
+
+\frame{
+  \frametitle{Agent Overview Diagram: dealer agent}
+  
+  \begin{center}
+  \includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/dealer_overview_diagram.png}
+  \end{center}
+}
+
+\frame{
+  \frametitle{Capability Overview Diagram: dealer agent}
+  
+  \begin{center}
+  \includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/dealing_capability_overview_diagram.png}
+  \end{center}
+}
+
+\frame{
+  \frametitle{Agent Overview Diagram: non-player-character agent}
+  
+  \begin{center}
+  \includegraphics[keepaspectratio,scale=0.35]{pdt/images/detailed_design/non-player_character_overview_diagram.png}
+  \end{center}
+}
 
 \frame[allowframebreaks]{
-  \frametitle{Conclusion}
+  \frametitle{Capability Overview Diagram: non-player-character agent}
+  
+  \begin{center}
+\includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/receive_a_hand_capability_overview_diagram.png}
+\includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/bidding_capability_overview_diagram.png}\\
+\includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/playing_capability_overview_diagram.png}\\
+\includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/declare_briscola_capability_overview_diagram.png}
+\includegraphics[keepaspectratio,scale=0.4]{pdt/images/detailed_design/join_to_game_capability_overview_diagram.png}
+  \end{center}
+}
 
-  What's wrong with 2APL?
+\part{Prototype}
+\frame{\partpage}
 
-  No security mechanisms
+\frame{
+  \frametitle{Prototype}
+  \begin{itemize}
+    \item Environment is a Java class
+    \item Agents are implemented in 2APL 
+    \item A GUI has been implemented
+    \item Agent strategies are straight forward
+  \end{itemize}
+}
+
+\part{Demo}
+\frame{\partpage}
+
+\part{Conclusions}
+\frame{\partpage}
+
+\frame{
+  \frametitle{Conclusion: the good and the bad}
+
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+  Good:
+      \begin{itemize}
+        \item Powerful mix of declarative (Prolog) and imperative programming style (Java)
+        \item JADE
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+  Bad:
+     \begin{itemize}
+      \item Lack of library to support agent side development
+      \item Lack of a manual and examples
+      \item Platform not at industry level 
+     \end{itemize}
+    \end{column}
+  \end{columns}
 }
 
 
