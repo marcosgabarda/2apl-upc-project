@@ -42,7 +42,7 @@ There are many features that make Briscola Chiamata an ideal game to model with 
 
 Cooperation in Briscola Chiamata is a double-edge sword, since if you choose the wrong player to cooperate with, you will be the cause of your own defeat. On the other hand, a successful cooperation will most of the time ensure a safe victory. This risk in choosing which players to trust and cooperate with is what makes the game exciting for humans, and hard for agents. Competition is divided into two types, an individual agent competing to win the game alone, and a team of agents, that are unknown for mostly of the game, trying to compete against the opposite team.
 
-Reactivity is an obvious requirement in any card game; when it is your turn to play, you have to play. In Briscola Chiamata however a proactivity is also required since turns are non strict, i.e: a player can decide to play outside his turn to cheat others of not being interested in the current round. This freedom of the game needs to be given to the agents.
+Reactivity is an obvious requirement in any card game; when it is your turn to play, you have to play. In Briscola Chiamata however a proactivity is also required since turns are non strict, i.e: a player can decide to play outside his turn to cheat others of not being interested in the current round or exchange information with other players. This freedom of the game needs to be given to the agents.
 
 The social factor comes from the fact that teams are created without the agents knowing who they are partners and this creates the necessity for communication between them in order to try to determine who are their partners. This, of course, implies a balance between cooperating and cheating. Having agents change status from partner to opponent between rounds makes a dynamic social multi agent system which is worth studying.
 
@@ -75,32 +75,36 @@ The only actor we felt to model in this first sketch of our game is the user of 
   \item ``End of the game'' scenario is in charge of declaring the winner team, update the score of each player according to the scoring rules and release the player from the system. 
 \end{itemize}
 
-Finally, percepts and actions in the system are summarized in Table~\ref{table:inout}.
+Finally, percepts in the system and their subsequent actions are summarized in Table~\ref{table:inout}.
 
 \begin{table}[htp]
   \begin{tabular}{|l|l|}
     \hline
     Join request	& Subscribe user and manage request  \\
     \hline
-    5 players in the system	& Choose the card dealer, shuffling and dealing cards  \\
+    5 players subscribed	& Choose the card dealer \\
     \hline
-    Dealing is over	& Start bidding in turn \\
+    Dealer identified	& Shuffling and dealing cards  \\
     \hline
-    Bidding is over	& Declare the Briscola card \\ 
+    Deal is over	& Select turn \\
     \hline
-    Briscola declared	& Start playing in turn \\
+    Bid is over	& Declare Briscola card \\ 
     \hline
-    Card played	& Update internal beliefs about teams setting \\
+    Briscola card declared	& Select turn  \\
     \hline
-    Message from other players & Update internal beliefs about teams setting \\
+    Turn selected	& Play card or Bid \\
     \hline
-    The hand is over	& Count points \\
+    Card played	& Internal beliefs are updated\\
     \hline
-    The game is over	& Declare the winner \\
+    No percepts needed & Exchange information \\
     \hline
-    Winner declared	 & Update the system scoring \\
+    Round is over	& Count points \\
     \hline
-    System scoring updated	& Release the agents from the system \\
+    Game is over	& Declaring the winner \\
+    \hline
+    Winner declared	 & Update the scoring \\
+    \hline
+    Scoring updated	& Release the players \\
     \hline
   \end{tabular}
   \label{table:inout}
