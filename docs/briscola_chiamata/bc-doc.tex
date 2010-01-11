@@ -240,9 +240,25 @@ In the system overview diagram you can see all agents in the system, along with 
   \caption{System overview diagram}
 \end{figure}
 
+In the context of the system overview diagram, internal protocols for the game are also added. Figure~\ref{fig:protocols} provides them all.
+
+\begin{figure}[htp]
+  \centering
+  \subfloat[Bidding protocol]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/protocols/Bidding_protocol.png}}
+  \subfloat[Game protocol]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/protocols/Game_protocol.png}}\\
+  \subfloat[Dealing protocol]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/protocols/Dealing_protocol.png}}\\
+  \subfloat[First bid protocol]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/protocols/First_bid_protocol.png}}
+  \subfloat[Communication protocol]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/protocols/Communication_protocol.png}}\\
+  \subfloat[Join the game protocol]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/protocols/Join_game_protocol.png}}
+  \subfloat[Wake up dealer procotol]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/protocols/Wake_up_dealer_protocol.png}}
+  \label{fig:protocols}
+  \caption{Protocols for agent coordination}
+\end{figure}
+
+
 \section{Detailed Design}\label{sec:detaildesign}
 
-In this phase, the internals of each agent are developed in terms of capabilities, events, plans and data at the level of individual agents.
+In this phase, the internals of each agent are developed in terms of capabilities, events, plans and data.
 
 \subsection{Agent Overview Diagram}
 The agent overview diagram shows the internals of an agent. Thus, there is one agent overview diagram for every agent in the system: the dealer, the gatekeeper, the 5 non-player character and the notary. Their diagrams are respectively provided in Figure~\ref{fig:dealer}, Figure~\ref{fig:notary}, Figure~\ref{fig:gatekeeper} and Figure~\ref{fig:nonplay-char}.
