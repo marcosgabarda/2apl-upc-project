@@ -68,10 +68,10 @@ The analysis overview diagram is designed to show the interactions between the s
 
 The only actor we felt to model in this first sketch of our game is the user of the system that can be either human or software. Here follows a brief description of each of the scenarios we have identified for it: 
 \begin{itemize}
-  \item ``Start the game Scenario'' is in charge of receiving join requests from users and accept and subscribe users or queue their requests. Once there are 5 players registered in the system.
-  \item ``Dealing scenario'' is in charge of choosing the dealer, shuffle the deck and deal cards to all subscribed the players in the system. 
+  \item ``Start the game Scenario'' is in charge of receiving join requests from users and either accept and subscribe users or queue them. 
+  \item ``Dealing scenario'' takes place once there are 5 players registered and is in charge of choosing the dealer, shuffle the deck and deal cards to all the players registered in the system. 
   \item ``Bidding scenario'' takes place once the dealing is over. It is in charge of giving players a chance to bid. The player who wins the bid, must declare the Briscola card. If nobody bids, then the game has to be restarted. If the bidding succeeds, the Briscola card is declared by the winner of the bid.
-  \item ``Play the game'' scenario occurs once all bids are over and the game finally starts. The team distributions are obviously unknown to all players until the Briscola card is played. The players have to update their beliefs about the team distributions each time a card is played. Of course, cheating is part of the game. Communication that is used to model sign exchange among players is allowed to exchange information about players and cards. After each round, points are counted. 
+  \item ``Play the game'' scenario occurs once all bids are over and the game finally starts. The team settings are  unknown to all players until the Briscola card is played. The players can update their beliefs about the team settings each time a card is played. Of course, cheating is part of the game, thus communication among players is allowed to exchange information and beliefs about players and cards. After each round, points are counted. 
   \item ``End of the game'' scenario is in charge of declaring the winner team, update the score of each player according to the scoring rules and release the player from the system. 
 \end{itemize}
 
@@ -127,7 +127,7 @@ Figure~\ref{fig:analysis} provides the analysis overview diagram for our game.
 
 \subsection{Scenarios Diagram}
 
-The scenarios cover all the phases of the game shows the dynamics of the game. First, the ``start the game scenario'' waits for players to register in the system, then the ``dealing scenario'' deals cards to the players, after that the ``bidding scenario'' allows the players to do their bids, then ``play the game scenario'' allows them to play the game and finally the ``end the game scenario'' assigns them their score. If nobody of the players leave the system, another game can be started, again from the ``dealing scenario''. The scenarios diagram is provided in Figure~\ref{fig:scenarios} .
+The scenarios cover all the phases of the game shows the dynamics of the game. First, the ``start the game scenario'' waits for players to register in the system, then the ``dealing scenario'' deals cards to the players, after that the ``bidding scenario'' allows the players to do their bids, then ``play the game scenario'' allows them to play the game and finally the ``end the game scenario'' assigns the players their score and allow them to leave the system. Obiousvly, another game can be played again starting from the ``start the game scenario''. It could happen the case that nobody of the players bid. In this case, the ``dealing scenario'' has to take place again. The scenarios diagram is provided in Figure~\ref{fig:scenarios} .
 
 \begin{figure}[htp]
   \centering
