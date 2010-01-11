@@ -50,7 +50,7 @@ The rest of the report is organized as follows. Section~\ref{sec:gamedescr} prov
 
 \section{Game Description}\label{sec:gamedescr}
 
-Briscola Chiamatais the five-player version of the italian game of Briscola\cite{wiki:briscola}. Every player is dealt eight cards, so that no cards remain undealt. Then, each player, starting from the dealer's right\footnote{If the dealer is not one the players, then starting from the declearer's right.} and proceeding counter-clockwise, bids in an auction to declare how many points they will score. A player may pass, and hence cannot bid again in that game. The bid represents the number of points that player believes he is capable of accumulating. Bidding continues until all but one player have passed in a round. This remaining player has then ``won the bid'' and therefore gets to declare the Briscola. The declarer also declares a specific Briscola card (example, the ``Ace of Cups'') and the holder of this card is then determined to be the declarer's partner. Logically, the declarer would declare the highest Briscola card he does not already hold in the hopes of creating the strongest combined hand between him and his partner.
+Briscola Chiamata is the five-player version of the Italian game of Briscola\cite{wiki:briscola}. Every player is dealt eight cards, so that no cards remain undealt. Then, each player, starting from the dealer's right\footnote{If the dealer is not one the players, then starting from the declearer's right.} and proceeding counter-clockwise, bids in an auction to declare how many points they will score. A player may pass, and hence cannot bid again in that game. The bid represents the number of points that player believes he is capable of accumulating. Bidding continues until all but one player have passed in a round. This remaining player has then ``won the bid'' and therefore gets to declare the Briscola. The declarer also declares a specific Briscola card (example, the ``Ace of Cups'') and the holder of this card is then determined to be the declarer's partner. Logically, the declarer would declare the highest Briscola card he does not already hold in the hopes of creating the strongest combined hand between him and his partner.
 The remaining three players are partnered with each other, without their knowledge. Each player, other than the declarer's partner, acts independently, until it is clear which players are partners. Infrequently, the declarer may declare a Briscola card he already holds (if he feels he has a very strong hand), in which case the other four players are partnered against him.
 Game strategy is often devised to determine which player is partnered with the declarer, whereas the declarer's partner may devise ruses and decoy strategies to fool the other players, such as not taking a trick, or playing points on a trick that will be won by an opponent.
 
@@ -60,7 +60,7 @@ Each player collects tricks as per the regular version of the game, and counts p
 
 \section{System Specification}\label{sec:sysspec} 
 
-According to Prometheus methodoly, in the system specification phase, the actors expected to interact with the system, are identified, along with the interface to the system in terms of actions and percepts; system goals are elaborated, and scenarios described in terms of sequences of steps are developed. Roles encompassing small chunks of functionality (identified by goals, percepts and actions) are described and captured.
+According to Prometheus methodology, in the system specification phase, the actors expected to interact with the system, are identified, along with the interface to the system in terms of actions and percepts; system goals are elaborated, and scenarios described in terms of sequences of steps are developed. Roles encompassing small chunks of functionality (identified by goals, percepts and actions) are described and captured.
 
 \subsection{Analysis Overview Diagram}
 
@@ -117,7 +117,7 @@ Finally, percepts in the system and their consequent actions are summarized in T
 
 \begin{figure}[htp]
   \centering
-  \includegraphics[keepaspectratio,scale=0.35]{pdt/images/system_specification/analysis_overview.png}
+  \includegraphics[keepaspectratio,scale=0.4]{pdt/images/system_specification/analysis_overview.png}
   \label{fig:analysis}
   \caption{Analysis overview diagram}
 \end{figure}
@@ -127,7 +127,7 @@ Figure~\ref{fig:analysis} provides the analysis overview diagram for our game.
 
 \subsection{Scenarios Diagram}
 
-The scenarios cover all the phases of the game shows the dynamics of the game. First, the ``start the game scenario'' waits for players to register in the system, then the ``dealing scenario'' deals cards to the players, after that the ``bidding scenario'' allows the players to do their bids, then ``play the game scenario'' allows them to play the game and finally the ``end the game scenario'' assigns the players their score and free the system according to some internal rules. Obiousvly, another game can be played again starting from the ``start the game scenario''. It could happen the case that nobody of the players bid. In this case, the ``dealing scenario'' has to take place again. The scenarios diagram is provided in Figure~\ref{fig:scenarios} .
+The scenarios cover all the phases of the game shows the dynamics of the game. First, the ``start the game scenario'' waits for players to register in the system, then the ``dealing scenario'' deals cards to the players, after that the ``bidding scenario'' allows the players to do their bids, then ``play the game scenario'' allows them to play the game and finally the ``end the game scenario'' assigns the players their score and free the system according to some internal rules. Obviously, another game can be played again starting from the ``start the game scenario''. It could happen the case that nobody of the players bid. In this case, the ``dealing scenario'' has to take place again. The scenarios diagram is provided in Figure~\ref{fig:scenarios} .
 
 \begin{figure}[htp]
   \centering
@@ -142,7 +142,7 @@ The goal overview diagram is a directed acyclic graph of all goals in the system
 
 \begin{figure}[htp]
   \centering
-  \includegraphics[keepaspectratio,scale=0.4]{pdt/images/system_specification/goal_overview.png}
+  \includegraphics[keepaspectratio,scale=0.45]{pdt/images/system_specification/goal_overview.png}
   \label{fig:goals}
   \caption{Goals diagram}
 \end{figure}
@@ -201,7 +201,7 @@ The data coupling diagram is provided in Figure~\ref{fig:datacoupl}.
 
 \subsection{Agent-Role Grouping Diagram}
 
-In this diagram we group the roles into agent types. The agent-role coupling diagram shows the group of roles that come under an agent. Here follows the list of the agent types that we have indentified:
+In this diagram we group the roles into agent types. The agent-role coupling diagram shows the group of roles that come under an agent. Here follows the list of the agent types that we have identified:
 \begin{itemize}
   \item ``Dealer'' that is the that represents the dealer that is in charge of dealing cards
   \item ``Gatekeeper'' that is the that represents the agent that let the players come in and out the system
@@ -330,7 +330,7 @@ The capability overview diagram allows to specify the internals of a capability 
 The prototype was built according the design decisions as described in the previous sections, each step was carefully defined, built and implemented. % The idea was to use as many features as 2APL as possible, and thus our own personal environment was also created for this Paper.
 The development of the prototype can be logically separated in two parts: firstly the environment in which the agents interact, and secondly the agents themselves.
 
-Environments in 2APL, as mentioned in the previos paper, are created as a Java class extension. By using the example environment given in the documentation of 2APL we were able to build our own environment adding it a graphic user interface (GUI) to allow monitoring visually the agents in action. This environment was built so that it would allow agents to interact in all of the possible manners defined during the design stage. We successfully implemented it with a GUI that achieved the desired level of detail as to be pleasing to the eye but not a burden to the real task at hand: the way the agents act and interact. A screen shot of the GUI is provided in Figure~\ref{fig:gui1}. As you can see it was decided to split the GUI into three panels: the left panel being the one which shows each players cards, score and bid; a top right corner in which cards played are shown, and a bottom right panel in which information about the agent interactions is displayed, along with game information. Teams are highlighted in different colors, black and blue.
+Environments in 2APL, as mentioned in the previous paper, are created as a Java class extension. By using the example environment given in the documentation of 2APL we were able to build our own environment adding it a graphic user interface (GUI) to allow monitoring visually the agents in action. This environment was built so that it would allow agents to interact in all of the possible manners defined during the design stage. We successfully implemented it with a GUI that achieved the desired level of detail as to be pleasing to the eye but not a burden to the real task at hand: the way the agents act and interact. A screen shot of the GUI is provided in Figure~\ref{fig:gui1}. As you can see it was decided to split the GUI into three panels: the left panel being the one which shows each players cards, score and bid; a top right corner in which cards played are shown, and a bottom right panel in which information about the agent interactions is displayed, along with game information. Teams are highlighted in different colors, black and blue.
 
 \begin{figure}[htp]
   \centering
@@ -359,7 +359,7 @@ The negative aspects of 2APL are few, but certainly relevant. Firstly it is clea
 
 Even though declarative programming does give us a very powerful logic system, 2APL does lack to provide agents with the capability to compute things on their own. In its current state the designer is forced to have the environment calculate it for the agent, instead of allowing the agent to encapsulate the calculation method in its own code. Finally, even though it was previously mentioned, the 2APL parser was so unhelpful that it barely provided us with any useful information. Clearer instructions or error messages would be necessary if any serious development was to be made in this language.
 
-So even though we praised 2APL for some things and despised it for others, as a whole we were pleased to develop with 2APL and do believe that with more work it can become the ``go to'' language of multiagent systems, at least from a research point of view.
+So even though we praised 2APL for some things and despised it for others, as a whole we were pleased to develop with 2APL and do believe that with more work it can become the ``go to'' language of multi-agent systems, at least from a research point of view.
 
 
 \section{Bibliography}
