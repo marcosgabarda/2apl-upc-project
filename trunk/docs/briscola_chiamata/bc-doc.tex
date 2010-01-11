@@ -127,7 +127,7 @@ Figure~\ref{fig:analysis} provides the analysis overview diagram for our game.
 
 \subsection{Scenarios Diagram}
 
-The scenarios cover all the phases of the game shows the dynamics of the game. First, the ``start the game scenario'' waits for players to register in the system, then the ``dealing scenario'' deals cards to the players, after that the ``bidding scenario'' allows the players to do their bids, then ``play the game scenario'' allows them to play the game and finally the ``end the game scenario'' assigns the players their score and allow them to leave the system. Obiousvly, another game can be played again starting from the ``start the game scenario''. It could happen the case that nobody of the players bid. In this case, the ``dealing scenario'' has to take place again. The scenarios diagram is provided in Figure~\ref{fig:scenarios} .
+The scenarios cover all the phases of the game shows the dynamics of the game. First, the ``start the game scenario'' waits for players to register in the system, then the ``dealing scenario'' deals cards to the players, after that the ``bidding scenario'' allows the players to do their bids, then ``play the game scenario'' allows them to play the game and finally the ``end the game scenario'' assigns the players their score and free the system according to some internal rules. Obiousvly, another game can be played again starting from the ``start the game scenario''. It could happen the case that nobody of the players bid. In this case, the ``dealing scenario'' has to take place again. The scenarios diagram is provided in Figure~\ref{fig:scenarios} .
 
 \begin{figure}[htp]
   \centering
@@ -240,7 +240,7 @@ In the system overview diagram you can see all agents in the system, along with 
   \caption{System overview diagram}
 \end{figure}
 
-In the context of the system overview diagram, internal protocols for the game are also added. Figure~\ref{fig:protocols} provides them all.
+In the context of the system overview diagram, simple internal protocols are developed for the game to let agent communicate. Figure~\ref{fig:protocols} provides diagrams for them all.
 
 \begin{figure}[htp]
   \centering
@@ -295,7 +295,7 @@ The capability overview diagram allows to specify the internals of a capability 
   \centering
   \includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/dealing_capability_overview_diagram.png}
   \label{fig:dealing-cap}
-  \caption{Capability overview diagram for capabilities of the dealer agent}
+  \caption{Capability overview diagram of the dealer agent}
 \end{figure}
 \begin{figure}[htp]
   \centering
@@ -305,14 +305,14 @@ The capability overview diagram allows to specify the internals of a capability 
   \subfloat[Control bidding]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/control_bidding_capability_overview_diagram.png}}\\
   \subfloat[Count points]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/count_points_capability_overview_diagram.png}}
   \label{fig:notary-cap}
-  \caption{Capability overview diagram for capabilities of the notary agent}
+  \caption{Capability overview diagram of the notary agent}
 \end{figure}
 \begin{figure}[htp]
   \centering
   \subfloat[Release player]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/release_player_capability_overview_diagram.png}}
   \subfloat[Join players]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/join_players_capability_overview_diagram.png}}
   \label{fig:gatekeeper-cap}
-  \caption{Capability overview diagram for capabilities of the gatekeeper agent}
+  \caption{Capability overview diagram of the gatekeeper agent}
 \end{figure}
 \begin{figure}[htp]
   \centering
@@ -322,7 +322,7 @@ The capability overview diagram allows to specify the internals of a capability 
   \subfloat[Declare briscola]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/declare_briscola_capability_overview_diagram.png}}
   \subfloat[Join the game]{\includegraphics[keepaspectratio,scale=0.45]{pdt/images/detailed_design/join_to_game_capability_overview_diagram.png}}
   \label{fig:non-player-cap}
-  \caption{Capability overview diagram for capabilities of the non-player character agent}
+  \caption{Capability overview diagram of the non-player character agent}
 \end{figure}
 
 \section{Prototype}\label{sec:proto} 
