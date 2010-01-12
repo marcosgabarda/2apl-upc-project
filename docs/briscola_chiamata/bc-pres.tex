@@ -81,7 +81,13 @@
 \frame{
     \frametitle{Briscola Chiamata}
 
-    An italian card game of 5 players, 8 cards each (no cards undealt), 2 teams 
+    An italian cards game:
+    \begin{itemize}
+      \item 40 cards, 120 points
+      \item 5 players
+      \item 8 cards each (no cards undealt)
+      \item 2 teams (possible settings: 3-2 or 4-1)
+    \end{itemize}
 
 %Players look at cards and start bidding to be attempt to be the winner of the round. 
 %Highest bidder then names a card (which he usually doesnt have) and the owner of that card becomes part of his team (only he knows... for now).
@@ -105,7 +111,7 @@
   \frametitle{Why is suitable for multi-agents system?}
 
   \begin{itemize}
-    \item Uncertainity (nobody knows who are its team's partners)
+    \item Uncertainty (nobody knows who are its team's partners)
     \item Sociality (needed in order to discover team settings)
     \begin{itemize}
       \item Cooperation (inside the team once partners are discovered)
@@ -130,16 +136,32 @@
   \end{itemize}
 }
 
-\part{System Specification}
+\part{Analysis and Design Specification}
 \frame{\partpage}
+
+\frame{
+  \frametitle{Analysis and Design Specification}
+
+  We followed the Prometheus methodology that consists of 3 phases:
+
+  \vskip 2.0ex
+
+  \begin{itemize}
+    \item System Specification: actors, actions, percepts, goals and scenarios
+    \vskip 2.0ex
+    \item High-level/Architectural Specification: overall structure of the system 
+    \vskip 2.0ex
+    \item Detailed Specification: internals of each agent
+  \end{itemize}
+}
 
 \frame{
   \frametitle{System Specification}
 
   \begin{itemize}
-    \item Analysis overview diagram: the interactions between the system and the environment
+    \item Analysis overview diagram: interactions between the system and the environment
     \vskip 2.0ex
-    \item Scenarios diagram: the dynamics of the game
+    \item Scenarios diagram: dynamics of the game
     \vskip 2.0ex
     \item Goals overview diagram: how goals can be decomposed into subgoals
     \vskip 2.0ex
@@ -191,9 +213,6 @@
   \end{center}
 }
 
-\part{High-level/Architectural Design}
-\frame{\partpage}
-
 \frame{
   \frametitle{High-level/Architectural Specification}
 
@@ -202,7 +221,7 @@
     \vskip 2.0ex
     \item Agent-role grouping diagram: group the roles into agent types
     \vskip 2.0ex
-    \item Agent acquaintance diagram: how agents interact with each's other
+    \item Agent acquaintance diagram: how agents interact with each other's
     \vskip 2.0ex
     \item System overview diagram: all agents in the system, along with their interface and interaction
   \end{itemize}
@@ -254,9 +273,6 @@
   \end{center}
 
 }
-
-\part{Detailed Design}
-\frame{\partpage}
 
 \frame{
   \frametitle{Detailed Design}
@@ -348,10 +364,9 @@
   \begin{itemize}
     \item The prototype was built in two languages:
   \begin{itemize}
-	\item Ennvironment was coded in Java (extension of a \texttt{apapl.Environment} class).
+	\item Environment was coded in Java (extension of a \texttt{apapl.Environment} class).
 	\item Agents were coded in 2APL (founded in Prolog).
   \end{itemize}
-
 	\item 2APL has little information on building environments so code inspection of an example was performed.
 	\item The GUI was designed apart and then inserted into the environment.
   \end{itemize}
@@ -361,22 +376,23 @@
 \frame{
   \frametitle{Prototype: concepts}
   \begin{itemize}
-    \item The prototype is an approach of our Prometheus design of Briscola Chimiata applied to 2APL.
-    \item We want ot test the develop of a real problem using 2APL platform.
+    % For Marcos: The prototype is a first instantiation of the design using 2APL platform
+    \item The prototype is an approach of our Prometheus design of Briscola Chiamata applied to 2APL.
+    % For Marcos: The purpose is to evaluate the 2APL platform with a real problem, not developing a full working card game
+    \item We want to test the develop of a real problem using 2APL platform.
     \item Cover all the scenarios, with the minimum functionalities.
     \item The GUI allows the designer of the agents to view how the agents play.
-    %\item By showing the game steps at human eye sight speed, one could see the game in action instead of staring at a console.
-    \item Fancy graphics were never intended, it is marely a visual aid, not an actual game to be played.
+    \item Fancy graphics were never intended, it is merely a visual aid, not an actual game to be played.
   \end{itemize}
 }
 
 \frame{
-  \frametitle{Prototype : The future}
+  \frametitle{Prototype: future}
   \begin{itemize}
-    \item Make agents more intelligent, adding learning algorithms or adding reputation models. 
-    \item Personalize the strategies of each player, making competition.
-    \item Allow human players to join, using and interface agent.
-%%  Marcos: I comment this, because 2APL allows to use JADE, so other agents can be in other computers...
+    \item Make agents more ``intelligent'', adding learning algorithms or implementing reputation models. 
+    \item Personalize agent's game strategies of each player, making a true competition of players.
+    \item Allow human players to join the system.
+%%  Marcos: I comment this, because 2APL allows to use JADE, so other agents can be in other computers.................
 %   \item Or even more interesting, by adding the required libraries, one could potentially play on a server and have agents designed by different people play each other.
 %   \item Due to lack of community this feature is unlikely to be added.
   \end{itemize}
