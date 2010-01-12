@@ -23,12 +23,18 @@
   \begin{itemize}
    \item Problem Specification
    \vskip 2.0ex
-   \item System Specification
-   \item High level/Architectural Design
-   \item Detailed Design
+   \item Analysis and Design Specification
+   \begin{itemize}
+    \item System Specification
+    \item High level/Architectural Design
+    \item Detailed Design
+   \end{itemize}
    \vskip 2.0ex
-   \item Prototype
-   \item Demo
+   \item Implementation
+   \begin{itemize}
+      \item Prototype description
+      \item Demo
+   \end{itemize}
    \item Conclusions
   \end{itemize}
 }
@@ -41,16 +47,16 @@
 
   \begin{itemize}
 
-   \item Chosen problem : the Briscola Chiamata card game
+   \item Chosen problem: the Briscola Chiamata card game
+   \vskip 2.0ex
    \item Why the game is suitable for a multi-agents system?
 
-    \begin{itemize}  
+%     \begin{itemize}  
+%       \item Competitiveness and Cooperation.
+%       \item Reactive and Proactive agents.
+%       \item Could also have human players.
+%     \end{itemize}
 
-      \item Competitiveness and Cooperation.
-      \item Reactive and Proactive agents.
-      \item Could also have human players.
-
-    \end{itemize}
   \end{itemize}
 }
 
@@ -58,11 +64,16 @@
     \frametitle{A bit of terminology}
   
     \begin{itemize}
-      \item Game: The event starting when enough players are gathered and ending when a final victor is declared.
-      \item Round: A round is a subdivision of a game. It represents one full play of the deck, after which it is shuffled and anoher round begins.
+      \item Game: full play of the deck
+      \vskip 2.0ex
+      \item Round: subdivision of a game, each player play a card
+      \vskip 2.0ex
       \item Trick: points collected in one round
+      \vskip 2.0ex
       \item Suit: spades, hearts, diamonds, clubs
+      \vskip 2.0ex
       \item Rank: 1-7, jack, queen, king
+      \vskip 2.0ex
       \item Briscola (Brisca): a particular suit
     \end{itemize}
 }
@@ -70,15 +81,23 @@
 \frame{
     \frametitle{Briscola Chiamata}
 
-    In short: An italian card game of 5 players, 8 cards each ( no cards undealt). Players look at cards and start bidding to be attempt to be the winner of the round. Highest bidder then names a card (which he usually doesnt have) and the owner of that card becomes part of his team (only he knows... for now). So 2 teams. The person to reach a certain amount of points wins the game.
+    An italian card game of 5 players, 8 cards each (no cards undealt), 2 teams 
+
+%Players look at cards and start bidding to be attempt to be the winner of the round. 
+%Highest bidder then names a card (which he usually doesnt have) and the owner of that card becomes part of his team (only he knows... for now).
+%So 2 teams. The person to reach a certain amount of points wins the game.
 
     \vskip 2.0ex
 
     Game in two-phases:
     \begin{itemize}  
-      \item Bidding phase
+      \item Bidding phase (amount of points to win the game)
       \item Playing phase
     \end{itemize}
+
+    \vskip 2.0ex
+
+    After the bidding phase, the briscola card is declared and the teams are formed.
 }
 
 
@@ -86,13 +105,13 @@
   \frametitle{Why is suitable for multi-agents system?}
 
   \begin{itemize}
-    \item Uncertainity (nobody knows who is actually its partner)
+    \item Uncertainity (nobody knows who are its team's partners)
     \item Sociality (needed in order to discover team settings)
     \begin{itemize}
       \item Cooperation (inside the team once partners are discovered)
       \item Competition (between opponent's teams)
+      \item Trust/Reputation models needed 
     \end{itemize}
-    \item Trust/Reputation models needed 
   \end{itemize}
 	
   \vskip 2.0ex
@@ -119,8 +138,11 @@
 
   \begin{itemize}
     \item Analysis overview diagram: the interactions between the system and the environment
+    \vskip 2.0ex
     \item Scenarios diagram: the dynamics of the game
+    \vskip 2.0ex
     \item Goals overview diagram: how goals can be decomposed into subgoals
+    \vskip 2.0ex
     \item System roles diagram: group different goals, percepts and actions under roles
   \end{itemize}
 }
@@ -153,19 +175,19 @@
   \frametitle{System Roles Diagram}
 
   \begin{center}
-    \includegraphics[keepaspectratio,scale=0.3]{fig/system_roles_1.png}
+    \includegraphics[keepaspectratio,scale=0.34]{fig/system_roles_1.png}
   \end{center}
 
   \break
 
   \begin{center}
-    \includegraphics[keepaspectratio,scale=0.3]{fig/system_roles_2.png}
+    \includegraphics[keepaspectratio,scale=0.35]{fig/system_roles_2.png}
   \end{center}
 
   \break
   
   \begin{center}
-    \includegraphics[keepaspectratio,scale=0.3]{fig/system_roles_3.png}
+    \includegraphics[keepaspectratio,scale=0.32]{fig/system_roles_3.png}
   \end{center}
 }
 
@@ -177,8 +199,11 @@
 
   \begin{itemize}
     \item Data coupling diagram: links roles to data
+    \vskip 2.0ex
     \item Agent-role grouping diagram: group the roles into agent types
+    \vskip 2.0ex
     \item Agent acquaintance diagram: how agents interact with each's other
+    \vskip 2.0ex
     \item System overview diagram: all agents in the system, along with their interface and interaction
   \end{itemize}
 }
@@ -238,6 +263,7 @@
 
   \begin{itemize}
     \item Agent overview diagrams: internals of agents
+    \vskip 2.0ex
     \item Capability overview diagrams: internals of a capability in terms of plans or sub-capabilities and messages
   \end{itemize}
 }
@@ -314,32 +340,30 @@
   \end{center}
 }
 
-\part{Prototype}
+\part{Implementation}
 \frame{\partpage}
 
 \frame{
-  \frametitle{Prototype}
+  \frametitle{Prototype description}
   \begin{itemize}
-    \item The prototype was built in two languages :
+    \item The prototype was built in two languages:
   \begin{itemize}
-	\item The environment was coded in java as an extension of a 2APL java class.
-	\item The Agents were coded in prolog.
+	\item Ennvironment was coded in Java (extension of a \texttt{apapl.Environment} class).
+	\item Agents were coded in 2APL (founded in Prolog).
   \end{itemize}
 
-	\item 2APL has very little information on building environments so code inspection of an example was performed.
+	\item 2APL has little information on building environments so code inspection of an example was performed.
 	\item The GUI was designed apart and then inserted into the environment.
-
   \end{itemize}
 }
 
 
 \frame{
-  \frametitle{Prototype : The concept}
+  \frametitle{Prototype: concepts}
   \begin{itemize}
     \item The idea of the prototype was for it to simply allow the designer of the game agents to view live how the agents play
     \item By showing the game steps at human eye sight speed, one could see the game in action instead of staring at a console.
     \item Fancy graphics were never intended, it is marely a visual aid, not an actual game to be played.
-
   \end{itemize}
 }
 
@@ -360,11 +384,18 @@
 \frame{\partpage}
 
 \frame{
-  \frametitle{Conclusion: the good and the bad}
+  \frametitle{Conclusions}
 
   \begin{columns}
     \begin{column}{0.5\textwidth}
-  Good:
+      Good:
+    \end{column}    
+    \begin{column}{0.5\textwidth}
+     Bad:
+    \end{column}
+  \end{columns}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
       \begin{itemize}
         \item Powerful mix of declarative (Prolog) and imperative programming style (Java)
         \item JADE platform compatibility.
@@ -372,7 +403,6 @@
       \end{itemize}
     \end{column}
     \begin{column}{0.5\textwidth}
-  Bad:
      \begin{itemize}
       \item Lack of library to support agent side development
       \item Lack of a manual and examples
@@ -380,6 +410,22 @@
      \end{itemize}
     \end{column}
   \end{columns}
+}
+
+\frame{
+  \frametitle{EF($\Psi_1 \lor \Psi_2$)}
+
+  \begin{itemize}
+    \item $\Psi_1$: Finalize the prototype
+    \vskip 2.0ex
+    \item $\Psi_2$: Institute a contest
+  \end{itemize}
+
+  \vskip 4.0ex
+
+  \begin{center}
+  Join us at \url{http://2apl-upc-project.googlecode.com} !
+  \end{center}
 }
 
 
