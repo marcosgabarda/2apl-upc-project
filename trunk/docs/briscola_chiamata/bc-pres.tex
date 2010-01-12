@@ -38,9 +38,19 @@
 
 \frame{
     \frametitle{Problem Specification}
+
   \begin{itemize}
-   \item Introduction to Briscola Chiamata card game
+
+   \item Chosen problem : the Briscola Chiamata card game
    \item Why the game is suitable for a multi-agents system?
+
+    \begin{itemize}  
+
+      \item Competitiveness and Cooperation.
+      \item Reactive and Proactive agents.
+      \item Could also have human players.
+
+    \end{itemize}
   \end{itemize}
 }
 
@@ -48,20 +58,20 @@
     \frametitle{A bit of terminology}
   
     \begin{itemize}
-      \item Game: ....definition here......
-      \item Hand/Round: .......definition here........
+      \item Game: The event starting when enough players are gathered and ending when a final victor is declared.
+      \item Round: A round is a subdivision of a game. It represents one full play of the deck, after which it is shuffled and anoher round begins.
       \item Trick: points collected in one round
       \item Suit: spades, hearts, diamonds, clubs
       \item Rank: 1-7, jack, queen, king
       \item Briscola (Brisca): a particular suit
-      \item Non-player charcacter: .....definiton here.....
+      \item Non-player charcacter: An agent not playing the actual game. (Not to be confused with non-playable character)
     \end{itemize}
 }
 
 \frame{
     \frametitle{Briscola Chiamata}
 
-    In short: italian game, 5 players, 8 cards each, no cards undealt, 2 teams
+    In short: An italian card game of 5 players, 8 cards each ( no cards undealt). Players look at cards and start bidding to be attempt to be the winner of the round. Highest bidder then names a card (which he usually doesnt have) and the owner of that card becomes part of his team (only he knows... for now). So 2 teams. The person to reach a certain amount of points wins the game.
 
     \vskip 2.0ex
 
@@ -311,10 +321,36 @@
 \frame{
   \frametitle{Prototype}
   \begin{itemize}
-    \item Environment is a Java class
-    \item Agents are implemented in 2APL 
-    \item A GUI has been implemented
-    \item Agent strategies are straight forward
+    \item The prototype was built in two languages :
+  \begin{itemize}
+	\item The environment was coded in java as an extension of a 2APL java class.
+	\item The Agents were coded in prolog.
+  \end{itemize}
+
+	\item 2APL has very little information on building environments so code inspection of an example was performed.
+	\item The GUI was designed apart and then inserted into the environment.
+
+  \end{itemize}
+}
+
+
+\frame{
+  \frametitle{Prototype : The concept}
+  \begin{itemize}
+    \item The idea of the prototype was for it to simply allow the designer of the game agents to view live how the agents play
+    \item By showing the game steps at human eye sight speed, one could see the game in action instead of staring at a console.
+    \item Fancy graphics were never intended, it is marely a visual aid, not an actual game to be played.
+
+  \end{itemize}
+}
+
+\frame{
+  \frametitle{Prototype : The future}
+  \begin{itemize}
+    \item Since the GUI can be easely extended, it could be possible to allow human players to join.
+    \item Or even more interesting, by adding the required libraries, one could potentially play on a server and have agents designed by different people play each other.
+    \item Due to lack of community this feature is unlikely to be added.
+
   \end{itemize}
 }
 
@@ -332,7 +368,8 @@
   Good:
       \begin{itemize}
         \item Powerful mix of declarative (Prolog) and imperative programming style (Java)
-        \item JADE
+        \item JADE platform compatibility.
+        \item 2APL tools helpful during development.
       \end{itemize}
     \end{column}
     \begin{column}{0.5\textwidth}
