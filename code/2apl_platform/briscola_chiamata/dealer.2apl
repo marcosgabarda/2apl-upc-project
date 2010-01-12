@@ -2,11 +2,17 @@ BeliefUpdates:
   { not assigned(POS, X) }  SetAssigned(POS, X)     { assigned(POS, X) }
   { true }  AddDeck(X) { deck(X) }
   { deck(X) }  RemoveDeck(X) { not deck(X) }
+  { true }  AddDeckBackup(X) { deckbackup(X) }
 Beliefs:
   notary(n).
   gatekeeper(gk).
   player(X) :- assigned(POS, X).
   gethand([C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16 | NewDeck], [C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, C16], NewDeck).
+  
+  getcard([], 0, []).
+  getcard([X], 0, []).
+  getcard([ S, R | REST ], 0, [S, R]).
+  getcard([ S, R | REST ], I, X) :- Y is I - 1, getcard(REST, Y, X).
   
 Goals:
   deal(0)
@@ -56,8 +62,15 @@ PC-rules:
   
   event(deckShuffled(X), cardtable) <- true | 
   {
-    AddDeck(X)
+    AddDeck(X);
+    AddDeckBackup(X)
   }
   
-  
+  message(X, inform, _, _, askforacard(Y)) <- true |
+  {
+    B(deckbackup(D));
+    B(is( RAND, int( random( 40 ) ) ));
+    B(getcard(D, RAND, [S, R]));
+    send(X, inform, acard([S, R]))
+  }
   
