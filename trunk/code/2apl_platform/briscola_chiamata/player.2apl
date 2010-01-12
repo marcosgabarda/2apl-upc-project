@@ -183,16 +183,23 @@ PC-rules:
   {
     print("I've the Briscola!");
     AddBriscola(0);
+    //TODO: The knowledge of a general deck must be included into NPC belief base to be able to
+    //chose a random card of the deck
+    send(d, inform, askforacard(0))    
+  }
+  message(d, inform, _, _, acard(X)) <- briscola(B) |
+  {
+    B(X = [S, R]);
     // --- Declare Briscola
-    //B( getcard(H, 3, Briscola) ); FIXME this line do not work
-    send(n, inform, declarebriscola([clubs, ace]));
-    @cardtable(briscolaDeclared(clubs,ace));
-    if B( iscard(H, [clubs, ace]) ) then
+    send(n, inform, declarebriscola([S, R]));
+    @cardtable(briscolaDeclared(S, R));
+    if B( iscard(H, [S, R]) ) then
     {
       print("I go alone!");
       AddTeamMember(alone) // The player goes alone
     }
   }
+  
 
   message(X, inform, _, _, declarebriscola(Briscola, Y)) <- hand(H) |
   {
@@ -255,7 +262,7 @@ PC-rules:
   
   message(n, inform, _, _, youlose(Y)) <- briscola(_) |
   {
-  B( assigned(Pos, Me) );
+    B( assigned(Pos, Me) );
     @cardtable(updateScore(Me, -2))
   }
   
