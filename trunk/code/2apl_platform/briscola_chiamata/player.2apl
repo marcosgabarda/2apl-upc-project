@@ -7,13 +7,10 @@ BeliefUpdates:
   { hand(X) }  RemoveHand(X)  { not hand(X) }
   { not lastbid(X) } AddLastBid(X) { lastbid(X) }
   { lastbid(X) } RemoveLastBid(X) { not lastbid(X) }
-  
-  { not points(X) } AddPoints(X) { points(X) }
+  { not points(X) } SetPoints(X) { points(X) }
   { points(X) } RemovePoints(X) { not points(X) }
-  
   { true }  SetPartner(X) { partner(X) }
- 
-  { true } AddBriscola(X) { briscola(X) }
+  { true } SetBriscola(S,R) { briscola(S,R) }
  
 Beliefs:
   notary(n).
@@ -21,17 +18,17 @@ Beliefs:
   dealer(d).
   player(X) :- assigned(POS, X).
   
-  getcard([], 0, []).
-  getcard([X], 0, []).
-  getcard([ S, R | REST ], 0, [S, R]).
-  getcard([ S, R | REST ], I, X) :- Y is I - 1, getcard(REST, Y, X).
+  getfirstcard([], 0, []).
+  getfirstcard([X], 0, []).
+  getfirstcard([ S, R | REST ], 0, [S, R]).
+  getfirstcard([ S, R | REST ], I, X) :- Y is I - 1, getfirstcard(REST, Y, X).
   
-  iscard([], []).
-  iscard([Card1, Card2 | REST ], [Card1, Card2]).
-  iscard([ X, Y | REST ], Q) :- iscard(REST, Q).
+  hascard([], []).
+  hascard([Card1, Card2 | REST ], [Card1, Card2]).
+  hascard([ X, Y | REST ], Q) :- hascard(REST, Q).
   
   deletehandcard(R, S, [R, S|T], T).
-  deletehandcard(R, S, [X, Y|T], [H|T1]):- deletehandcard(R, S, T, T1).
+  deletehandcard(R, S, [X, Y|T], [X, Y|T1]):- deletehandcard(R, S, T, T1).
 
   points(0).
   
@@ -182,19 +179,18 @@ PC-rules:
   message(X, inform, _, _, bidwinner(Y)) <- hand(H) | 
   {
     print("I've the Briscola!");
-    AddBriscola(0);
     //TODO: The knowledge of a general deck must be included into NPC belief base to be able to
     //chose a random card of the deck
     send(d, inform, askforacard(0))    
   }
 
-  message(d, inform, _, _, acard(X)) <- briscola(B) |
+  message(d, inform, _, _, acard(X)) <- true |
   {
     B(X = [S, R]);
     // --- Declare Briscola
     send(n, inform, declarebriscola([S, R]));
     @cardtable(briscolaDeclared(S, R));
-    if B( iscard(H, [S, R]) ) then
+    if B( hascard(H, [S, R]) ) then
     {
       print("I go alone!");
       SetPartner(Me) // The player goes alone
@@ -203,8 +199,10 @@ PC-rules:
   
   message(X, inform, _, _, declarebriscola(Briscola, Y)) <- hand(H) |
   {
+   B(Briscola = [S,R]);
+   SetBriscola(S, R);
    // Update knowledge about the team
-   if B( iscard(H, Briscola) ) then
+   if B( hascard(H, Briscola) ) then
    {
      print("is the parter of the declarer");
      SetPartner(Y)
@@ -217,21 +215,24 @@ PC-rules:
   message(n, inform, _, _, yourturn(Y)) <-  hand(H) and not H = [] |   
   {
 
-    print("My turn!");
-    B( getcard(H, 0, X ) ); //TODO Get a ramdom card.
+    print("My turn as default!");
+    B( getfirstcard(H, 0, X ) ); 
     B( X = [S, R] );
     @cardtable(playCard(S, R));
     
     // Update hand
     B( deletehandcard(S, R, H, RES ) );
     RemoveHand(H);
-    SetHand(RES);
+    SetHand(RES)
     
+/*
     // Check if hand is ended
     if B(RES = []) then
     {
       endhand()
     }
+*/
+
   }
   
   message(n, inform, _, _, yourpoints(Y)) <-  true | 
@@ -239,9 +240,10 @@ PC-rules:
     print("I received the points");
     B( points(P) );
     RemovePoints(P);
-    AddPoints(P + Y)
+    SetPoints(P + Y)
   }
   
+/*****
   endhand() <- hand([]) | 
   {
     print("I finish my hand!");
@@ -249,9 +251,18 @@ PC-rules:
     B( points(P) );
     send(n, inform, doiwin(P))
   }
+*****/
+
+  message(n, inform, _, _, gameisover(X)) <- hand([]) |
+  {
+    RemoveHand([]);
+    B( points(P) );
+    send(n, inform, doiwin(P))
+  }
   
   /**
-   * updateScore() should be moved in the notary agent?
+   * The updateScore external actions have to be moved into the notary agent.
+   * They are defined here for semplicity, at the moment.
    */
   message(n, inform, _, _, youwin(Y)) <- briscola(_) |
   {
@@ -276,4 +287,3 @@ PC-rules:
     B( assigned(Pos, Me) );
     @cardtable(updateScore(Me, -1))
   }
-  
