@@ -1,1 +1,45 @@
 Include: player.2apl
+
+BeliefUpdates:
+ { true }  AddCardPlayed(S, R, X) { cardontable(S, R, X), cardplayed(S, R, X) }  /* Keep track of cards on the table
+										    as well as the history of cards played */
+ { true }  RemoveCardOnTable(S,R,X) { not cardontable(S,R,X) }			 /* Discard beliefs about the cards on the table
+										    as soon as they are not neeed anymore */
+
+Beliefs:
+  nopoints(X) :- (X=two;X=four;X=five;X=six;X=seven).
+  fewpoints(X) :- (X=jack;X=queen;X=king).
+  getlowestcard(H, [S, R]) :- hascard(H, [S,R]), nopoints(R), !.
+  getlowestcard(H, [S, R]) :- hascard(H, [S,R]), fewpoints(R), !.
+  getlowestcard(H, [S, R]) :- hascard(H, [S,R]).
+
+PC-rules:
+  /* track all the cards played by other players */
+  event(cardPlayed(S, R, N), cardtable) <- true |
+  {
+    AddCardPlayed(S, R, N)
+  }
+
+
+  /* it's my turn playing */
+  message(n, inform, _, _, yourturn(Y)) <-  hand(H) and not H = [] |
+  {
+  
+    /* find out the best card to play */
+    B( getlowestcard(H, [S, R]) ); 
+
+    /* play the card */
+    @cardtable(playCard(S, R));
+
+    /* discard beliefs about cards on the table */
+    while B( cardontable(S1, R1, X1) ) do
+    {
+        RemoveCardOnTable(S1,R1,X1)
+    };
+    
+    /* update beliefs about the cards I have */
+    B( deletehandcard(S, R, H, RES ) );
+    RemoveHand(H);
+    SetHand(RES)
+
+  }

@@ -3,19 +3,22 @@ BeliefUpdates:
   { true }  RemoveAssigned(POS, X) 	{ not assigned(POS, X) }
   { true }  SetDealer(X)  { dealer(X) }
   { not currentturn(_) }  UpdateTurn(X)  { currentturn(X) }
-  { currentturn(X) }  RemoveTrun(X)  { not currentturn(X) }
+  { currentturn(X) }  RemoveTurn(X)  { not currentturn(X) }
+  { not rounds(_) }  UpdateRounds(X)  { rounds(X) }
+  { rounds(X) }  RemoveRounds(X)  { not rounds(X) }
   { true }  PlayerPass(X)  { playerpass(X) }
-  { true }  AddCardPlayed(S, R, X) { cardontable(S, R, X) } 		/* Player X has played card of rank R and suit S */
-  { true }  AddBriscola(S, R) { briscola(S, R) } 			/* Set the riscola to be a card of rank R and suit S */
+  { true }  SetBriscola(S, R) { briscola(S, R) } 			/* Set the briscola to be a card of rank R and suit S */
+  { true }  AddCardPlayed(S, R, X) { cardontable(S, R, X) } 		/* Keep track of cards on the table */
   { true }  RemoveCardPlayed(S, R, X) { not cardontable(S, R, X) } 
 
   { not points(P, X) } AddPoints(P, X) { points(P, X) }
   { points(P, X) } RemovePoints(P, X) { not points(P, X) }
   
 Beliefs:
-  gatekeeper(gk).		/* we know who the gatekeeper is, for simplicity */
+  gatekeeper(gk).	/* we know who the gatekeeper is, for simplicity */
   dealer(d).
   currentturn(0).   /* the first turn is for the agent in postion 0 */
+  rounds(8).	/* there are 8 rounds */
   
   getpoints(jack, X) :- X is 2.
   getpoints(queen, X) :- X is 3.
@@ -24,19 +27,22 @@ Beliefs:
   getpoints(ace, X) :- X is 11.
   getpoints(Y, X) :- X is 0.
 
-  briscolaPlayed(X) :- cardontable(S, _, X), briscola(S, _).	/* Keep track of who played a briscola */
+  briscolaPlayed(X) :- cardontable(S, _, X), briscola(S, _).	/* Keep track of who played a briscola: it is useful when points of a round has to be counted in order to establish if someone has played a briscola */
   
-  getwinner(Winner, Suit) :- cardontable(Suit, ace, Winner), !.
-  getwinner(Winner, Suit) :- cardontable(Suit, three, Winner), !.
-  getwinner(Winner, Suit) :- cardontable(Suit, king, Winner), !.
-  getwinner(Winner, Suit) :- cardontable(Suit, queen, Winner), !.
-  getwinner(Winner, Suit) :- cardontable(Suit, jack, Winner), !.
-  getwinner(Winner, Suit) :- cardontable(Suit, seven, Winner), !.
-  getwinner(Winner, Suit) :- cardontable(Suit, six, Winner), !.
-  getwinner(Winner, Suit) :- cardontable(Suit, five, Winner), !.
-  getwinner(Winner, Suit) :- cardontable(Suit, four, Winner), !.
-  getwinner(Winner, Suit) :- cardontable(Suit, two, Winner), !.
+  getroundwinner(W, S) :- cardontable(S, ace, W), !.
+  getroundwinner(W, S) :- cardontable(S, three, W), !.
+  getroundwinner(W, S) :- cardontable(S, king, W), !.
+  getroundwinner(W, S) :- cardontable(S, queen, W), !.
+  getroundwinner(W, S) :- cardontable(S, jack, W), !.
+  getroundwinner(W, S) :- cardontable(S, seven, W), !.
+  getroundwinner(W, S) :- cardontable(S, six, W), !.
+  getroundwinner(W, S) :- cardontable(S, five, W), !.
+  getroundwinner(W, S) :- cardontable(S, four, W), !.
+  getroundwinner(W, S) :- cardontable(S, two, W), !.
   
+  /*
+   * This is wrong: a player win if its team has won. A team wins if the sum of the points of its parters is greater than the sum of the points of the other players.
+   */
   major(X, Y) :- X >= Y.
   win(X, P1, [X, P1]).
   win(X, P1, [X, P1|T]) :- win(Y, P2, T), major(P1, P2).
@@ -89,7 +95,7 @@ PC-rules:
   message(X, inform, _, _, declarebriscola(Briscola)) <- true | 
   {
     B( Briscola = [S, R] );
-    AddBriscola(S, R);
+    SetBriscola(S, R);
     B( assigned(Pos, X) );
     if B( Pos = 0 ) then
     {
@@ -148,7 +154,7 @@ PC-rules:
     };
     
     // START THE GAME!!!
-    selectturn()
+      selectturn()
   }
   
  /**
@@ -158,24 +164,36 @@ PC-rules:
   {
     if B( X = 5 ) then
     {
-      RemoveTrun(X);
+      RemoveTurn(X);
       UpdateTurn(0);
       B( assigned(0, P));
       print("Round over!");
-      countpoints()
+      [ countpoints() ];
+
+      B( rounds(N) );
+      RemoveRounds(N);
+      UpdateRounds(N - 1);
+
+      if B( rounds(N) and N = 0 ) then
+      {
+	while B ( assigned(POS, Y) ) do
+        {
+          send(Y, inform, gameisover(0));
+	  RemoveAssigned(POS, Y)
+        }
+      }
     }
     else
     {
       B( assigned(X, P));
       send(P, inform, yourturn(X));
-      RemoveTrun(X);
+      RemoveTurn(X);
       UpdateTurn(X + 1)
     }
   }
   
   event(cardPlayed(S, R, N), cardtable) <- true | 
   {
-    //TODO add card played to can count points
     AddCardPlayed(S, R, N);
     selectturn()
   }
@@ -201,16 +219,15 @@ PC-rules:
 
      if B( briscolaPlayed(_)) then
      {
-         B( briscola(S,_) and getwinner(W, S))
+         B( briscola(S,_) and getroundwinner(W, S))
      }
      else
      {
-       B( getwinner(W, S0))
+       B( getroundwinner(W, S0))
      };
      
      //Send point to the winner
      send(W, inform, yourpoints( X0 + X1 + X2 + X3 + X4));
-     //@cardtable(updatePoints(W, X0 + X1 + X2 + X3 + X4));
      B( points(W, POINTS) );
      RemovePoints(W, POINTS);
      AddPoints(W, POINTS + X0 + X1 + X2 + X3 + X4);
@@ -248,5 +265,3 @@ PC-rules:
       send(X, inform, youlose(P))
     }
   }
-  
-  
