@@ -11,7 +11,7 @@ BeliefUpdates:
   { not points(X) } AddPoints(X) { points(X) }
   { points(X) } RemovePoints(X) { not points(X) }
   
-  { true }  AddTeamMember(X) { team(X) }
+  { true }  SetPartner(X) { partner(X) }
  
   { true } AddBriscola(X) { briscola(X) }
  
@@ -187,6 +187,7 @@ PC-rules:
     //chose a random card of the deck
     send(d, inform, askforacard(0))    
   }
+
   message(d, inform, _, _, acard(X)) <- briscola(B) |
   {
     B(X = [S, R]);
@@ -196,18 +197,17 @@ PC-rules:
     if B( iscard(H, [S, R]) ) then
     {
       print("I go alone!");
-      AddTeamMember(alone) // The player goes alone
+      SetPartner(Me) // The player goes alone
     }
   }
   
-
   message(X, inform, _, _, declarebriscola(Briscola, Y)) <- hand(H) |
   {
    // Update knowledge about the team
    if B( iscard(H, Briscola) ) then
    {
-     print("I go with bid winner!");
-     AddTeamMember(Y)
+     print("is the parter of the declarer");
+     SetPartner(Y)
    }
   }
   
@@ -216,6 +216,7 @@ PC-rules:
   */
   message(n, inform, _, _, yourturn(Y)) <-  hand(H) and not H = [] |   
   {
+
     print("My turn!");
     B( getcard(H, 0, X ) ); //TODO Get a ramdom card.
     B( X = [S, R] );
@@ -235,6 +236,7 @@ PC-rules:
   
   message(n, inform, _, _, yourpoints(Y)) <-  true | 
   {
+    print("I received the points");
     B( points(P) );
     RemovePoints(P);
     AddPoints(P + Y)
@@ -248,6 +250,9 @@ PC-rules:
     send(n, inform, doiwin(P))
   }
   
+  /**
+   * updateScore() should be moved in the notary agent?
+   */
   message(n, inform, _, _, youwin(Y)) <- briscola(_) |
   {
     B( assigned(Pos, Me) );
