@@ -27,7 +27,7 @@ Beliefs:
   hascard([ X, Y | REST ], Q) :- hascard(REST, Q).
   
   deletehandcard(R, S, [R, S|T], T).
-  deletehandcard(R, S, [X, Y|T], [X, Y|T1]):- deletehandcard(R, S, T, T1).
+  deletehandcard(R, S, [X, Y|T], [X, Y|T1]) :- deletehandcard(R, S, T, T1).
 
   points(0).
   
@@ -213,8 +213,6 @@ PC-rules:
   */
   message(n, inform, _, _, yourturn(Y)) <-  hand(H) and not H = [] |   
   {
-
-    print("My turn as default!");
     B( getfirstcard(H, 0, X ) ); 
     B( X = [S, R] );
     @cardtable(playCard(S, R));

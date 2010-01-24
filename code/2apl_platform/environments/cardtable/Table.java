@@ -190,6 +190,9 @@ public class Table extends JFrame{
       }
 
       public void updatePoints(String name, int position, int points) {
+	java.net.URL imgURL = getClass().getResource("cards/b.gif");
+	  ImageIcon cardBack = new ImageIcon(imgURL);
+
 	Integer pointsInt = new Integer(points);
 	JLabel pointsLab = (JLabel) playersPane[position].getComponent(2);
 	pointsLab.setText("Points: "+pointsInt.toString());
@@ -198,6 +201,10 @@ public class Table extends JFrame{
 	if(round<9) {
 	  Integer roundInt = new Integer(round);
 	  roundLab.setText("Round : "+roundInt.toString());
+	}
+	for (int i = 0; i < 5; i++) {
+	JLabel cardLab = (JLabel) layeredPane.getComponent(i);
+	  cardLab.setIcon(cardBack);
 	}
 	setVisible( true );
       }
