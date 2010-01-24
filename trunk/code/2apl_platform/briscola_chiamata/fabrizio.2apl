@@ -1,71 +1,158 @@
 Include: player.2apl
 
 BeliefUpdates:
- { true }  AddCardPlayed(S, R, X) { cardontable(S, R, X), cardplayed(S, R, X) }  /* Keep track of cards on the table
-										    as well as the history of cards played */
- { true }  RemoveCardOnTable(S,R,X) { not cardontable(S,R,X) }			 /* Discard beliefs about the cards on the table
-										    as soon as they are not neeed anymore */
+ { true }  AddCardPlayed(S, R, X) { cardplayed(S, R, X) }  /* Keep track of history of cards */
+ { true }  AddCardOnTable(S, R, X) { cardontable(S, R, X) }  /* Keep track of cards on table */
+ { cardontable(S,R,X) }  RemoveCardOnTable(S,R,X) { not cardontable(S,R,X) }
  { not hasplayed(_) }  SetHasPlayed(X)  { hasplayed(X) }			/* Keep track of who is playing */
  { hasplayed(X) }  RemoveHasPlayed(X)  { not hasplayed(X) }
+ { not round(_) }  SetRound(X)  { round(X) }					/* Keep track of round */
+ { round(X) }  RemoveRound(X)  { not round(X) }
+ { not pointsontable(_) }  SetPoints(X)  { pointsontable(X) }					/* Keep track of points on table */
+ { pointsontable(X) }  RemovePoints(X)  { not pointsontable(X) }
 
 Beliefs:
   nopoints(X) :- (X=two;X=four;X=five;X=six;X=seven).
   fewpoints(X) :- (X=jack;X=queen;X=king).
   manypoints(X) :- (X=ace;X=three).
 
-  getlowcard(H, [S, R]) :- hascard(H, [S,R]), nopoints(R), !.
-  getlowcard(H, [S, R]) :- hascard(H, [S,R]), fewpoints(R), !.
-  getlowcard(H, [S, R]) :- hascard(H, [S,R]).
+  getlowcard(H, [S, R]) :- hascard(H, [S,R]), nopoints(R), not briscola(S, _), !.
+  getlowcard(H, [S, R]) :- hascard(H, [S,R]), fewpoints(R), not briscola(S, _), !.
+  getlowcard(H, [S, R]) :- hascard(H, [S,R]), not briscola(S, _).
 
-  gethighcard(H, [S, R]) :- hascard(H, [S,R]), manypoints(R), !.
-  gethighcard(H, [S, R]) :- hascard(H, [S,R]), fewpoints(R), !.
-  gethighcard(H, [S, R]) :- hascard(H, [S,R]).
+  gethighcard(H, [S, R]) :- hascard(H, [S,R]), manypoints(R), not briscola(S, _), !.
+  gethighcard(H, [S, R]) :- hascard(H, [S,R]), fewpoints(R), not briscola(S, _), !.
+  gethighcard(H, [S, R]) :- hascard(H, [S,R]), not briscola(S, _).
+
+  getlowbriscolacard(H, [S, R]) :- hascard(H, [S,R]), nopoints(R), briscola(S, _), !.
+  getlowbriscolacard(H, [S, R]) :- hascard(H, [S,R]), fewpoints(R), briscola(S, _), !.
+  getlowbriscolacard(H, [S, R]) :- hascard(H, [S,R]), briscola(S, _).
+
+  gethighbriscolacard(H, [S, R]) :- hascard(H, [S,R]), manypoints(R), briscola(S, _), !.
+  gethighbriscolacard(H, [S, R]) :- hascard(H, [S,R]), fewpoints(R), briscola(S, _), !.
+  gethighbriscolacard(H, [S, R]) :- hascard(H, [S,R]), not briscola(S, _).
 
   hasplayed(0).
-
+  pointsontable(0).
+  round(1).
+  firstrounds(X) :- (X=1,X=2).
 
 PC-rules:
   /* track all the cards played by other players _before_ me */
   event(cardPlayed(S, R, N), cardtable) <- true |
   {
+    [ 
+    B( hasplayed(P1));
+    AddCardPlayed(S, R, P1);
     if B( assigned(P0, _) and hasplayed(P1) and P0 > P1 ) then
     {
-      AddCardPlayed(S, R, N)
+      B( hasplayed(P1));
+      AddCardOnTable(S, R, P1);
+      B( pointsontable(PT));
+      B(getpoints(R, R1));
+      RemovePoints(PT);
+      SetPoints(PT + R1)
     };
 
     if B( hasplayed(P1) and P1 = 4) then
     {
+      B (hasplayed(P1));
       RemoveHasPlayed(P1);
-      SetHasPlayed(0)
+      SetHasPlayed(0);
+      B(round(R1));
+      RemoveRound(R1);
+      SetRound(R1+1);
+      B( pointsontable(PT));
+      RemovePoints(PT);
+      SetPoints(0)
     }
     else
     {
       B ( hasplayed(P1));
       RemoveHasPlayed(P1);
       SetHasPlayed(P1 + 1)
-    }
-
+    } ]
   }
 
   /* it's my turn playing */
   message(n, inform, _, _, yourturn(Y)) <-  hand(H) and not H = [] |
   {
-  
+    [
     /* find out the best card to play */
-    B( getlowcard(H, [S, R]) ); 
-
-    /* play the card */
+    if B(pointsontable(PT) and PT > 15) then
+    {
+     	B( gethighbriscolacard(H, [S, R]) )
+    }
+    else 
+    {
+      if B(assigned(POS, _) and POS = 4 and briscola(BS, _) and not cardontable(BS, _, _) and pointontable(PT) and PT > 5) then
+      {
+   	B( cardontable(S, _, 0));
+       	B( gethighcard(H, [S, R]) )
+      }
+      else
+      {
+        if B(round(RND) and firstrounds(RND) and not briscola(S,_)) then
+        {
+       	  B( getlowcard(H, [S, R]) )
+        }
+        else
+        {
+       	  B( getlowcard(H, [S, R]) )
+        }
+      }
+    };
     @cardtable(playCard(S, R));
+   cleanup(S, R, H)
+   ]
+  }
 
+  cleanup(S, R, H) <- true |
+  {
+    [
     /* discard beliefs about cards on the table */
     while B( cardontable(S1, R1, X1) ) do
     {
-        [ RemoveCardOnTable(S1,R1,X1) ]
+         RemoveCardOnTable(S1,R1,X1) 
     };
     
     /* update beliefs about the cards I have */
     B( deletehandcard(S, R, H, RES ) );
     RemoveHand(H);
     SetHand(RES)
+    ]
 
+  }
+
+PR-rules:
+  B(getlowcard(H, [S0,R0])); @cardtable(playCard(S0,R0)); REST <- true |
+  {  
+    print("Plan Repair rule 1!");
+    B(getlowbriscolacard(H, [S, R]));
+    @cardtable(playCard(S, R));
+   cleanup(S, R, H)
+  }
+
+  B(gethighcard(H, [S0,R0])); @cardtable(playCard(S0,R0)); REST <- true |
+  {
+    print("Plan Repair rule 2!");
+    B(getlowbriscolacard(H, [S, R]));
+    @cardtable(playCard(S, R));
+   cleanup(S, R, H)
+  }
+
+  B(getlowbriscolacard(H, [S0,R0])); @cardtable(playCard(S0,R0)); REST <- true |
+  {  
+    print("Plan Repair rule 3!");
+    B(getlowcard(H, [S, R]));
+    @cardtable(playCard(S, R));
+   cleanup(S, R, H)
+  }
+
+  B(gethighbriscolacard(H, [S0,R0])); @cardtable(playCard(S0,R0)); REST <- true |
+  {
+    print("Plan Repair rule 4!");
+    B(getlowcard(H, [S, R]));
+    @cardtable(playCard(S, R));
+   cleanup(S, R, H)
   }
