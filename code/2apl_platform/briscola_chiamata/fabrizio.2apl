@@ -5,28 +5,54 @@ BeliefUpdates:
 										    as well as the history of cards played */
  { true }  RemoveCardOnTable(S,R,X) { not cardontable(S,R,X) }			 /* Discard beliefs about the cards on the table
 										    as soon as they are not neeed anymore */
+ { not hasplayed(_) }  SetHasPlayed(X)  { hasplayed(X) }			/* Keep track of who is playing */
+ { hasplayed(X) }  RemoveHasPlayed(X)  { not hasplayed(X) }
 
 Beliefs:
   nopoints(X) :- (X=two;X=four;X=five;X=six;X=seven).
   fewpoints(X) :- (X=jack;X=queen;X=king).
-  getlowestcard(H, [S, R]) :- hascard(H, [S,R]), nopoints(R), !.
-  getlowestcard(H, [S, R]) :- hascard(H, [S,R]), fewpoints(R), !.
-  getlowestcard(H, [S, R]) :- hascard(H, [S,R]).
+  manypoints(X) :- (X=ace;X=three).
+
+  getlowcard(H, [S, R]) :- hascard(H, [S,R]), nopoints(R), !.
+  getlowcard(H, [S, R]) :- hascard(H, [S,R]), fewpoints(R), !.
+  getlowcard(H, [S, R]) :- hascard(H, [S,R]).
+
+  gethighcard(H, [S, R]) :- hascard(H, [S,R]), manypoints(R), !.
+  gethighcard(H, [S, R]) :- hascard(H, [S,R]), fewpoints(R), !.
+  gethighcard(H, [S, R]) :- hascard(H, [S,R]).
+
+  hasplayed(0).
+
 
 PC-rules:
-  /* track all the cards played by other players */
+  /* track all the cards played by other players _before_ me */
   event(cardPlayed(S, R, N), cardtable) <- true |
   {
-    AddCardPlayed(S, R, N)
-  }
+    if B( assigned(P0, _) and hasplayed(P1) and P0 > P1 ) then
+    {
+      AddCardPlayed(S, R, N)
+    };
 
+    if B( hasplayed(P1) and P1 = 4) then
+    {
+      RemoveHasPlayed(P1);
+      SetHasPlayed(0)
+    }
+    else
+    {
+      B ( hasplayed(P1));
+      RemoveHasPlayed(P1);
+      SetHasPlayed(P1 + 1)
+    }
+
+  }
 
   /* it's my turn playing */
   message(n, inform, _, _, yourturn(Y)) <-  hand(H) and not H = [] |
   {
   
     /* find out the best card to play */
-    B( getlowestcard(H, [S, R]) ); 
+    B( getlowcard(H, [S, R]) ); 
 
     /* play the card */
     @cardtable(playCard(S, R));
@@ -34,7 +60,7 @@ PC-rules:
     /* discard beliefs about cards on the table */
     while B( cardontable(S1, R1, X1) ) do
     {
-        RemoveCardOnTable(S1,R1,X1)
+        [ RemoveCardOnTable(S1,R1,X1) ]
     };
     
     /* update beliefs about the cards I have */

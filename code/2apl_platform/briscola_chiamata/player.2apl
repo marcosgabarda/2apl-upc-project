@@ -16,7 +16,6 @@ Beliefs:
   notary(n).
   gatekeeper(gk).
   dealer(d).
-  player(X) :- assigned(POS, X).
   
   getfirstcard([], 0, []).
   getfirstcard([X], 0, []).
@@ -193,7 +192,7 @@ PC-rules:
     if B( hascard(H, [S, R]) ) then
     {
       print("I go alone!");
-      SetPartner(Me) // The player goes alone
+      SetPartner(me) // The player goes alone
     }
   }
   
@@ -224,15 +223,6 @@ PC-rules:
     B( deletehandcard(S, R, H, RES ) );
     RemoveHand(H);
     SetHand(RES)
-    
-/*
-    // Check if hand is ended
-    if B(RES = []) then
-    {
-      endhand()
-    }
-*/
-
   }
   
   message(n, inform, _, _, yourpoints(Y)) <-  true | 
@@ -243,16 +233,6 @@ PC-rules:
     SetPoints(P + Y)
   }
   
-/*****
-  endhand() <- hand([]) | 
-  {
-    print("I finish my hand!");
-    RemoveHand([]);
-    B( points(P) );
-    send(n, inform, doiwin(P))
-  }
-*****/
-
   message(n, inform, _, _, gameisover(X)) <- hand([]) |
   {
     RemoveHand([]);
